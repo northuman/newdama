@@ -41,4 +41,9 @@ public class Baraja : MonoBehaviour {
         //Colocar en la mano del jugador
         cartaRobada.transform.SetParent(GameObject.Find("Mano Jugador").transform);
     }
+
+    public void AnyadirCarta(Carta carta) {
+
+
+    }
 }

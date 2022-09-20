@@ -5,46 +5,87 @@ using UnityEngine.UI;
 
 public class Partida : MonoBehaviour {
 
-    Button botonFases;
+    // Mulligan = 0, Mantenimiento = 1, Robo = 2, Principal = 4, Combate = 5, Principal2 = 6, Fin = 7
     bool turnoJugador = true; //Si false, turno oponente
-
-    // Mulligan = 0, Mantenimiento = 1, Robo = 2, Principal = 4
-    //Combate = 5, Principal2 = 6, Fin = 7
     int faseActual = 0; 
 
     Baraja barajaJugador;
+    GameObject manoJugador;
+
+    Button botonFases;
+    GameObject cajaDialogo;
     
     void Start() {
         
-        botonFases = GameObject.Find("Boton Fases").GetComponent<Button>();
         barajaJugador = GameObject.Find("Baraja 1").GetComponent<Baraja>();
+        manoJugador = GameObject.Find("Mano Jugador");
+
+        botonFases = GameObject.Find("Boton Fases").GetComponent<Button>();
+        cajaDialogo = GameObject.Find("Caja de Dialogo");
+        cajaDialogo.SetActive(false);
 
         barajaJugador.Barajar();
 
+        StartCoroutine(RobarManoInicialJugador());    
+    }
+
+    IEnumerator RobarManoInicialJugador() {
+
         for(int i=7; i>0; i--) {
 
+            yield return new WaitForSeconds(0.5f);
             barajaJugador.RobarCarta();
-            EsperarSegundos(10);
+        }
+
+        HacerPregunta("¿Desea hacer Mulligan?");
+
+        yield return new WaitForSeconds(2);
+        cajaDialogo.SetActive(true);
+    }
+
+    public void DevolverManoInicial() {
+
+        StartCoroutine(DevolverCartasMulligan());
+    }
+
+    IEnumerator DevolverCartasMulligan() {
+
+        for(int i=7; i>0; i--) {
+
+            yield return new WaitForSeconds(0.5f);
+            
+            GameObject cartaEnMano = manoJugador.transform.GetChild(i-1).gameObject;
+
+            barajaJugador.AnyadirCarta(CartaDesdeGameObject(cartaEnMano));
+
+            Destroy(cartaEnMano);
         }
     }
 
-    IEnumerator EsperarSegundos(int seg) {
+    Carta CartaDesdeGameObject(GameObject cartaGameObject) {
 
-        yield return new WaitForSeconds(seg);
+        Carta carta;
+
+        carta = cartaGameObject.GetComponent<MostrarDatosCarta>().carta;
+
+        return carta;
     }
 
     void Update() {
         
-        switch(faseActual) {
+        
+    }
 
-            case 0:
-                //Devolver las cartas al mazo
-                //Robar 7 nuevas
-                break;
-            default:
-                Debug.Log("Se ha roto");
-                break;
-        }
+    void HacerPregunta(string pregunta) {
+
+        //El hijo 0 de la Caja de Dialogo debe ser el Texto de la Pregunta
+        TMPro.TMP_Text texto = cajaDialogo.transform.GetChild(0).gameObject.GetComponent<TMPro.TMP_Text>();
+        texto.text = pregunta;
+    }
+
+    public void QuedarMano() {
+
+        cajaDialogo.SetActive(false);
     }
 
     public void Mulligan() {
