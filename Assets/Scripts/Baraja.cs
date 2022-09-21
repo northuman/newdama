@@ -44,6 +44,6 @@ public class Baraja : MonoBehaviour {
 
     public void AnyadirCarta(Carta carta) {
 
-
+        cartas.Add(carta);
     }
 }

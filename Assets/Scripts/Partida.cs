@@ -5,15 +5,21 @@ using UnityEngine.UI;
 
 public class Partida : MonoBehaviour {
 
+    const float TIEMPO_ROBO = 0.5f;
+
     // Mulligan = 0, Mantenimiento = 1, Robo = 2, Principal = 4, Combate = 5, Principal2 = 6, Fin = 7
     bool turnoJugador = true; //Si false, turno oponente
-    int faseActual = 0; 
+    int faseActual = 0;
+    int mulligan = 7;
+    bool quedarMano = false;
 
     Baraja barajaJugador;
     GameObject manoJugador;
 
     Button botonFases;
     GameObject cajaDialogo;
+    GameObject botonAceptar;
+    GameObject botonCancelar;
     
     void Start() {
         
@@ -22,37 +28,59 @@ public class Partida : MonoBehaviour {
 
         botonFases = GameObject.Find("Boton Fases").GetComponent<Button>();
         cajaDialogo = GameObject.Find("Caja de Dialogo");
+        botonAceptar = GameObject.Find("Boton Aceptar");
+        botonCancelar = GameObject.Find("Boton Cancelar");
         cajaDialogo.SetActive(false);
 
         barajaJugador.Barajar();
 
-        StartCoroutine(RobarManoInicialJugador());    
+        Mulligan();
     }
 
-    IEnumerator RobarManoInicialJugador() {
+    IEnumerator RobarCartas(int cantidad) {
 
-        for(int i=7; i>0; i--) {
+        for(int i=cantidad; i>0; i--) {
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(TIEMPO_ROBO);
             barajaJugador.RobarCarta();
         }
 
-        HacerPregunta("¿Desea hacer Mulligan?");
+        if(mulligan == 0) { quedarMano = true; }
 
-        yield return new WaitForSeconds(2);
+        if(!quedarMano) {
+
+            yield return PreguntarMulligan();
+        }
+    }
+
+    //Mulligan --------------------------------------------------------------------------------------------------------
+
+    void Mulligan() {
+
+        StartCoroutine(RobarCartas(mulligan));
+    }
+
+    IEnumerator PreguntarMulligan() {
+
+        yield return new WaitForSeconds(1f);
+
+        ModificarCajaDialogo(1);
+
         cajaDialogo.SetActive(true);
     }
 
     public void DevolverManoInicial() {
 
-        StartCoroutine(DevolverCartasMulligan());
+        cajaDialogo.SetActive(false);
+
+        StartCoroutine(DevolverCartas(mulligan));
     }
 
-    IEnumerator DevolverCartasMulligan() {
+    IEnumerator DevolverCartas(int cantidad) {
 
-        for(int i=7; i>0; i--) {
+        for(int i=cantidad; i>=1; i--) {
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(TIEMPO_ROBO);
             
             GameObject cartaEnMano = manoJugador.transform.GetChild(i-1).gameObject;
 
@@ -60,6 +88,13 @@ public class Partida : MonoBehaviour {
 
             Destroy(cartaEnMano);
         }
+
+        barajaJugador.Barajar();
+
+        botonAceptar.GetComponent<Button>().onClick.RemoveAllListeners();
+        botonCancelar.GetComponent<Button>().onClick.RemoveAllListeners();
+
+        yield return RobarCartas(--mulligan);
     }
 
     Carta CartaDesdeGameObject(GameObject cartaGameObject) {
@@ -71,27 +106,58 @@ public class Partida : MonoBehaviour {
         return carta;
     }
 
-    void Update() {
-        
-        
-    }
-
-    void HacerPregunta(string pregunta) {
-
-        //El hijo 0 de la Caja de Dialogo debe ser el Texto de la Pregunta
-        TMPro.TMP_Text texto = cajaDialogo.transform.GetChild(0).gameObject.GetComponent<TMPro.TMP_Text>();
-        texto.text = pregunta;
-    }
-
     public void QuedarMano() {
 
         cajaDialogo.SetActive(false);
+        quedarMano = true;
+
+        botonAceptar.GetComponent<Button>().onClick.RemoveAllListeners();
+        botonCancelar.GetComponent<Button>().onClick.RemoveAllListeners();
     }
 
-    public void Mulligan() {
+    //Mulligan --------------------------------------------------------------------------------------------------------
 
+    // Mantenimiento --------------------------------------------------------------------------------------------------
 
+    void Mantenimiento() {
+
+        Debug.Log("Mantenimiento");
     }
+
+    // Mantenimiento --------------------------------------------------------------------------------------------------
+
+    //Dialogo ---------------------------------------------------------------------------------------------------------
+
+    //Modificar Dialogo
+    //Motivo 1 -> Mulligan
+
+    void ModificarCajaDialogo(int motivo) {
+
+        switch(motivo) {
+
+            case 0:
+                Debug.Log("Se ha muerto");
+                break;
+
+            case 1:
+
+                TMPro.TMP_Text textoDialogo = cajaDialogo.transform.GetChild(0).gameObject.GetComponent<TMPro.TMP_Text>(); //Texto de Pregunta
+                textoDialogo.text = "¿Desea hacer Mulligan a " + (mulligan-1) + "?";
+
+                TMPro.TMP_Text textoAceptar = botonAceptar.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+                textoAceptar.text = "Hacer Mulligan";
+                botonAceptar.GetComponent<Button>().onClick.AddListener(delegate { DevolverManoInicial(); });
+
+
+                TMPro.TMP_Text textoCancelar = botonCancelar.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+                textoCancelar.text = "Quedar Mano";
+                botonCancelar.GetComponent<Button>().onClick.AddListener(delegate { QuedarMano(); });
+
+                break;
+        }
+    }
+
+    //Dialogo ---------------------------------------------------------------------------------------------------------
 }
 
 /*
