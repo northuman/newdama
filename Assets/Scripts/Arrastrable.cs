@@ -11,6 +11,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     GameObject placeholder = null;
 
+    static bool algunaCartaAmpliada = false;
     bool cartaAmpliada = false;
     Transform transformCarta;
 
@@ -40,11 +41,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         //Cogemos el CanvasGroup de la carta y evitamos que bloquee el Raycast. Asi los paneles podran ver cuando soltamos la carta sobre ellos
         GetComponent<CanvasGroup>().blocksRaycasts = false;
-
-        //Buscamos todas las DropZone para utilizarlas mas adelante
-        DropZone[] zonas = GameObject.FindObjectsOfType<DropZone>();
-
-        //Filtramos para hacer que brillen por ejemplo y asi el jugador sepa donde soltar la carta
     }
 
     public void OnDrag(PointerEventData datosEvento) {
@@ -61,7 +57,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         this.transform.SetParent(padreOriginal);
 
         //Devolvemos la carta a la posicion correspondiente del layout element
-        this.transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
+        if(padreOriginal == padrePlaceholder)
+            this.transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
 
         //Para poder volver a coger la misma carta
         GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -71,8 +68,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnPointerClick(PointerEventData datosEvento) {
 
-        if(!cartaAmpliada) { AumentarTamanyoCarta(); }
-        else { ReducirTamanyoCarta(); }
+        if(!algunaCartaAmpliada && !cartaAmpliada) { AumentarTamanyoCarta(); }
+        else if(algunaCartaAmpliada && cartaAmpliada) { ReducirTamanyoCarta(); }
     }
 
     void AumentarTamanyoCarta() {
@@ -80,6 +77,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         transformCarta.localScale *= 2;
         transformCarta.Translate(Vector3.up * 300);
         cartaAmpliada = true;
+        algunaCartaAmpliada = true;
     }
 
     void ReducirTamanyoCarta() {
@@ -87,6 +85,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         transformCarta.Translate(Vector3.down * 300);
         transformCarta.localScale /= 2;
         cartaAmpliada = false;
+        algunaCartaAmpliada = false;
     }
 
     void ObtenerTipoCarta() {
@@ -100,6 +99,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         else if(cadenaTipo.Contains("Artefacto")) { tipoCarta = TipoCarta.ARTEFACTO; }
         else if(cadenaTipo.Contains("Encantamiento")) { tipoCarta = TipoCarta.ENCANTEMIENTO; }
         else if(cadenaTipo.Contains("Tierra")) { tipoCarta = TipoCarta.TIERRA; }
+
+        Debug.Log(this.gameObject.name + " es del tipo " + this.tipoCarta);
     }
 
     void CrearPlaceholder() {
@@ -136,5 +137,27 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
 
         placeholder.transform.SetSiblingIndex(nuevoIndice);
+    }
+
+    public void ColocarCarta() {
+
+        if(this.tipoCarta == TipoCarta.CRIATURA) {
+
+            //this.gameObject.transform = DropZone.criaturasJugador.transform;
+            this.transform.SetParent(DropZone.criaturasJugador.transform);
+        }
+
+        else {
+
+            //padreOriginal = DropZone.tierrasJugador.transform;
+            this.transform.SetParent(DropZone.tierrasJugador.transform);
+        }
+    }
+
+    public void AnyadirCartaPila() {
+
+        padreOriginal = DropZone.pila.transform;
+        Pila.pila.Push(this);
+        Pila.cantidadCartas++;
     }
 }

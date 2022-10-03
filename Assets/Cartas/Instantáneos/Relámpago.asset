@@ -16,7 +16,7 @@ MonoBehaviour:
   costeMana: 0000000001000000000000000000000000000000
   palabrasClave: 
   descripcion: "Rel\xE1mpago hace 3 puntos de da\xF1o a cualquier criatura o jugador."
-  tipos: "Instant\xE1neo"
-  tiposCriatura: 
+  tipoCarta: "Instant\xE1neo"
+  tiposConcretos: 
   fuerza: 0
   resistencia: 0

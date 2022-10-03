@@ -5,9 +5,18 @@ using UnityEngine.EventSystems;
 
 public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler {
 
-    public enum TipoZona {MANO, CRIATURAS, TIERRAS, ENCANTAMIENTOS, OTROS};
+    public static GameObject pila;
+    public static GameObject manoJugador;
+    public static GameObject tierrasJugador;
+    public static GameObject criaturasJugador;
 
-    public TipoZona tipoZona;
+    void Start() {
+        
+        pila = GameObject.Find("Pila");
+        manoJugador = GameObject.Find("Mano Jugador");
+        tierrasJugador = GameObject.Find("Tierras Jugador");
+        criaturasJugador = GameObject.Find("Criaturas Jugador");
+    }
     
     public void OnPointerEnter(PointerEventData datosEvento) {
 
@@ -19,15 +28,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
         if(carta != null) {
 
-            if(tipoZona == TipoZona.CRIATURAS && carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
 
-                carta.padrePlaceholder = this.transform;
-            }
-
-            else if(tipoZona == TipoZona.MANO) {
-
-                carta.padrePlaceholder = this.transform;
-            }
         }
     }
 
@@ -41,15 +42,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
         if(carta != null && carta.padrePlaceholder == this.transform) {
 
-            if(tipoZona == TipoZona.CRIATURAS && carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
 
-                carta.padrePlaceholder = this.transform;
-            }
-
-            else if(tipoZona == TipoZona.MANO) {
-
-                carta.padrePlaceholder = carta.padreOriginal;
-            }
         }
     }
 
@@ -61,14 +54,17 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
         if(carta != null) {
 
-            if(tipoZona == TipoZona.CRIATURAS && carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
+            if(gameObject.name == "Mano Jugador") {
 
-                carta.padreOriginal = this.transform;
+                carta.padreOriginal = manoJugador.transform;
             }
 
-            else if(tipoZona == TipoZona.MANO) {
+            else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA)
+                carta.padreOriginal = tierrasJugador.transform;
 
-                carta.padreOriginal = this.transform;
+            else {
+
+                carta.AnyadirCartaPila();
             }
         }
     }

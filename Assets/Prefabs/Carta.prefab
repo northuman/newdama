@@ -992,7 +992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   padreOriginal: {fileID: 0}
   padrePlaceholder: {fileID: 0}
-  tipoCarta: 6
+  tipoCarta: 0
 --- !u!1 &2421649485034577491
 GameObject:
   m_ObjectHideFlags: 0

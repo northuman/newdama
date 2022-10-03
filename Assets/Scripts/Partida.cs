@@ -8,21 +8,26 @@ public class Partida : MonoBehaviour {
     const float TIEMPO_ROBO = 0.5f;
 
     // Mulligan = 0, Mantenimiento = 1, Robo = 2, Principal = 4, Combate = 5, Principal2 = 6, Fin = 7
-    bool turnoJugador = true; //Si false, turno oponente
-    int faseActual = 0;
-    int mulligan = 7;
-    bool quedarMano = false;
+    //bool turnoJugador = true; //Si es false, turno del oponente
+    static int faseActual = 0;
+    static int mulligan = 7;
+    public static bool quedarMano = false;
 
-    Baraja barajaJugador;
-    GameObject manoJugador;
+    static Baraja barajaJugador;
+    static GameObject manoJugador;
 
-    Button botonFases;
-    GameObject cajaDialogo;
-    GameObject botonAceptar;
-    GameObject botonCancelar;
+    static Button botonFases;
+    static GameObject cajaDialogo;
+    static GameObject botonAceptar;
+    static GameObject botonCancelar;
     
     void Start() {
         
+        EmpezarPartida();
+    }
+
+    void EmpezarPartida() {
+
         barajaJugador = GameObject.Find("Baraja 1").GetComponent<Baraja>();
         manoJugador = GameObject.Find("Mano Jugador");
 
@@ -39,6 +44,9 @@ public class Partida : MonoBehaviour {
 
     IEnumerator RobarCartas(int cantidad) {
 
+        GameObject eventSystem = GameObject.Find("EventSystem");
+        eventSystem.SetActive(false);
+
         for(int i=cantidad; i>0; i--) {
 
             yield return new WaitForSeconds(TIEMPO_ROBO);
@@ -51,6 +59,8 @@ public class Partida : MonoBehaviour {
 
             yield return PreguntarMulligan();
         }
+
+        eventSystem.SetActive(true);
     }
 
     //Mulligan --------------------------------------------------------------------------------------------------------
@@ -110,6 +120,7 @@ public class Partida : MonoBehaviour {
 
         cajaDialogo.SetActive(false);
         quedarMano = true;
+        faseActual = 1;
 
         botonAceptar.GetComponent<Button>().onClick.RemoveAllListeners();
         botonCancelar.GetComponent<Button>().onClick.RemoveAllListeners();

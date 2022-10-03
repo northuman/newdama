@@ -16,7 +16,7 @@ MonoBehaviour:
   costeMana: 0300000002000000000000000000000000000000
   palabrasClave: Vuela
   descripcion: 
-  tipos: Criatura
-  tiposCriatura: "Drag\xF3n"
+  tipoCarta: Criatura
+  tiposConcretos: "Drag\xF3n"
   fuerza: 4
   resistencia: 4
