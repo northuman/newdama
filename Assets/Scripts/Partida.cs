@@ -6,14 +6,21 @@ using UnityEngine.UI;
 public class Partida : MonoBehaviour {
 
     const float TIEMPO_ROBO = 0.5f;
+    const float ENTRETIEMPO = 1f;
 
-    // Mulligan = 0, Mantenimiento = 1, Robo = 2, Principal = 4, Combate = 5, Principal2 = 6, Fin = 7
     //bool turnoJugador = true; //Si es false, turno del oponente
-    static int faseActual = 0;
-    static int mulligan = 7;
-    public static bool quedarMano = false;
 
-    static Baraja barajaJugador;
+    public enum FaseActual {MULLIGAN, MANTENIMIENTO, ROBO, PRINCIPAL, COMBATE, PRINCIPAL2, FIN };
+
+    public static FaseActual faseActual = FaseActual.MULLIGAN;
+    static int mulligan = 7;
+    static int vidaJugador = 20;
+    static int vidaOponente = 20;
+    public static bool quedarMano = false;
+    public static bool pasarFase = false;
+
+    Jugador jugador;
+
     static GameObject manoJugador;
 
     static Button botonFases;
@@ -28,7 +35,7 @@ public class Partida : MonoBehaviour {
 
     void EmpezarPartida() {
 
-        barajaJugador = GameObject.Find("Baraja 1").GetComponent<Baraja>();
+        jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
         manoJugador = GameObject.Find("Mano Jugador");
 
         botonFases = GameObject.Find("Boton Fases").GetComponent<Button>();
@@ -37,46 +44,124 @@ public class Partida : MonoBehaviour {
         botonCancelar = GameObject.Find("Boton Cancelar");
         cajaDialogo.SetActive(false);
 
-        barajaJugador.Barajar();
+        jugador.Barajar();
 
-        Mulligan();
+        StartCoroutine(EmpezarCicloPartida());
     }
 
     IEnumerator RobarCartas(int cantidad) {
 
-        GameObject eventSystem = GameObject.Find("EventSystem");
-        eventSystem.SetActive(false);
-
         for(int i=cantidad; i>0; i--) {
 
             yield return new WaitForSeconds(TIEMPO_ROBO);
-            barajaJugador.RobarCarta();
+            jugador.RobarCarta();
         }
 
-        if(mulligan == 0) { quedarMano = true; }
+        if(mulligan == 0) { 
+            
+            quedarMano = true;
+        }
 
         if(!quedarMano) {
 
             yield return PreguntarMulligan();
         }
-
-        eventSystem.SetActive(true);
     }
+
+    //Ciclo Partida ---------------------------------------------------------------------------------------------------
+
+    IEnumerator EmpezarCicloPartida() {
+  
+        Mulligan(); 
+
+        yield return new WaitUntil(GetQuedarMano);
+        
+        //while(vidaJugador > 0 && vidaOponente > 0) {
+
+            StartCoroutine(Mantenimiento());
+            yield return new WaitUntil(GetPasarFase);
+            FasePrincipal();
+            
+            //break;
+        //}
+    }
+
+    bool GetQuedarMano() {
+        
+        return quedarMano; 
+    }
+
+    public void SetPasarFaseTrue() {
+
+        pasarFase = true;
+    }
+
+    //Ciclo Partida ---------------------------------------------------------------------------------------------------
+
+    // Fase Principal -------------------------------------------------------------------------------------------------
+
+    IEnumerator FasePrincipal() {
+
+        pasarFase = false;
+        Debug.Log("Fase Principal");
+
+        yield return new WaitForSeconds(ENTRETIEMPO);
+
+        if(jugador.turno) {
+
+            //Dejamos jugar carta
+        }
+    }
+
+    bool GetPasarFase() {
+
+        return pasarFase;
+    }
+
+    // Fase Principal -------------------------------------------------------------------------------------------------
+
+    // Mantenimiento --------------------------------------------------------------------------------------------------
+
+    IEnumerator Mantenimiento() {
+
+        Debug.Log("Mantenimiento");
+        yield return new WaitForSeconds(ENTRETIEMPO);
+
+        if(jugador.turno) {
+
+            StartCoroutine(PreguntarJugarCarta());
+        }
+        
+        yield return new WaitUntil(GetPasarFase);
+
+        EnderezarTierras();
+    }
+
+    void EnderezarTierras() {
+
+        Debug.Log("Enderezar Tierras");
+        faseActual = FaseActual.ROBO;
+    }
+
+    public void ContinuarTurno() {
+
+        cajaDialogo.SetActive(false);
+        pasarFase = true;
+    }
+
+    public void JugarInterrupcion() {
+
+        jugador.permitidoJugarCartas = true;
+        cajaDialogo.SetActive(false);
+    }
+
+    // Mantenimiento --------------------------------------------------------------------------------------------------
 
     //Mulligan --------------------------------------------------------------------------------------------------------
 
     void Mulligan() {
 
         StartCoroutine(RobarCartas(mulligan));
-    }
-
-    IEnumerator PreguntarMulligan() {
-
-        yield return new WaitForSeconds(1f);
-
-        ModificarCajaDialogo(1);
-
-        cajaDialogo.SetActive(true);
     }
 
     public void DevolverManoInicial() {
@@ -94,12 +179,12 @@ public class Partida : MonoBehaviour {
             
             GameObject cartaEnMano = manoJugador.transform.GetChild(i-1).gameObject;
 
-            barajaJugador.AnyadirCarta(CartaDesdeGameObject(cartaEnMano));
+            jugador.DevolverCartaAlMazo(CartaDesdeGameObject(cartaEnMano));
 
             Destroy(cartaEnMano);
         }
 
-        barajaJugador.Barajar();
+        jugador.Barajar();
 
         botonAceptar.GetComponent<Button>().onClick.RemoveAllListeners();
         botonCancelar.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -120,7 +205,7 @@ public class Partida : MonoBehaviour {
 
         cajaDialogo.SetActive(false);
         quedarMano = true;
-        faseActual = 1;
+        faseActual = FaseActual.MANTENIMIENTO;
 
         botonAceptar.GetComponent<Button>().onClick.RemoveAllListeners();
         botonCancelar.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -128,21 +213,16 @@ public class Partida : MonoBehaviour {
 
     //Mulligan --------------------------------------------------------------------------------------------------------
 
-    // Mantenimiento --------------------------------------------------------------------------------------------------
-
-    void Mantenimiento() {
-
-        Debug.Log("Mantenimiento");
-    }
-
-    // Mantenimiento --------------------------------------------------------------------------------------------------
-
     //Dialogo ---------------------------------------------------------------------------------------------------------
 
     //Modificar Dialogo
     //Motivo 1 -> Mulligan
 
     void ModificarCajaDialogo(int motivo) {
+
+        TMPro.TMP_Text textoDialogo = cajaDialogo.transform.GetChild(0).gameObject.GetComponent<TMPro.TMP_Text>(); //Texto de Pregunta
+        TMPro.TMP_Text textoAceptar = botonAceptar.transform.GetChild(0).GetComponent<TMPro.TMP_Text>(); //Boton Aceptar
+        TMPro.TMP_Text textoCancelar = botonCancelar.transform.GetChild(0).GetComponent<TMPro.TMP_Text>(); //Boton Cancelar
 
         switch(motivo) {
 
@@ -152,20 +232,46 @@ public class Partida : MonoBehaviour {
 
             case 1:
 
-                TMPro.TMP_Text textoDialogo = cajaDialogo.transform.GetChild(0).gameObject.GetComponent<TMPro.TMP_Text>(); //Texto de Pregunta
                 textoDialogo.text = "¿Desea hacer Mulligan a " + (mulligan-1) + "?";
 
-                TMPro.TMP_Text textoAceptar = botonAceptar.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
                 textoAceptar.text = "Hacer Mulligan";
                 botonAceptar.GetComponent<Button>().onClick.AddListener(delegate { DevolverManoInicial(); });
-
-
-                TMPro.TMP_Text textoCancelar = botonCancelar.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
+ 
                 textoCancelar.text = "Quedar Mano";
                 botonCancelar.GetComponent<Button>().onClick.AddListener(delegate { QuedarMano(); });
 
                 break;
+
+            case 2:
+
+                textoDialogo.text = "¿Desea jugar alguna carta?";
+
+                textoAceptar.text = "Jugar Carta";
+                botonAceptar.GetComponent<Button>().onClick.AddListener(delegate { JugarInterrupcion(); });
+
+                textoCancelar.text = "Continuar";
+                botonCancelar.GetComponent<Button>().onClick.AddListener(delegate { ContinuarTurno(); });
+
+                break;
         }
+    }
+
+    IEnumerator PreguntarMulligan() {
+
+        yield return new WaitForSeconds(ENTRETIEMPO);
+
+        ModificarCajaDialogo(1);
+
+        cajaDialogo.SetActive(true);
+    }
+
+    IEnumerator PreguntarJugarCarta() {
+
+        yield return new WaitForSeconds(ENTRETIEMPO);
+
+        ModificarCajaDialogo(2);
+
+        cajaDialogo.SetActive(true);
     }
 
     //Dialogo ---------------------------------------------------------------------------------------------------------

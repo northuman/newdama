@@ -11,24 +11,27 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     GameObject placeholder = null;
 
-    static bool algunaCartaAmpliada = false;
-    bool cartaAmpliada = false;
     Transform transformCarta;
+    public bool cartaGirada = false;
 
     //Esto se usara para saber si una carta al jugarse ira al cementerio o si permanecera en la mesa
     public enum TipoCarta {CRIATURA, CONJURO, INSTANTANEO, ARTEFACTO, ENCANTEMIENTO, TIERRA, NULO};
     public TipoCarta tipoCarta = TipoCarta.NULO;
 
+    Jugador jugador;
+    Carta carta;
+
     void Start() {
         
         transformCarta = this.gameObject.transform;
+        jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
+        carta = gameObject.GetComponent<MostrarDatosCarta>().carta;
+        ObtenerTipoCarta();
     }
 
     public void OnBeginDrag(PointerEventData datosEvento) {
 
-        if(!cartaAmpliada) { AumentarTamanyoCarta(); }
-
-        ObtenerTipoCarta();
+        AumentarTamanyoCarta();
 
         CrearPlaceholder();
 
@@ -52,7 +55,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData datosEvento) {
 
-        if(cartaAmpliada) { ReducirTamanyoCarta(); }
+        ReducirTamanyoCarta();
 
         this.transform.SetParent(padreOriginal);
 
@@ -68,24 +71,42 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnPointerClick(PointerEventData datosEvento) {
 
-        if(!algunaCartaAmpliada && !cartaAmpliada) { AumentarTamanyoCarta(); }
-        else if(algunaCartaAmpliada && cartaAmpliada) { ReducirTamanyoCarta(); }
+        if(tipoCarta == TipoCarta.TIERRA) {
+
+            //Girar la carta
+            GirarCarta();
+
+            //Anyadir mana a la cuenta
+            if(!cartaGirada)
+                jugador.AnyadirMana(carta);
+
+            cartaGirada = true;
+        }
+    }
+
+    void GirarCarta() {
+
+        Vector3 eulerAngles = transform.eulerAngles;
+        transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, -90f);
+    }
+
+    public void SuficienteMana() {
+
+        //Contar el mana de la carta
+
+        //El jugador comprueba si puede jugarla
     }
 
     void AumentarTamanyoCarta() {
 
         transformCarta.localScale *= 2;
-        transformCarta.Translate(Vector3.up * 300);
-        cartaAmpliada = true;
-        algunaCartaAmpliada = true;
+        //transformCarta.Translate(Vector3.down * 100);
     }
 
     void ReducirTamanyoCarta() {
 
-        transformCarta.Translate(Vector3.down * 300);
+        //transformCarta.Translate(Vector3.up * 100);
         transformCarta.localScale /= 2;
-        cartaAmpliada = false;
-        algunaCartaAmpliada = false;
     }
 
     void ObtenerTipoCarta() {
@@ -99,8 +120,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         else if(cadenaTipo.Contains("Artefacto")) { tipoCarta = TipoCarta.ARTEFACTO; }
         else if(cadenaTipo.Contains("Encantamiento")) { tipoCarta = TipoCarta.ENCANTEMIENTO; }
         else if(cadenaTipo.Contains("Tierra")) { tipoCarta = TipoCarta.TIERRA; }
-
-        Debug.Log(this.gameObject.name + " es del tipo " + this.tipoCarta);
     }
 
     void CrearPlaceholder() {

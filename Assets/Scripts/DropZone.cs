@@ -52,15 +52,23 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
         Arrastrable carta = datosEvento.pointerDrag.GetComponent<Arrastrable>();
 
-        if(carta != null) {
+        if(carta != null && Partida.faseActual != Partida.FaseActual.MULLIGAN) {
 
             if(gameObject.name == "Mano Jugador") {
 
                 carta.padreOriginal = manoJugador.transform;
             }
 
-            else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA)
+            else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA && (Partida.faseActual != Partida.FaseActual.PRINCIPAL || 
+            Partida.faseActual != Partida.FaseActual.PRINCIPAL2 )) {
+
                 carta.padreOriginal = tierrasJugador.transform;
+            }
+
+            else if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
+
+                bool jugarCarta = carta.SuficienteMana();
+            }
 
             else {
 

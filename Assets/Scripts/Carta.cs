@@ -13,4 +13,7 @@ public class Carta : ScriptableObject {
     public string tiposConcretos;
     public int fuerza;
     public int resistencia;
+    public int[] cantidadMana;
+    //   in ro bl ve ne
+    //int[0][0][0][0][0]
 } 
