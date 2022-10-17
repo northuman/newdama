@@ -32,9 +32,12 @@ public class MostrarDatosCarta : MonoBehaviour {
         //   in ro bl ve ne
         //int[0][0][0][0][0]
 
-        if(carta.costeMana.Length == 0) {return null;}
+        if(carta.costeMana.Length < 5) {return null;}
 
-        string resultado = carta.costeMana[0].ToString(); //Valor de mana incoloro
+        string resultado = "";
+
+        if(carta.costeMana[0] > 0)
+            resultado = carta.costeMana[0].ToString(); //Valor de mana incoloro
 
         if(carta.costeMana[1] > 0) { //Valor de mana rojo
 

@@ -18,8 +18,9 @@ public class Partida : MonoBehaviour {
     static int vidaOponente = 20;
     public static bool quedarMano = false;
     public static bool pasarFase = false;
+    public static bool jugarCartas = false;
 
-    Jugador jugador;
+    public Jugador jugador;
 
     static GameObject manoJugador;
 
@@ -146,6 +147,7 @@ public class Partida : MonoBehaviour {
     public void ContinuarTurno() {
 
         cajaDialogo.SetActive(false);
+        jugarCartas = true;
         pasarFase = true;
     }
 

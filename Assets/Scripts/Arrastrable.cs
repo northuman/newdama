@@ -57,6 +57,9 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         ReducirTamanyoCarta();
 
+        if(!Partida.jugarCartas)
+            padreOriginal = GameObject.Find("Mano Jugador").transform;
+
         this.transform.SetParent(padreOriginal);
 
         //Devolvemos la carta a la posicion correspondiente del layout element
@@ -90,11 +93,15 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, -90f);
     }
 
-    public void SuficienteMana() {
+    public bool SuficienteMana() {
 
         //Contar el mana de la carta
+        
 
         //El jugador comprueba si puede jugarla
+
+
+        return false;
     }
 
     void AumentarTamanyoCarta() {

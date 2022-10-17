@@ -19,16 +19,17 @@ public class Pila : MonoBehaviour {
 
     public void ResolverEfecto() {
 
-        Arrastrable carta = pila.Pop();
-        if(carta) {
+        if(pila.Count > 0) {
 
-            //Comprobar si hay mana disponible para jugarla
+            Arrastrable carta = pila.Pop();
+            if(carta) {
 
-            //Si hay se juega
-            carta.ColocarCarta();
+                //Si hay se juega
+                carta.ColocarCarta();
+            }
+
+            else
+                Debug.Log("Se ha perdido la carta de la pila");
         }
-
-        else
-            Debug.Log("Se ha perdido la carta de la pila");
     }
 }

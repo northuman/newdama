@@ -6,60 +6,100 @@ public class Tierras : MonoBehaviour {
    
     public List<Arrastrable> tierras = new List<Arrastrable>();
     public GameObject contadorMana;
+    bool cambioEnMana = false;
     
     //total de mana
     int[] mana;
-
-    //mana disponible este turno
-    int[] manaTemp;
 
     //   in ro bl ve ne
     //int[0][0][0][0][0]
     void Start() {
 
         mana = new int[5];
-        manaTemp = new int[5];
         contadorMana = GameObject.Find("Mana Jugador");
     }
 
     public void JugarTierra(Arrastrable tierra) {
 
         tierras.Add(tierra);
-        Carta datosTierra = tierra.gameObject.GetComponent<MostrarDatosCarta>().carta;
-        
-        for(int i=0; i<5; i++) {
-
-            mana[i] += datosTierra.cantidadMana[i];
-        }
-    }
-
-    public void EnderezarTierras() {
-
-        for(int i=0; i<5; i++) {
-
-            manaTemp[i] = mana[i];
-        }
     }
 
     public void AnyadirMana(Carta carta) {
 
         for(int i=0; i<5; i++) {
 
-            manaTemp[i] += carta.cantidadMana[i];
+            mana[i] += carta.cantidadMana[i];
             TMPro.TMP_Text text = contadorMana.transform.GetChild(i).GetComponent<TMPro.TMP_Text>();
-            text.text = manaTemp[i].ToString();
+            text.text = mana[i].ToString();
         }
     }
 
-    void ActualizarMana(int i) {
+    public void ActualizarMana() {
+        
+        for(int i=0; i<5; i++) {
 
-        switch(i) {
-
-            case 0:
-
-                
-
-                break;
+            TMPro.TMP_Text text = contadorMana.transform.GetChild(i).GetComponent<TMPro.TMP_Text>();
+            text.text = mana[i].ToString();
         }
+    }
+
+    public bool SuficienteMana(Carta carta) {
+
+        bool manaSuficiente = true;
+        int[] auxMana = (int[])mana.Clone();
+
+        //Restar todo el mana especifico
+        for(int i=1; i<5; i++) {
+
+            if(auxMana[i] < carta.costeMana[i]) {
+
+                manaSuficiente = false;
+                break;
+            }
+
+            else {
+
+                auxMana[i] -= carta.costeMana[i];
+            }
+        }
+
+        //Comprobar si se puede pagar el mana generico
+        if(manaSuficiente) {
+
+            int manaGenerico = carta.costeMana[0];
+            int mayorCantidad = 0;
+            int mayorPosicion = -1;
+
+            while(manaGenerico > 0) {
+
+                for(int i=0; i<5; i++) {
+
+                    if(auxMana[i] > mayorCantidad) {
+
+                        mayorPosicion = i;
+                        mayorCantidad = auxMana[i];
+                    }
+                }
+
+                if(mayorPosicion == -1) {
+
+                    manaSuficiente = false;
+                    break;
+                }
+
+                auxMana[mayorPosicion]--;
+                manaGenerico--;
+                mayorCantidad = 0;
+                mayorPosicion = -1;
+            }
+        }
+
+        if(manaSuficiente) {
+
+            mana = (int[])auxMana.Clone();
+            ActualizarMana();
+        }
+
+        return manaSuficiente;
     }
 }
