@@ -57,7 +57,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         ReducirTamanyoCarta();
 
-        if(!Partida.jugarCartas)
+        if(!jugador.permitidoJugarCartas)
             padreOriginal = GameObject.Find("Mano Jugador").transform;
 
         this.transform.SetParent(padreOriginal);
@@ -74,34 +74,36 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnPointerClick(PointerEventData datosEvento) {
 
-        if(tipoCarta == TipoCarta.TIERRA) {
+        if(tipoCarta == TipoCarta.TIERRA && gameObject.transform.parent == DropZone.tierrasJugador.transform) {
 
-            //Girar la carta
-            GirarCarta();
+            if(!cartaGirada) {
 
-            //Anyadir mana a la cuenta
-            if(!cartaGirada)
                 jugador.AnyadirMana(carta);
-
-            cartaGirada = true;
+                GirarCarta();
+                cartaGirada = true;
+            }
         }
+
+        if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.turno == Partida.Turno.JUGADOR) {
+
+            if(!cartaGirada) {
+
+                GirarCarta();
+                cartaGirada = true;
+            }
+        }
+    }
+
+    public void InflingirDanyo() {
+
+        Partida.oponente.vida -= carta.fuerza;
+        Partida.oponente.ActualizarVida();
     }
 
     void GirarCarta() {
 
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, -90f);
-    }
-
-    public bool SuficienteMana() {
-
-        //Contar el mana de la carta
-        
-
-        //El jugador comprueba si puede jugarla
-
-
-        return false;
     }
 
     void AumentarTamanyoCarta() {

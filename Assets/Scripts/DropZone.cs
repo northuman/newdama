@@ -9,7 +9,6 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     public static GameObject manoJugador;
     public static GameObject tierrasJugador;
     public static GameObject criaturasJugador;
-    public static Partida partida;
 
     void Start() {
         
@@ -17,7 +16,6 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         manoJugador = GameObject.Find("Mano Jugador");
         tierrasJugador = GameObject.Find("Tierras Jugador");
         criaturasJugador = GameObject.Find("Criaturas Jugador");
-        partida = GameObject.Find("Partida").GetComponent<Partida>();
     }
     
     public void OnPointerEnter(PointerEventData datosEvento) {
@@ -50,26 +48,26 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
     public void OnDrop(PointerEventData datosEvento) {
 
-        Debug.Log(datosEvento.pointerDrag.name + " fue soltado sobre " + gameObject.name);
+        //Debug.Log(datosEvento.pointerDrag.name + " fue soltado sobre " + gameObject.name);
 
         Arrastrable carta = datosEvento.pointerDrag.GetComponent<Arrastrable>();
 
-        if(carta != null && Partida.faseActual != Partida.FaseActual.MULLIGAN) {
+        if(carta != null && Partida.faseActual != Partida.Fase.MULLIGAN) {
 
-            if(gameObject.name == "Mano Jugador") {
+            if(gameObject.name == "Mano Jugador" && carta.padreOriginal == manoJugador.transform) {
 
                 carta.padreOriginal = manoJugador.transform;
             }
 
-            else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA && (Partida.faseActual != Partida.FaseActual.PRINCIPAL || 
-            Partida.faseActual != Partida.FaseActual.PRINCIPAL2 )) {
+            else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA && (Partida.faseActual != Partida.Fase.PRINCIPAL || 
+            Partida.faseActual != Partida.Fase.PRINCIPAL2 )) {
 
                 carta.padreOriginal = tierrasJugador.transform;
             }
 
             else if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
 
-                bool jugarCarta = partida.jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
+                bool jugarCarta = Partida.jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
 
                 if(jugarCarta) {
 

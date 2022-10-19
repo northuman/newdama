@@ -16,7 +16,6 @@ public class Tierras : MonoBehaviour {
     void Start() {
 
         mana = new int[5];
-        contadorMana = GameObject.Find("Mana Jugador");
     }
 
     public void JugarTierra(Arrastrable tierra) {

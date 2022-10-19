@@ -8,19 +8,19 @@ public class Partida : MonoBehaviour {
     const float TIEMPO_ROBO = 0.5f;
     const float ENTRETIEMPO = 1f;
 
-    //bool turnoJugador = true; //Si es false, turno del oponente
+    public enum Fase { MULLIGAN, MANTENIMIENTO, ROBO, PRINCIPAL, COMBATE, PRINCIPAL2, FIN };
+    public enum Turno { JUGADOR, OPONENTE };
 
-    public enum FaseActual {MULLIGAN, MANTENIMIENTO, ROBO, PRINCIPAL, COMBATE, PRINCIPAL2, FIN };
-
-    public static FaseActual faseActual = FaseActual.MULLIGAN;
+    public static Fase faseActual = Fase.MULLIGAN;
+    public static Turno turno = Turno.JUGADOR;
     static int mulligan = 7;
-    static int vidaJugador = 20;
-    static int vidaOponente = 20;
     public static bool quedarMano = false;
     public static bool pasarFase = false;
-    public static bool jugarCartas = false;
+    public static bool continuarFase = false;
+    //public static bool jugarCartas = false;
 
-    public Jugador jugador;
+    public static Jugador jugador;
+    public static Jugador oponente;
 
     static GameObject manoJugador;
 
@@ -37,6 +37,7 @@ public class Partida : MonoBehaviour {
     void EmpezarPartida() {
 
         jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
+        oponente = GameObject.Find("Oponente").GetComponent<Jugador>();
         manoJugador = GameObject.Find("Mano Jugador");
 
         botonFases = GameObject.Find("Boton Fases").GetComponent<Button>();
@@ -69,7 +70,7 @@ public class Partida : MonoBehaviour {
         }
     }
 
-    //Ciclo Partida ---------------------------------------------------------------------------------------------------
+    // Ciclo Partida --------------------------------------------------------------------------------------------------
 
     IEnumerator EmpezarCicloPartida() {
   
@@ -81,7 +82,11 @@ public class Partida : MonoBehaviour {
 
             StartCoroutine(Mantenimiento());
             yield return new WaitUntil(GetPasarFase);
-            FasePrincipal();
+            StartCoroutine(FasePrincipal());
+            yield return new WaitUntil(GetPasarFase);
+            StartCoroutine(FaseCombate());
+            yield return new WaitUntil(GetPasarFase);
+            Ataque();
             
             //break;
         //}
@@ -97,20 +102,52 @@ public class Partida : MonoBehaviour {
         pasarFase = true;
     }
 
-    //Ciclo Partida ---------------------------------------------------------------------------------------------------
+    // Ciclo Partida --------------------------------------------------------------------------------------------------
+
+    // Fase Combate ---------------------------------------------------------------------------------------------------
+
+    void Ataque() {
+
+        GameObject criaturas = DropZone.criaturasJugador;
+
+        for(int i=0; i<criaturas.transform.childCount; i++) {
+
+            Transform criatura = criaturas.transform.GetChild(i);
+            Arrastrable arrastrable = criatura.gameObject.GetComponent<Arrastrable>();
+
+            if(arrastrable.cartaGirada) {
+
+                arrastrable.InflingirDanyo();
+            }
+        }
+    }
+
+    IEnumerator FaseCombate() {
+
+        pasarFase = false;
+
+        Debug.Log("Fase Combate");
+        faseActual = Fase.COMBATE;
+        yield return new WaitForSeconds(ENTRETIEMPO);
+
+        //Hacer brillar criaturas que puedan
+    }
+
+    // Fase Combate ---------------------------------------------------------------------------------------------------
 
     // Fase Principal -------------------------------------------------------------------------------------------------
 
     IEnumerator FasePrincipal() {
-
+        
         pasarFase = false;
-        Debug.Log("Fase Principal");
 
+        Debug.Log("Fase Principal");
+        faseActual = Fase.PRINCIPAL;
         yield return new WaitForSeconds(ENTRETIEMPO);
 
-        if(jugador.turno) {
+        if(turno == Turno.JUGADOR) {
 
-            //Dejamos jugar carta
+            jugador.permitidoJugarCartas = true;
         }
     }
 
@@ -128,12 +165,12 @@ public class Partida : MonoBehaviour {
         Debug.Log("Mantenimiento");
         yield return new WaitForSeconds(ENTRETIEMPO);
 
-        if(jugador.turno) {
+        if(turno == Turno.JUGADOR) {
 
             StartCoroutine(PreguntarJugarCarta());
         }
         
-        yield return new WaitUntil(GetPasarFase);
+        yield return new WaitUntil(GetContinuarFase);
 
         EnderezarTierras();
     }
@@ -141,14 +178,18 @@ public class Partida : MonoBehaviour {
     void EnderezarTierras() {
 
         Debug.Log("Enderezar Tierras");
-        faseActual = FaseActual.ROBO;
+        faseActual = Fase.ROBO;
     }
 
     public void ContinuarTurno() {
 
         cajaDialogo.SetActive(false);
-        jugarCartas = true;
-        pasarFase = true;
+        continuarFase = true;
+    }
+
+    bool GetContinuarFase() {
+
+        return continuarFase;
     }
 
     public void JugarInterrupcion() {
@@ -207,7 +248,7 @@ public class Partida : MonoBehaviour {
 
         cajaDialogo.SetActive(false);
         quedarMano = true;
-        faseActual = FaseActual.MANTENIMIENTO;
+        faseActual = Fase.MANTENIMIENTO;
 
         botonAceptar.GetComponent<Button>().onClick.RemoveAllListeners();
         botonCancelar.GetComponent<Button>().onClick.RemoveAllListeners();
