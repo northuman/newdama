@@ -10,9 +10,11 @@ public class Partida : MonoBehaviour {
 
     public enum Fase { MULLIGAN, MANTENIMIENTO, ROBO, PRINCIPAL, COMBATE, PRINCIPAL2, FIN };
     public enum Turno { JUGADOR, OPONENTE };
+    public enum Combate { ATACANTES, BLOQUEADORES, RESPUESTA_ATACANTE, RESPUESTA_DEFENSOR, DANYO }
 
     public static Fase faseActual = Fase.MULLIGAN;
     public static Turno turno = Turno.JUGADOR;
+    public static Combate momentoCombate = Combate.ATACANTES;
     static int mulligan = 7;
     public static bool quedarMano = false;
     public static bool pasarFase = false;
@@ -86,7 +88,10 @@ public class Partida : MonoBehaviour {
             yield return new WaitUntil(GetPasarFase);
             StartCoroutine(FaseCombate());
             yield return new WaitUntil(GetPasarFase);
-            Ataque();
+            Bloqueadores();
+            yield return new WaitUntil(GetPasarFase);
+            Enfrentamientos();
+            yield return new WaitUntil(GetPasarFase);
             
             //break;
         //}
@@ -108,7 +113,9 @@ public class Partida : MonoBehaviour {
 
     void Ataque() {
 
-        GameObject criaturas = DropZone.criaturasJugador;
+        //Declarar atacantes
+
+        /*GameObject criaturas = DropZone.criaturasJugador;
 
         for(int i=0; i<criaturas.transform.childCount; i++) {
 
@@ -119,15 +126,57 @@ public class Partida : MonoBehaviour {
 
                 arrastrable.InflingirDanyo();
             }
+        }*/
+    }
+
+    void Enfrentamientos() {
+
+        Debug.Log("Enfrentamientos");
+        momentoCombate = Combate.DANYO;
+
+        if(turno == Turno.JUGADOR) {
+
+            GameObject criaturas = DropZone.criaturasJugador;
+
+            for(int i=0; i<criaturas.transform.childCount; i++) {
+
+                Transform criatura = criaturas.transform.GetChild(i);
+                Arrastrable arrastrable = criatura.gameObject.GetComponent<Arrastrable>();
+
+                if(arrastrable.cartaGirada) {
+
+                    if(arrastrable.bloqueadaPor) {
+
+                        arrastrable.Combate(arrastrable.bloqueadaPor);
+                        Debug.Log("Atacante: " + arrastrable.carta.nombreCarta);
+                        Debug.Log("Bloqueador: " + arrastrable.bloqueadaPor.carta.nombreCarta);
+                    }
+
+                    else {
+
+                        arrastrable.InflingirDanyo();
+                        Debug.Log("Entra2");
+                    }
+                }
+            }
         }
+    }
+
+    void Bloqueadores() {
+
+        pasarFase = false;
+
+        Debug.Log("Declarar Bloqueadores");
+        momentoCombate = Combate.BLOQUEADORES;
     }
 
     IEnumerator FaseCombate() {
 
         pasarFase = false;
 
-        Debug.Log("Fase Combate");
+        Debug.Log("Declarar Atacantes");
         faseActual = Fase.COMBATE;
+        momentoCombate = Combate.ATACANTES;
         yield return new WaitForSeconds(ENTRETIEMPO);
 
         //Hacer brillar criaturas que puedan

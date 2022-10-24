@@ -7,20 +7,38 @@ using System;
 public class MostrarDatosCarta : MonoBehaviour {
 
     public Carta carta;
+    public Arrastrable arrastrable;
 
     public TMPro.TMP_Text nombre;
     public TMPro.TMP_Text costeMana;
     public TMPro.TMP_Text palabrasClave;
     public TMPro.TMP_Text descripcion;
     public TMPro.TMP_Text tipos;
-    public TMPro.TMP_Text estadisticas;
+    public TMPro.TMP_Text fuerza;
+    public TMPro.TMP_Text resistencia;
+
+    TMPro.TextMeshProUGUI goFuerza;
+    TMPro.TextMeshProUGUI goResistencia;
 
     void Start() {
+
+        arrastrable = gameObject.GetComponent<Arrastrable>();
         
         nombre.text = carta.nombreCarta;
         costeMana.text = StringCosteMana();
         palabrasClave.text = carta.palabrasClave;
         descripcion.text = carta.descripcion;
+
+        carta.fuerzaTemp = carta.fuerza;
+        carta.resistenciaTemp = carta.resistencia;
+
+        goFuerza = gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        .transform.Find("Fuerza").GetComponent<TMPro.TextMeshProUGUI>();
+
+        goResistencia = gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        .transform.Find("Resistencia").GetComponent<TMPro.TextMeshProUGUI>();
 
         PintarCarta();
         EscribirTiposCarta();
@@ -199,21 +217,34 @@ public class MostrarDatosCarta : MonoBehaviour {
             tipos.text = carta.tipoCarta;
     }
 
-    void EscribirFuerzaResistencia() {
+    public void EscribirFuerzaResistencia() {
 
-        //Si la fuerza y la resistencia son diferentes del valor por defecto (0), es una criatura
-        if(carta.fuerza != default && carta.resistencia != default)
-            estadisticas.text = carta.fuerza.ToString() + "/" + carta.resistencia.ToString();
-        //Si ambos valores valen 0, entonces no es una criatura y no necesita el cuadro de estadisticas
-        else 
+        if(arrastrable && arrastrable.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
+
+            //estadisticas.text = carta.fuerza.ToString() + "/" + carta.resistencia.ToString();
+            fuerza.text = carta.fuerza.ToString();
+            resistencia.text = carta.resistencia.ToString();
+        }
+
+        else {
+
             DesactivarFuerzaResistencia();
+        }
     }
 
     void DesactivarFuerzaResistencia() {
 
         gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
         .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
-        .transform.Find("Estadisticas").GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
+        .transform.Find("Fuerza").GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
+
+        gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        .transform.Find("Barra").GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
+
+        gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        .transform.Find("Resistencia").GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
 
         gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
         .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
@@ -221,5 +252,43 @@ public class MostrarDatosCarta : MonoBehaviour {
 
         gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
         .transform.Find("Marco Estadisticas").GetComponent<Image>().enabled = false;
+    }
+
+    public void ActualizarEstadisticas() {
+
+        fuerza.text = carta.fuerzaTemp.ToString();
+        resistencia.text = carta.resistenciaTemp.ToString();
+
+
+        if(carta.fuerzaTemp > carta.fuerza) {
+
+            goFuerza.color = new Color32(0, 255, 0, 255); //Verde
+        }
+
+        else if (carta.fuerzaTemp < carta.fuerza) {
+
+            goFuerza.color = new Color32(255, 0, 0, 255); //Rojo
+        }
+
+        else {
+
+            goFuerza.color = new Color32(0, 0, 0, 255);
+        }
+
+
+        if(carta.resistenciaTemp > carta.resistencia) {
+
+            goResistencia.color = new Color32(0, 255, 0, 255); //Verde
+        }
+
+        else if (carta.resistenciaTemp < carta.resistencia) {
+
+            goResistencia.color = new Color32(255, 0, 0, 255); //Rojo
+        }
+
+        else {
+
+            goResistencia.color = new Color32(0, 0, 0, 255);
+        }
     }
 }

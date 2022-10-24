@@ -13,19 +13,23 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     Transform transformCarta;
     public bool cartaGirada = false;
+    public static Arrastrable bloqueador = null;
+    public Arrastrable bloqueadaPor = null;
 
     //Esto se usara para saber si una carta al jugarse ira al cementerio o si permanecera en la mesa
     public enum TipoCarta {CRIATURA, CONJURO, INSTANTANEO, ARTEFACTO, ENCANTEMIENTO, TIERRA, NULO};
     public TipoCarta tipoCarta = TipoCarta.NULO;
 
-    Jugador jugador;
-    Carta carta;
+    public Jugador jugador;
+    public Carta carta;
+    MostrarDatosCarta datosCarta;
 
     void Start() {
         
         transformCarta = this.gameObject.transform;
         jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
-        carta = gameObject.GetComponent<MostrarDatosCarta>().carta;
+        datosCarta = gameObject.GetComponent<MostrarDatosCarta>();
+        carta = datosCarta.carta;
         ObtenerTipoCarta();
     }
 
@@ -57,9 +61,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         ReducirTamanyoCarta();
 
-        if(!jugador.permitidoJugarCartas)
-            padreOriginal = GameObject.Find("Mano Jugador").transform;
-
         this.transform.SetParent(padreOriginal);
 
         //Devolvemos la carta a la posicion correspondiente del layout element
@@ -84,12 +85,26 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             }
         }
 
-        if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.turno == Partida.Turno.JUGADOR) {
+        if(tipoCarta == TipoCarta.CRIATURA && Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR) {
 
             if(!cartaGirada) {
 
                 GirarCarta();
                 cartaGirada = true;
+            }
+        }
+
+        if(tipoCarta == TipoCarta.CRIATURA && Partida.momentoCombate == Partida.Combate.BLOQUEADORES && Partida.turno == Partida.Turno.JUGADOR) {
+
+            if(!bloqueador) {
+
+                bloqueador = this;
+            }
+
+            else {
+
+                this.bloqueadaPor = bloqueador;
+                bloqueador = null;
             }
         }
     }
@@ -98,6 +113,15 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         Partida.oponente.vida -= carta.fuerza;
         Partida.oponente.ActualizarVida();
+    }
+
+    public void Combate(Arrastrable otra) {
+
+        //Ataque y vida de ambos
+        this.carta.resistenciaTemp = this.carta.resistencia - otra.carta.fuerza;
+        otra.carta.resistenciaTemp = otra.carta.resistencia - this.carta.fuerza;
+        this.datosCarta.ActualizarEstadisticas();
+        otra.datosCarta.ActualizarEstadisticas();
     }
 
     void GirarCarta() {
@@ -120,7 +144,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     void ObtenerTipoCarta() {
 
-        //tipoCarta = this.GetComponent<MostrarDatosCarta>();
         string cadenaTipo = this.GetComponent<MostrarDatosCarta>().carta.tipoCarta;
 
         if(cadenaTipo.Contains("Criatura")) { tipoCarta = TipoCarta.CRIATURA; }

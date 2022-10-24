@@ -54,31 +54,34 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
         if(carta != null && Partida.faseActual != Partida.Fase.MULLIGAN) {
 
-            if(gameObject.name == "Mano Jugador" && carta.padreOriginal == manoJugador.transform) {
+            if(carta.jugador.permitidoJugarCartas) {
 
-                carta.padreOriginal = manoJugador.transform;
-            }
+                if(gameObject.name == "Mano Jugador" && carta.padreOriginal == manoJugador.transform) {
 
-            else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA && (Partida.faseActual != Partida.Fase.PRINCIPAL || 
-            Partida.faseActual != Partida.Fase.PRINCIPAL2 )) {
-
-                carta.padreOriginal = tierrasJugador.transform;
-            }
-
-            else if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
-
-                bool jugarCarta = Partida.jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
-
-                if(jugarCarta) {
-
-                    carta.padreOriginal = pila.transform;
-                    Pila.pila.Push(carta);
+                    carta.padreOriginal = manoJugador.transform;
                 }
-            }
 
-            else {
+                else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA && (Partida.faseActual != Partida.Fase.PRINCIPAL || 
+                Partida.faseActual != Partida.Fase.PRINCIPAL2 )) {
 
-                carta.AnyadirCartaPila();
+                    carta.padreOriginal = tierrasJugador.transform;
+                }
+
+                else if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
+
+                    bool jugarCarta = Partida.jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
+
+                    if(jugarCarta) {
+
+                        carta.padreOriginal = pila.transform;
+                        Pila.pila.Push(carta);
+                    }
+                }
+
+                else {
+
+                    carta.AnyadirCartaPila();
+                }
             }
         }
     }

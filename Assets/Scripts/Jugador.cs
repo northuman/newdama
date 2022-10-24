@@ -8,6 +8,7 @@ public class Jugador : MonoBehaviour {
     public Baraja baraja;
     public GameObject goTierras;
     public GameObject contadorVida;
+    public GameObject criaturas;
     public Tierras tierras;
     public int vida = 20;
 
