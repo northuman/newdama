@@ -14,20 +14,21 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     Transform transformCarta;
     public bool cartaGirada = false;
     public static Arrastrable bloqueador = null;
-    public Arrastrable bloqueadaPor = null;
+    public static Arrastrable atacante = null;
+    public List<Arrastrable> bloqueadaPor = null;
 
     //Esto se usara para saber si una carta al jugarse ira al cementerio o si permanecera en la mesa
     public enum TipoCarta {CRIATURA, CONJURO, INSTANTANEO, ARTEFACTO, ENCANTEMIENTO, TIERRA, NULO};
     public TipoCarta tipoCarta = TipoCarta.NULO;
 
-    public Jugador jugador;
+    public Jugador propietario;
     public Carta carta;
     MostrarDatosCarta datosCarta;
 
     void Start() {
         
         transformCarta = this.gameObject.transform;
-        jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
+        bloqueadaPor = new List<Arrastrable>();
         datosCarta = gameObject.GetComponent<MostrarDatosCarta>();
         carta = datosCarta.carta;
         ObtenerTipoCarta();
@@ -79,13 +80,14 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             if(!cartaGirada) {
 
-                jugador.AnyadirMana(carta);
+                propietario.AnyadirMana(carta);
                 GirarCarta();
                 cartaGirada = true;
             }
         }
 
-        if(tipoCarta == TipoCarta.CRIATURA && Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR) {
+        if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.momentoCombate == Partida.Combate.ATACANTES 
+            && Partida.turno == Partida.Turno.JUGADOR) {
 
             if(!cartaGirada) {
 
@@ -94,7 +96,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             }
         }
 
-        if(tipoCarta == TipoCarta.CRIATURA && Partida.momentoCombate == Partida.Combate.BLOQUEADORES && Partida.turno == Partida.Turno.JUGADOR) {
+        if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.momentoCombate == Partida.Combate.BLOQUEADORES 
+            && Partida.turno == Partida.Turno.JUGADOR) {
 
             if(!bloqueador) {
 
@@ -103,8 +106,21 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             else {
 
-                this.bloqueadaPor = bloqueador;
+                this.bloqueadaPor.Add(bloqueador);
                 bloqueador = null;
+            }
+        }
+
+        if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
+            && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
+
+            atacante.Combate(this);
+            this.transform.SetParent(this.padreOriginal);
+
+            if(Partida.cajaDialogo.transform.childCount <= 3) {
+
+                Partida.cajaDialogo.SetActive(false);
+                Partida.momentoCombate = Partida.Combate.DANYO;
             }
         }
     }
@@ -118,16 +134,49 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void Combate(Arrastrable otra) {
 
         //Ataque y vida de ambos
-        this.carta.resistenciaTemp = this.carta.resistencia - otra.carta.fuerza;
-        otra.carta.resistenciaTemp = otra.carta.resistencia - this.carta.fuerza;
+        this.carta.resistenciaTemp = this.carta.resistencia - otra.carta.fuerzaTemp;
+        otra.carta.resistenciaTemp = otra.carta.resistencia - this.carta.fuerzaTemp;
+        
+        if(Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
+
+            this.carta.fuerzaTemp = this.carta.fuerza - otra.carta.resistencia;
+            if(this.carta.fuerzaTemp < 0) { this.carta.fuerzaTemp = 0; }
+        }
+
         this.datosCarta.ActualizarEstadisticas();
         otra.datosCarta.ActualizarEstadisticas();
+
+        /*if(this.carta.resistenciaTemp <= 0) {
+
+            this.propietario.cementerio.cartas.Add(this.gameObject);
+
+            if(cartaGirada) { EnderezarCarta(); }
+
+            this.padreOriginal = propietario.cementerio.gameObject.transform;
+            this.gameObject.transform.SetParent(propietario.cementerio.gameObject.transform);
+        }
+
+        if(otra.carta.resistenciaTemp <= 0) {
+
+            otra.propietario.cementerio.cartas.Add(otra.gameObject);
+
+            if(cartaGirada) { EnderezarCarta(); }
+
+            otra.padreOriginal = propietario.cementerio.gameObject.transform;
+            otra.gameObject.transform.SetParent(propietario.cementerio.gameObject.transform);
+        }*/
     }
 
     void GirarCarta() {
 
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, -90f);
+    }
+
+    void EnderezarCarta() {
+
+        Vector3 eulerAngles = transform.eulerAngles;
+        transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, 0f);
     }
 
     void AumentarTamanyoCarta() {
@@ -195,6 +244,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if(this.tipoCarta == TipoCarta.CRIATURA) {
 
             //this.gameObject.transform = DropZone.criaturasJugador.transform;
+            padreOriginal = propietario.criaturas.transform;
             this.transform.SetParent(DropZone.criaturasJugador.transform);
         }
 

@@ -54,7 +54,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
         if(carta != null && Partida.faseActual != Partida.Fase.MULLIGAN) {
 
-            if(carta.jugador.permitidoJugarCartas) {
+            if(carta.propietario.permitidoJugarCartas) {
 
                 if(gameObject.name == "Mano Jugador" && carta.padreOriginal == manoJugador.transform) {
 

@@ -6,7 +6,6 @@ public class Tierras : MonoBehaviour {
    
     public List<Arrastrable> tierras = new List<Arrastrable>();
     public GameObject contadorMana;
-    bool cambioEnMana = false;
     
     //total de mana
     int[] mana;

@@ -5,18 +5,19 @@ using UnityEngine;
 public class Jugador : MonoBehaviour {
 
     public bool permitidoJugarCartas = false;
-    public Baraja baraja;
+
     public GameObject goTierras;
     public GameObject contadorVida;
     public GameObject criaturas;
+
+    public Baraja baraja;
     public Tierras tierras;
+    public Cementerio cementerio;
     public int vida = 20;
 
     void Start() {
 
-        //baraja = GameObject.Find("Baraja 1").GetComponent<Baraja>();
-        //tierras = GameObject.Find("Tierras Jugador").GetComponent<Tierras>();
-        tierras = goTierras.GetComponent<Tierras>();
+        baraja.propietario = this;
     }
 
     public void Barajar() {

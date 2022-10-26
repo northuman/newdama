@@ -10,16 +10,16 @@ public class Partida : MonoBehaviour {
 
     public enum Fase { MULLIGAN, MANTENIMIENTO, ROBO, PRINCIPAL, COMBATE, PRINCIPAL2, FIN };
     public enum Turno { JUGADOR, OPONENTE };
-    public enum Combate { ATACANTES, BLOQUEADORES, RESPUESTA_ATACANTE, RESPUESTA_DEFENSOR, DANYO }
+    public enum Combate { ATACANTES, BLOQUEADORES, ORDEN_BLOQUEADORES, RESPUESTA_ATACANTE, RESPUESTA_DEFENSOR, DANYO }
 
     public static Fase faseActual = Fase.MULLIGAN;
     public static Turno turno = Turno.JUGADOR;
     public static Combate momentoCombate = Combate.ATACANTES;
+
     static int mulligan = 7;
     public static bool quedarMano = false;
     public static bool pasarFase = false;
     public static bool continuarFase = false;
-    //public static bool jugarCartas = false;
 
     public static Jugador jugador;
     public static Jugador oponente;
@@ -27,7 +27,7 @@ public class Partida : MonoBehaviour {
     static GameObject manoJugador;
 
     static Button botonFases;
-    static GameObject cajaDialogo;
+    public static GameObject cajaDialogo;
     static GameObject botonAceptar;
     static GameObject botonCancelar;
     
@@ -111,24 +111,6 @@ public class Partida : MonoBehaviour {
 
     // Fase Combate ---------------------------------------------------------------------------------------------------
 
-    void Ataque() {
-
-        //Declarar atacantes
-
-        /*GameObject criaturas = DropZone.criaturasJugador;
-
-        for(int i=0; i<criaturas.transform.childCount; i++) {
-
-            Transform criatura = criaturas.transform.GetChild(i);
-            Arrastrable arrastrable = criatura.gameObject.GetComponent<Arrastrable>();
-
-            if(arrastrable.cartaGirada) {
-
-                arrastrable.InflingirDanyo();
-            }
-        }*/
-    }
-
     void Enfrentamientos() {
 
         Debug.Log("Enfrentamientos");
@@ -145,20 +127,39 @@ public class Partida : MonoBehaviour {
 
                 if(arrastrable.cartaGirada) {
 
-                    if(arrastrable.bloqueadaPor) {
+                    if(arrastrable.bloqueadaPor.Count == 1) {
 
-                        arrastrable.Combate(arrastrable.bloqueadaPor);
+                        arrastrable.Combate(arrastrable.bloqueadaPor[0]);
                         Debug.Log("Atacante: " + arrastrable.carta.nombreCarta);
-                        Debug.Log("Bloqueador: " + arrastrable.bloqueadaPor.carta.nombreCarta);
+                        Debug.Log("Bloqueador: " + arrastrable.bloqueadaPor[0].carta.nombreCarta);
+                    }
+
+                    else if (arrastrable.bloqueadaPor.Count > 1) {
+
+                        //Enviar Al Dialogo a las cartas
+                        ModificarCajaDialogo(3);
+                        cajaDialogo.SetActive(true);
+                        botonAceptar.SetActive(false);
+                        botonCancelar.SetActive(false);
+
+                        momentoCombate = Combate.ORDEN_BLOQUEADORES;
+
+                        for(int j=0; j<arrastrable.bloqueadaPor.Count; j++) {
+
+                            arrastrable.bloqueadaPor[j].gameObject.transform.SetParent(cajaDialogo.transform);
+                            Arrastrable.atacante = arrastrable;
+                        }
                     }
 
                     else {
 
                         arrastrable.InflingirDanyo();
-                        Debug.Log("Entra2");
+                        Debug.Log("Ataca directamente: " + arrastrable.carta.nombreCarta);
                     }
                 }
             }
+
+            //Partida.momentoCombate = Combate.DANYO;
         }
     }
 
@@ -228,6 +229,7 @@ public class Partida : MonoBehaviour {
 
         Debug.Log("Enderezar Tierras");
         faseActual = Fase.ROBO;
+        pasarFase = true;
     }
 
     public void ContinuarTurno() {
@@ -336,13 +338,19 @@ public class Partida : MonoBehaviour {
 
             case 2:
 
-                textoDialogo.text = "¿Desea jugar alguna carta?";
+                textoDialogo.text = "¿Desea jugar alguna carta antes de su mantenimiento?";
 
                 textoAceptar.text = "Jugar Carta";
                 botonAceptar.GetComponent<Button>().onClick.AddListener(delegate { JugarInterrupcion(); });
 
                 textoCancelar.text = "Continuar";
                 botonCancelar.GetComponent<Button>().onClick.AddListener(delegate { ContinuarTurno(); });
+
+                break;
+
+            case 3:
+
+                textoDialogo.text = "¿A qué bloqueador desea atacar primero?";
 
                 break;
         }

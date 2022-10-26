@@ -23,8 +23,7 @@ public class Pila : MonoBehaviour {
 
             Arrastrable carta = pila.Pop();
             if(carta) {
-
-                //Si hay se juega
+                
                 carta.ColocarCarta();
             }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Baraja : MonoBehaviour {
 
+    public Jugador propietario;
     public List<Carta> cartas = new List<Carta>();
     public GameObject prefabCarta;
     GameObject cartaRobada;
@@ -40,6 +41,8 @@ public class Baraja : MonoBehaviour {
 
         //Colocar en la mano del jugador
         cartaRobada.transform.SetParent(GameObject.Find("Mano Jugador").transform);
+
+        cartaRobada.GetComponent<Arrastrable>().propietario = propietario;
     }
 
     public void AnyadirCarta(Carta carta) {
