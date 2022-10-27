@@ -13,6 +13,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     Transform transformCarta;
     public bool cartaGirada = false;
+    public bool cartaMuerta = false;
     public static Arrastrable bloqueador = null;
     public static Arrastrable atacante = null;
     public List<Arrastrable> bloqueadaPor = null;
@@ -24,6 +25,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Jugador propietario;
     public Carta carta;
     MostrarDatosCarta datosCarta;
+
 
     void Start() {
         
@@ -39,6 +41,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         AumentarTamanyoCarta();
 
         CrearPlaceholder();
+
+        EnderezarCarta();
 
         //Guardamos los datos del padre original de la carta
         padreOriginal = this.transform.parent;
@@ -61,6 +65,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnEndDrag(PointerEventData datosEvento) {
 
         ReducirTamanyoCarta();
+
+        if(cartaGirada) { GirarCarta(); }
 
         this.transform.SetParent(padreOriginal);
 
@@ -134,37 +140,32 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void Combate(Arrastrable otra) {
 
         //Ataque y vida de ambos
-        this.carta.resistenciaTemp = this.carta.resistencia - otra.carta.fuerzaTemp;
-        otra.carta.resistenciaTemp = otra.carta.resistencia - this.carta.fuerzaTemp;
-        
+        this.carta.resistenciaTemp = this.carta.resistenciaTemp - otra.carta.fuerzaTemp;  
+        otra.carta.resistenciaTemp = otra.carta.resistenciaTemp - this.carta.fuerzaTemp;  
+
         if(Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
 
-            this.carta.fuerzaTemp = this.carta.fuerza - otra.carta.resistencia;
-            if(this.carta.fuerzaTemp < 0) { this.carta.fuerzaTemp = 0; }
+            if(otra.carta.resistenciaTemp < 0) { 
+
+                this.carta.fuerzaTemp = this.carta.fuerzaTemp + otra.carta.resistenciaTemp; 
+                otra.carta.resistenciaTemp = 0;
+
+                if(this.carta.fuerzaTemp < 0) { this.carta.fuerzaTemp = 0; } 
+            }
         }
 
         this.datosCarta.ActualizarEstadisticas();
         otra.datosCarta.ActualizarEstadisticas();
 
-        /*if(this.carta.resistenciaTemp <= 0) {
+        if(this.carta.resistenciaTemp <= 0) {
 
-            this.propietario.cementerio.cartas.Add(this.gameObject);
-
-            if(cartaGirada) { EnderezarCarta(); }
-
-            this.padreOriginal = propietario.cementerio.gameObject.transform;
-            this.gameObject.transform.SetParent(propietario.cementerio.gameObject.transform);
+            this.cartaMuerta = true;
         }
 
         if(otra.carta.resistenciaTemp <= 0) {
 
-            otra.propietario.cementerio.cartas.Add(otra.gameObject);
-
-            if(cartaGirada) { EnderezarCarta(); }
-
-            otra.padreOriginal = propietario.cementerio.gameObject.transform;
-            otra.gameObject.transform.SetParent(propietario.cementerio.gameObject.transform);
-        }*/
+            otra.cartaMuerta = true;
+        }
     }
 
     void GirarCarta() {
@@ -244,14 +245,14 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if(this.tipoCarta == TipoCarta.CRIATURA) {
 
             //this.gameObject.transform = DropZone.criaturasJugador.transform;
-            padreOriginal = propietario.criaturas.transform;
-            this.transform.SetParent(DropZone.criaturasJugador.transform);
+            padreOriginal = propietario.goCriaturas.transform;
+            this.transform.SetParent(padreOriginal);
         }
 
         else {
 
             //padreOriginal = DropZone.tierrasJugador.transform;
-            this.transform.SetParent(DropZone.tierrasJugador.transform);
+            this.transform.SetParent(propietario.goTierras.transform);
         }
     }
 
@@ -260,5 +261,15 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         padreOriginal = DropZone.pila.transform;
         Pila.pila.Push(this);
         Pila.cantidadCartas++;
+    }
+
+    public void IrCementerio() {
+
+        if(this.cartaMuerta) {
+
+            padreOriginal = propietario.goCementerio.transform;
+            if(cartaGirada) { EnderezarCarta(); }
+            this.transform.SetParent(padreOriginal);
+        }
     }
 }

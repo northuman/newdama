@@ -92,6 +92,8 @@ public class Partida : MonoBehaviour {
             yield return new WaitUntil(GetPasarFase);
             Enfrentamientos();
             yield return new WaitUntil(GetPasarFase);
+            MandarCementerio();
+            yield return new WaitUntil(GetPasarFase);
             
             //break;
         //}
@@ -111,7 +113,18 @@ public class Partida : MonoBehaviour {
 
     // Fase Combate ---------------------------------------------------------------------------------------------------
 
+    void MandarCementerio() {
+
+        pasarFase = false;
+        Debug.Log("Mandar Cementerio");
+
+        jugador.MandarCementerio();
+        oponente.MandarCementerio();
+    }
+
     void Enfrentamientos() {
+
+        pasarFase = false;
 
         Debug.Log("Enfrentamientos");
         momentoCombate = Combate.DANYO;
@@ -136,7 +149,6 @@ public class Partida : MonoBehaviour {
 
                     else if (arrastrable.bloqueadaPor.Count > 1) {
 
-                        //Enviar Al Dialogo a las cartas
                         ModificarCajaDialogo(3);
                         cajaDialogo.SetActive(true);
                         botonAceptar.SetActive(false);

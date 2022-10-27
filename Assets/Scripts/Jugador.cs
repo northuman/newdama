@@ -8,7 +8,8 @@ public class Jugador : MonoBehaviour {
 
     public GameObject goTierras;
     public GameObject contadorVida;
-    public GameObject criaturas;
+    public GameObject goCriaturas;
+    public GameObject goCementerio;
 
     public Baraja baraja;
     public Tierras tierras;
@@ -47,6 +48,28 @@ public class Jugador : MonoBehaviour {
         if(text) {
 
             text.text = vida.ToString();
+        }
+    }
+
+    public List<Arrastrable> GetArrastrables() {
+
+        List<Arrastrable> arrastrables = new List<Arrastrable>();
+
+        for(int i=0; i<goCriaturas.transform.childCount; i++) {
+
+            arrastrables.Add(goCriaturas.transform.GetChild(i).GetComponent<Arrastrable>());
+        }
+
+        return arrastrables;
+    }
+
+    public void MandarCementerio() {
+
+        List<Arrastrable> arrastrables = GetArrastrables();
+
+        for(int i=0; i<arrastrables.Count; i++) {
+
+            arrastrables[i].IrCementerio();
         }
     }
 }

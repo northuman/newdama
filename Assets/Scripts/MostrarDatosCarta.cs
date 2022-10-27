@@ -259,7 +259,6 @@ public class MostrarDatosCarta : MonoBehaviour {
         fuerza.text = carta.fuerzaTemp.ToString();
         resistencia.text = carta.resistenciaTemp.ToString();
 
-
         if(carta.fuerzaTemp > carta.fuerza) {
 
             goFuerza.color = new Color32(0, 255, 0, 255); //Verde
