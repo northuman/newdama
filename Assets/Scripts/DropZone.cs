@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler {
 
@@ -20,68 +21,74 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     
     public void OnPointerEnter(PointerEventData datosEvento) {
 
-        //Debug.Log("OnPointerEnter to " + gameObject.name);
-
         if(datosEvento.pointerDrag == null) { return; }
 
         Arrastrable carta = datosEvento.pointerDrag.GetComponent<Arrastrable>();
 
-        if(carta != null) {
+        /*if(carta != null) {
 
 
-        }
+        }*/
     }
 
     public void OnPointerExit(PointerEventData datosEvento) {
 
-        //Debug.Log("OnPointerExit to " + gameObject.name);
-
         if(datosEvento.pointerDrag == null) { return; }
 
         Arrastrable carta = datosEvento.pointerDrag.GetComponent<Arrastrable>();
 
-        if(carta != null && carta.padrePlaceholder == this.transform) {
+        /*if(carta != null && carta.padrePlaceholder == this.transform) {
 
 
-        }
+        }*/
     }
 
     public void OnDrop(PointerEventData datosEvento) {
 
-        //Debug.Log(datosEvento.pointerDrag.name + " fue soltado sobre " + gameObject.name);
-
         Arrastrable carta = datosEvento.pointerDrag.GetComponent<Arrastrable>();
 
-        if(carta != null && Partida.faseActual != Partida.Fase.MULLIGAN) {
+        if(SceneManager.GetActiveScene().name == "Arena") {
 
-            if(carta.propietario.permitidoJugarCartas) {
+            if(carta != null && Partida.faseActual != Partida.Fase.MULLIGAN) {
 
-                if(gameObject.name == "Mano Jugador" && carta.padreOriginal == manoJugador.transform) {
+                if(carta.propietario.permitidoJugarCartas) {
 
-                    carta.padreOriginal = manoJugador.transform;
-                }
+                    if(gameObject.name == "Mano Jugador" && carta.padreOriginal == manoJugador.transform) {
 
-                else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA && (Partida.faseActual != Partida.Fase.PRINCIPAL || 
-                Partida.faseActual != Partida.Fase.PRINCIPAL2 )) {
+                        carta.padreOriginal = manoJugador.transform;
+                    }
 
-                    carta.padreOriginal = tierrasJugador.transform;
-                }
+                    else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA && (Partida.faseActual != Partida.Fase.PRINCIPAL || 
+                    Partida.faseActual != Partida.Fase.PRINCIPAL2 )) {
 
-                else if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
+                        carta.padreOriginal = tierrasJugador.transform;
+                    }
 
-                    bool jugarCarta = Partida.jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
+                    else if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
 
-                    if(jugarCarta) {
+                        bool jugarCarta = Partida.jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
 
-                        carta.padreOriginal = pila.transform;
-                        Pila.pila.Push(carta);
+                        if(jugarCarta) {
+
+                            carta.padreOriginal = pila.transform;
+                            Pila.pila.Push(carta);
+                        }
+                    }
+
+                    else {
+
+                        carta.AnyadirCartaPila();
                     }
                 }
+            }
+        }
 
-                else {
+        else if(SceneManager.GetActiveScene().name == "EditorBarajas") {
 
-                    carta.AnyadirCartaPila();
-                }
+            if(EditorBaraja.creandoBaraja) {
+
+                Carta datosCarta = carta.GetComponent<MostrarDatosCarta>().carta; 
+                EditorBaraja.AnyadirCartaBaraja(datosCarta);
             }
         }
     }

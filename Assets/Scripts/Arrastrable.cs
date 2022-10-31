@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
     
@@ -221,23 +222,26 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     void RecolocarCarta() {
 
-        if(placeholder.transform.parent != padrePlaceholder)
-            placeholder.transform.SetParent(padrePlaceholder);
+        if(SceneManager.GetActiveScene().name == "Arena") {
 
-        int nuevoIndice = padreOriginal.childCount;
+            if(placeholder.transform.parent != padrePlaceholder)
+                placeholder.transform.SetParent(padrePlaceholder);
 
-        for(int i=0; i<padrePlaceholder.childCount; i++) {
+            int nuevoIndice = padreOriginal.childCount;
 
-            if(this.transform.position.x < padrePlaceholder.GetChild(i).transform.position.x) {
+            for(int i=0; i<padrePlaceholder.childCount; i++) {
 
-                nuevoIndice = i;
+                if(this.transform.position.x < padrePlaceholder.GetChild(i).transform.position.x) {
 
-                if(placeholder.transform.GetSiblingIndex() < nuevoIndice) { nuevoIndice--; }
-                break;
+                    nuevoIndice = i;
+
+                    if(placeholder.transform.GetSiblingIndex() < nuevoIndice) { nuevoIndice--; }
+                    break;
+                }
             }
-        }
 
-        placeholder.transform.SetSiblingIndex(nuevoIndice);
+            placeholder.transform.SetSiblingIndex(nuevoIndice);
+        }
     }
 
     public void ColocarCarta() {
