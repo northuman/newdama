@@ -85,10 +85,12 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
         else if(SceneManager.GetActiveScene().name == "EditorBarajas") {
 
-            if(EditorBaraja.creandoBaraja) {
+            EditorBaraja editorBarajas = GameObject.Find("Editor Baraja").GetComponent<EditorBaraja>();
+
+            if(editorBarajas.panelSoltarCartas.activeInHierarchy) {
 
                 Carta datosCarta = carta.GetComponent<MostrarDatosCarta>().carta; 
-                EditorBaraja.AnyadirCartaBaraja(datosCarta);
+                editorBarajas.AnyadirCartaBaraja(carta);
             }
         }
     }

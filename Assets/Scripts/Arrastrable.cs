@@ -27,7 +27,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Carta carta;
     MostrarDatosCarta datosCarta;
 
-
     void Start() {
         
         transformCarta = this.gameObject.transform;

@@ -47,6 +47,20 @@ public class Baraja : MonoBehaviour {
 
     public void AnyadirCarta(Carta carta) {
 
+        //Comprobar si ya esta en la baraja
+
         cartas.Add(carta);
+    }
+
+    public bool ContieneCarta(Carta carta) {
+
+        return cartas.Contains(carta);
+    }
+
+    public int NumeroCopias(Carta carta) {
+
+        List<Carta> copias = cartas.FindAll(t => t.nombreCarta == carta.nombreCarta);
+
+        return copias.Count;
     }
 }
