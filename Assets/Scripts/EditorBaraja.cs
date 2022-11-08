@@ -105,6 +105,45 @@ public class EditorBaraja : MonoBehaviour {
         imagenCarta.transform.GetChild(1).GetComponent<TMPro.TMP_Text>().SetText(texto);
 
         imagenCarta.transform.SetParent(panelSoltarCartas.transform);
+
+        imagenCarta.AddComponent<ImagenCartaEditor>();
+
+        imagenCarta.GetComponent<ImagenCartaEditor>().editorBaraja = this;
+
+        imagenCarta.GetComponent<ImagenCartaEditor>().carta = carta;
+    }
+
+    public void BorrarImagenCarta(Carta carta) {
+
+        GameObject imagenCarta = GameObject.Find(carta.nombreCarta);
+
+        goBaraja.GetComponent<Baraja>().cartas.Remove(carta);
+
+        GameObject.Destroy(imagenCarta);
+    }
+
+    public void QuitarCarta(Carta carta) {
+
+        GameObject imagenCarta = GameObject.Find(carta.nombreCarta);
+
+        TMPro.TMP_Text tmpCantidad = imagenCarta.transform.GetChild(2).GetComponent<TMPro.TMP_Text>();
+
+        int cantidad = int.Parse(tmpCantidad.text);
+
+        if(cantidad <= 0) {
+
+            return;
+        }
+
+        else if (cantidad == 1) {
+
+            BorrarImagenCarta(carta);
+        }
+
+        else {
+
+            ReducirNumeroImagen(carta);
+        }
     }
 
     public void CrearImagenesBaraja() {
@@ -133,6 +172,8 @@ public class EditorBaraja : MonoBehaviour {
 
                 AumentarNumeroImagen(baraja.cartas[i]);
             }
+
+            crear = true;
         }
     }
 
@@ -141,9 +182,22 @@ public class EditorBaraja : MonoBehaviour {
         GameObject imagenCarta = GameObject.Find(carta.nombreCarta);
 
         TMPro.TMP_Text tmpCantidad = imagenCarta.transform.GetChild(2).GetComponent<TMPro.TMP_Text>();
-        int cantidad = int.Parse(tmpCantidad.text);
 
+        int cantidad = int.Parse(tmpCantidad.text);
         tmpCantidad.SetText((++cantidad).ToString());
+
+    }
+
+    public void ReducirNumeroImagen(Carta carta) {
+
+        GameObject imagenCarta = GameObject.Find(carta.nombreCarta);
+
+        TMPro.TMP_Text tmpCantidad = imagenCarta.transform.GetChild(2).GetComponent<TMPro.TMP_Text>();
+    
+        goBaraja.GetComponent<Baraja>().cartas.Remove(carta);
+
+        int cantidad = int.Parse(tmpCantidad.text);
+        tmpCantidad.SetText((--cantidad).ToString());
     }
 
     public void LimpiarPanelSoltar() {

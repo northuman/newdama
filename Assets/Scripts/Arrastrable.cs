@@ -82,51 +82,57 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnPointerClick(PointerEventData datosEvento) {
 
-        if(tipoCarta == TipoCarta.TIERRA && gameObject.transform.parent == DropZone.tierrasJugador.transform) {
+        if(SceneManager.GetActiveScene().name == "Arena") {
 
-            if(!cartaGirada) {
+            if(datosEvento.button == PointerEventData.InputButton.Left) {
 
-                propietario.AnyadirMana(carta);
-                GirarCarta();
-                cartaGirada = true;
-            }
-        }
+                if(tipoCarta == TipoCarta.TIERRA && gameObject.transform.parent == DropZone.tierrasJugador.transform) {
 
-        if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.momentoCombate == Partida.Combate.ATACANTES 
-            && Partida.turno == Partida.Turno.JUGADOR) {
+                    if(!cartaGirada) {
 
-            if(!cartaGirada) {
+                        propietario.AnyadirMana(carta);
+                        GirarCarta();
+                        cartaGirada = true;
+                    }
+                }
 
-                GirarCarta();
-                cartaGirada = true;
-            }
-        }
+                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.momentoCombate == Partida.Combate.ATACANTES 
+                    && Partida.turno == Partida.Turno.JUGADOR) {
 
-        if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.momentoCombate == Partida.Combate.BLOQUEADORES 
-            && Partida.turno == Partida.Turno.JUGADOR) {
+                    if(!cartaGirada) {
 
-            if(!bloqueador) {
+                        GirarCarta();
+                        cartaGirada = true;
+                    }
+                }
 
-                bloqueador = this;
-            }
+                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.momentoCombate == Partida.Combate.BLOQUEADORES 
+                    && Partida.turno == Partida.Turno.JUGADOR) {
 
-            else {
+                    if(!bloqueador) {
 
-                this.bloqueadaPor.Add(bloqueador);
-                bloqueador = null;
-            }
-        }
+                        bloqueador = this;
+                    }
 
-        if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
-            && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
+                    else {
 
-            atacante.Combate(this);
-            this.transform.SetParent(this.padreOriginal);
+                        this.bloqueadaPor.Add(bloqueador);
+                        bloqueador = null;
+                    }
+                }
 
-            if(Partida.cajaDialogo.transform.childCount <= 3) {
+                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
+                    && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
 
-                Partida.cajaDialogo.SetActive(false);
-                Partida.momentoCombate = Partida.Combate.DANYO;
+                    atacante.Combate(this);
+                    this.transform.SetParent(this.padreOriginal);
+
+                    if(Partida.cajaDialogo.transform.childCount <= 3) {
+
+                        Partida.cajaDialogo.SetActive(false);
+                        Partida.momentoCombate = Partida.Combate.DANYO;
+                    }
+                }
             }
         }
     }

@@ -62,6 +62,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                     Partida.faseActual != Partida.Fase.PRINCIPAL2 )) {
 
                         carta.padreOriginal = tierrasJugador.transform;
+                        //Anyadir Tierra
                     }
 
                     else if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
