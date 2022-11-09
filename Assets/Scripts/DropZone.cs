@@ -53,32 +53,33 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                 if(carta.propietario.permitidoJugarCartas) {
 
-                    if(gameObject.name == "Mano Jugador" && carta.padreOriginal == manoJugador.transform) {
+                    if(carta.cartaEnMano) {
 
-                        carta.padreOriginal = manoJugador.transform;
-                    }
+                        if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA) {
 
-                    else if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA && (Partida.faseActual != Partida.Fase.PRINCIPAL || 
-                    Partida.faseActual != Partida.Fase.PRINCIPAL2 )) {
+                            if(Partida.faseActual == Partida.Fase.PRINCIPAL || Partida.faseActual == Partida.Fase.PRINCIPAL2) {
 
-                        carta.padreOriginal = tierrasJugador.transform;
-                        //Anyadir Tierra
-                    }
+                                if(this.transform.parent != manoJugador.transform) {
 
-                    else if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
-
-                        bool jugarCarta = Partida.jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
-
-                        if(jugarCarta) {
-
-                            carta.padreOriginal = pila.transform;
-                            Pila.pila.Push(carta);
+                                    carta.NuevoPadre(tierrasJugador.transform);
+                                    carta.CambiarEscala(0.75f);
+                                    carta.cartaEnMano = false;
+                                    tierrasJugador.GetComponent<DropZone>().Ordenar();
+                                }
+                            }
                         }
-                    }
 
-                    else {
+                        if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
 
-                        carta.AnyadirCartaPila();
+                            bool jugarCarta = Partida.jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
+
+                            if(jugarCarta) {
+
+                                carta.padreOriginal = pila.transform;
+                                carta.cartaEnMano = false;
+                                carta.AnyadirCartaPila();
+                            }
+                        }
                     }
                 }
             }
@@ -92,6 +93,23 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                 Carta datosCarta = carta.GetComponent<MostrarDatosCarta>().carta; 
                 editorBarajas.AnyadirCartaBaraja(carta);
+            }
+        }
+    }
+
+    public void Ordenar() {
+
+        for(int i=0; i<transform.childCount; i++) {
+
+            for(int j=0; j<transform.childCount-1-i; j++) {
+
+                string a = transform.GetChild(j).GetComponent<MostrarDatosCarta>().carta.nombreCarta;
+                string b = transform.GetChild(j+1).GetComponent<MostrarDatosCarta>().carta.nombreCarta;
+
+                if(string.Compare(a,b) > 0) {
+
+                    transform.GetChild(j).SetSiblingIndex(j+1);
+                }
             }
         }
     }

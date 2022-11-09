@@ -7,16 +7,6 @@ public class Pila : MonoBehaviour {
     public static Stack<Arrastrable> pila = new Stack<Arrastrable>();
     public static int cantidadCartas = 0;
 
-    // Start is called before the first frame update
-    void Start() {
-        
-    }
-
-    // Update is called once per frame
-    void Update() {
-        
-    }
-
     public void ResolverEfecto() {
 
         if(pila.Count > 0) {
@@ -30,5 +20,11 @@ public class Pila : MonoBehaviour {
             else
                 Debug.Log("Se ha perdido la carta de la pila");
         }
+    }
+
+    public static void AnyadirCarta(Arrastrable carta) {
+
+        pila.Push(carta);
+        cantidadCartas++;
     }
 }

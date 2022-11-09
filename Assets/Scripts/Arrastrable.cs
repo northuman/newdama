@@ -12,9 +12,10 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     GameObject placeholder = null;
 
-    Transform transformCarta;
+    public Vector3 escalaOriginal;
     public bool cartaGirada = false;
     public bool cartaMuerta = false;
+    public bool cartaEnMano = true;
     public static Arrastrable bloqueador = null;
     public static Arrastrable atacante = null;
     public List<Arrastrable> bloqueadaPor = null;
@@ -29,7 +30,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     void Start() {
         
-        transformCarta = this.gameObject.transform;
+        escalaOriginal = this.transform.localScale;
         bloqueadaPor = new List<Arrastrable>();
         datosCarta = gameObject.GetComponent<MostrarDatosCarta>();
         carta = datosCarta.carta;
@@ -44,7 +45,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         EnderezarCarta();
 
-        //Guardamos los datos del padre original de la carta
+        //Guardamos donde estaba la carta originalmente y lo copiamos al placeholder
         padreOriginal = this.transform.parent;
         padrePlaceholder = padreOriginal;
 
@@ -59,7 +60,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         this.transform.position = datosEvento.position;
 
-        RecolocarCarta();
+        if(cartaEnMano)
+            RecolocarCarta();
     }
 
     public void OnEndDrag(PointerEventData datosEvento) {
@@ -71,7 +73,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         this.transform.SetParent(padreOriginal);
 
         //Devolvemos la carta a la posicion correspondiente del layout element
-        if(padreOriginal == padrePlaceholder)
+        if(padreOriginal == padrePlaceholder) 
             this.transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
 
         //Para poder volver a coger la misma carta
@@ -93,6 +95,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         propietario.AnyadirMana(carta);
                         GirarCarta();
                         cartaGirada = true;
+                        this.transform.SetAsLastSibling();
                     }
                 }
 
@@ -188,14 +191,20 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     void AumentarTamanyoCarta() {
 
-        transformCarta.localScale *= 2;
-        //transformCarta.Translate(Vector3.down * 100);
+        escalaOriginal = this.transform.localScale;
+
+        this.transform.localScale = new Vector3(2f, 2f, 2f);
     }
 
     void ReducirTamanyoCarta() {
 
-        //transformCarta.Translate(Vector3.up * 100);
-        transformCarta.localScale /= 2;
+        this.transform.localScale = escalaOriginal;
+    }
+
+    public void CambiarEscala(float e) {
+
+        this.escalaOriginal *= e;
+        this.transform.localScale = escalaOriginal;
     }
 
     void ObtenerTipoCarta() {
@@ -265,11 +274,16 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
     }
 
+    public void NuevoPadre(Transform padre) {
+
+        this.transform.SetParent(padre);
+        padreOriginal = padre;
+    }
+
     public void AnyadirCartaPila() {
 
         padreOriginal = DropZone.pila.transform;
-        Pila.pila.Push(this);
-        Pila.cantidadCartas++;
+        Pila.AnyadirCarta(this);
     }
 
     public void IrCementerio() {
