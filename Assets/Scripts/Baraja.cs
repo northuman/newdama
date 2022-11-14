@@ -40,7 +40,7 @@ public class Baraja : MonoBehaviour {
         cartaRobada.GetComponent<MostrarDatosCarta>().carta = datosCartaRobada;
 
         //Colocar en la mano del jugador
-        cartaRobada.transform.SetParent(GameObject.Find("Mano Jugador").transform);
+        cartaRobada.transform.SetParent(propietario.goMano.transform);
 
         cartaRobada.GetComponent<Arrastrable>().propietario = propietario;
     }

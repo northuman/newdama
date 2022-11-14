@@ -16,6 +16,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public bool cartaGirada = false;
     public bool cartaMuerta = false;
     public bool cartaEnMano = true;
+    public bool atacando = false;
     public static Arrastrable bloqueador = null;
     public static Arrastrable atacante = null;
     public List<Arrastrable> bloqueadaPor = null;
@@ -99,25 +100,26 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     }
                 }
 
-                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.momentoCombate == Partida.Combate.ATACANTES 
-                    && Partida.turno == Partida.Turno.JUGADOR) {
+                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
+                    Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR) {
 
                     if(!cartaGirada) {
 
                         GirarCarta();
                         cartaGirada = true;
+                        atacando = true;
                     }
                 }
 
-                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && Partida.momentoCombate == Partida.Combate.BLOQUEADORES 
-                    && Partida.turno == Partida.Turno.JUGADOR) {
+                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
+                    Partida.momentoCombate == Partida.Combate.BLOQUEADORES && Partida.turno == Partida.Turno.JUGADOR) {
 
                     if(!bloqueador) {
 
                         bloqueador = this;
                     }
 
-                    else {
+                    else if(this.atacando) { 
 
                         this.bloqueadaPor.Add(bloqueador);
                         bloqueador = null;
@@ -183,7 +185,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, -90f);
     }
 
-    void EnderezarCarta() {
+    public void EnderezarCarta() {
 
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, 0f);

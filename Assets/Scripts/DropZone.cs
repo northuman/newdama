@@ -59,12 +59,18 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                             if(Partida.faseActual == Partida.Fase.PRINCIPAL || Partida.faseActual == Partida.Fase.PRINCIPAL2) {
 
-                                if(this.transform.parent != manoJugador.transform) {
+                                if(carta.propietario.tierraDelTurnoJugada == false && this.transform.parent != manoJugador.transform) {
 
                                     carta.NuevoPadre(tierrasJugador.transform);
                                     carta.CambiarEscala(0.75f);
                                     carta.cartaEnMano = false;
+                                    carta.propietario.tierraDelTurnoJugada = true;
                                     tierrasJugador.GetComponent<DropZone>().Ordenar();
+                                }
+
+                                else {
+
+                                    Debug.Log("Ya has jugado tierra este turno");
                                 }
                             }
                         }

@@ -21,4 +21,11 @@ public class ModificarBaraja : MonoBehaviour, IPointerClickHandler {
             editorBaraja.EditarBaraja(id);
         }
     }
+
+    public void EliminarBaraja() {
+
+        Destroy(baraja.gameObject);
+        Destroy(baraja);
+        Destroy(this.gameObject);
+    }
 }
