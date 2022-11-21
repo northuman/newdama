@@ -33,12 +33,39 @@ public class Tierras : MonoBehaviour {
     }
 
     public void ActualizarMana() {
-        
-        for(int i=0; i<5; i++) {
 
-            TMPro.TMP_Text text = contadorMana.transform.GetChild(i).GetComponent<TMPro.TMP_Text>();
-            text.text = mana[i].ToString();
+        if(contadorMana) {
+        
+            for(int i=0; i<5; i++) {
+
+                TMPro.TMP_Text text = contadorMana.transform.GetChild(i).GetComponent<TMPro.TMP_Text>();
+                text.text = mana[i].ToString();
+            }
         }
+    }
+
+    public int ManaSinUsar() {
+
+        int manaSinUsar = 0;
+
+        for(int i=0; i<mana.Length; i++) {
+
+            manaSinUsar += mana[i];
+        }
+
+        ReiniciarContador();
+
+        return manaSinUsar;
+    }
+
+    public void ReiniciarContador() {
+
+        for(int i=0; i<mana.Length; i++) {
+
+            mana[i] = 0;
+        }
+
+        ActualizarMana();
     }
 
     public bool SuficienteMana(Carta carta) {

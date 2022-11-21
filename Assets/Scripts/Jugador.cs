@@ -57,6 +57,7 @@ public class Jugador : MonoBehaviour {
 
             Arrastrable arrastrable = goCriaturas.transform.GetChild(i).GetComponent<Arrastrable>();
             if(arrastrable.cartaGirada) { arrastrable.EnderezarCarta(); }
+            arrastrable.mareo = false;
             criaturasActivas++;
         }
     }
@@ -93,6 +94,12 @@ public class Jugador : MonoBehaviour {
 
             text.text = vida.ToString();
         }
+    }
+
+    public void RestarVidaPorMana() {
+
+        vida -= tierras.ManaSinUsar();
+        ActualizarVida();
     }
 
     public List<Arrastrable> GetArrastrables() {

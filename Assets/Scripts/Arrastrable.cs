@@ -17,6 +17,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public bool cartaMuerta = false;
     public bool cartaEnMano = true;
     public bool atacando = false;
+    public bool mareo = false;
     public static Arrastrable bloqueador = null;
     public static Arrastrable atacante = null;
     public List<Arrastrable> bloqueadaPor = null;
@@ -35,6 +36,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         bloqueadaPor = new List<Arrastrable>();
         datosCarta = gameObject.GetComponent<MostrarDatosCarta>();
         carta = datosCarta.carta;
+        mareo = true;
         ObtenerTipoCarta();
     }
 
@@ -101,7 +103,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 }
 
                 if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
-                    Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR) {
+                    Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR
+                    && propietario == Partida.jugador && mareo == false) {
 
                     if(!cartaGirada) {
 
@@ -189,6 +192,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, 0f);
+        cartaGirada = false;
+        mareo = false;
     }
 
     void AumentarTamanyoCarta() {
@@ -267,6 +272,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             //this.gameObject.transform = DropZone.criaturasJugador.transform;
             padreOriginal = propietario.goCriaturas.transform;
             this.transform.SetParent(padreOriginal);
+            mareo = true;
         }
 
         else {
@@ -293,6 +299,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if(this.cartaMuerta) {
 
             padreOriginal = propietario.goCementerio.transform;
+            CambiarEscala(0.6f);
             if(cartaGirada) { EnderezarCarta(); }
             this.transform.SetParent(padreOriginal);
         }

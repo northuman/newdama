@@ -26,7 +26,7 @@ public class Partida : MonoBehaviour {
     public static GameObject cajaDialogo;
     public static GameObject botonAceptar;
     public static GameObject botonCancelar;
-    static Button botonFases;
+    public static Button botonFases;
     
     void Start() {
         
@@ -97,13 +97,26 @@ public class Partida : MonoBehaviour {
 
         //Si hay efectos que hacer, preguntar si se desea hacerlos
         pasarFase = false;
+        continuarFase = false;
         Debug.Log("Fase Final de Turno");
         faseActual = Fase.FIN;
 
-        if(turno == Turno.JUGADOR) { turno = Turno.OPONENTE; }
-        else { turno = Turno.JUGADOR; }
+        jugador.permitidoJugarCartas = false;
+        oponente.permitidoJugarCartas = false;
 
-        //yield return new WaitUntil()
+        if(turno == Turno.JUGADOR) { 
+            
+            turno = Turno.OPONENTE; 
+            jugador.tierraDelTurnoJugada = false;
+            jugador.RestarVidaPorMana();
+        }
+
+        else { 
+            
+            turno = Turno.JUGADOR; 
+            oponente.tierraDelTurnoJugada = false;
+            oponente.RestarVidaPorMana();
+        }
     }
 
     // Fase Fin Turno -------------------------------------------------------------------------------------------------
@@ -123,7 +136,6 @@ public class Partida : MonoBehaviour {
         continuarFase = false;
 
         Debug.Log("Enfrentamientos");
-        momentoCombate = Combate.DANYO;
 
         if(turno == Turno.JUGADOR) {
 
@@ -134,7 +146,19 @@ public class Partida : MonoBehaviour {
                 Transform criatura = criaturas.transform.GetChild(i);
                 Arrastrable arrastrable = criatura.gameObject.GetComponent<Arrastrable>();
 
-                if(arrastrable.cartaGirada) {
+                if(arrastrable.atacando) {
+
+                    /*if(arrastrable.bloqueadaPor.Count > 1) {
+
+                        variosBloqueos.Add(arrastrable);
+                        Debug.Log(arrastrable.carta.nombreCarta + " es bloqueada por " + arrastrable.bloqueadaPor.Count);
+                    }
+
+                    else {
+
+                        elResto.Add(arrastrable);
+                        Debug.Log(arrastrable.carta.nombreCarta + " es bloqueada por " + arrastrable.bloqueadaPor.Count);
+                    }*/
 
                     if(arrastrable.bloqueadaPor.Count == 1) {
 
@@ -167,7 +191,39 @@ public class Partida : MonoBehaviour {
                 }
             }
 
-            //Partida.momentoCombate = Combate.DANYO;
+            /*for(int i=0; i<variosBloqueos.Count; i++) {
+
+                ModificarCajaDialogo(3);
+                cajaDialogo.SetActive(true);
+                botonAceptar.SetActive(false);
+                botonCancelar.SetActive(false);
+
+                momentoCombate = Combate.ORDEN_BLOQUEADORES;
+
+                for(int j=0; j<variosBloqueos[i].bloqueadaPor.Count; j++) {
+
+                    variosBloqueos[i].bloqueadaPor[j].gameObject.transform.SetParent(cajaDialogo.transform);
+                    Arrastrable.atacante = variosBloqueos[i];
+                }
+            }
+
+            momentoCombate = Combate.DANYO;
+
+            for(int i=0; i<elResto.Count; i++) {
+
+                if(elResto[i].bloqueadaPor.Count == 1) {
+
+                    elResto[i].Combate(elResto[i].bloqueadaPor[0]);
+                    Debug.Log("Atacante: " + elResto[i].carta.nombreCarta);
+                    Debug.Log("Bloqueador: " + elResto[i].bloqueadaPor[0].carta.nombreCarta);
+                }
+
+                else {
+
+                    elResto[i].InflingirDanyo();
+                    Debug.Log("Ataca directamente: " + elResto[i].carta.nombreCarta);
+                }
+            }*/
         }
     }
 
@@ -181,12 +237,18 @@ public class Partida : MonoBehaviour {
 
     IEnumerator FaseCombate() {
 
+        faseActual = Fase.COMBATE;
+        pasarFase = false;
+        continuarFase = false;
+
+        jugador.permitidoJugarCartas = false;
+        oponente.permitidoJugarCartas = false;
+
+        Debug.Log("Fase de Combate");
+
         if(turno == Turno.JUGADOR && jugador.criaturasActivas > 0) {
 
-            pasarFase = false;
-
-            Debug.Log("Declarar Atacantes");
-            faseActual = Fase.COMBATE;
+            Debug.Log("Jugador declara Atacantes");
             momentoCombate = Combate.ATACANTES;
 
             //Cambiar Funcion del Boton de fases
@@ -218,10 +280,7 @@ public class Partida : MonoBehaviour {
 
         if(turno == Turno.OPONENTE && oponente.criaturasActivas > 0) {
 
-            pasarFase = false;
-
-            Debug.Log("Declarar Atacantes");
-            faseActual = Fase.COMBATE;
+            Debug.Log("Oponente declara Atacantes");
             momentoCombate = Combate.ATACANTES;
 
             //Cambiar Funcion del Boton de fases
@@ -280,6 +339,16 @@ public class Partida : MonoBehaviour {
 
             jugador.permitidoJugarCartas = true;
         }
+
+        else if(turno == Turno.OPONENTE) {
+
+            oponente.permitidoJugarCartas = true;
+        }
+
+        else {
+
+            Debug.Log("Algo rompiste en Partida -> FasePrincipal");
+        }
     }
 
     bool GetPasarFase() {
@@ -307,8 +376,7 @@ public class Partida : MonoBehaviour {
         faseActual = Fase.MANTENIMIENTO;
         yield return new WaitForSeconds(ENTRETIEMPO);
 
-        //if(turno == Turno.JUGADOR) {
-        if(turno == Turno.JUGADOR && jugador.ManaRestante() > 0) {
+        if(jugador.ManaRestante() > 0) {
 
             StartCoroutine(PreguntarJugarCarta());
             yield return new WaitUntil(GetContinuarFase);
@@ -320,8 +388,6 @@ public class Partida : MonoBehaviour {
     void EnderezarCartas() {
 
         Debug.Log("Enderezar Tierras");
-        faseActual = Fase.ROBO;
-        pasarFase = true;
 
         if(turno == Turno.JUGADOR) { 
 
@@ -334,6 +400,8 @@ public class Partida : MonoBehaviour {
             oponente.EnderezarTierras();
             oponente.EnderezarCriaturas();
         }
+
+        pasarFase = true;
     }
 
     public static void ContinuarTurno() {
@@ -344,7 +412,6 @@ public class Partida : MonoBehaviour {
 
     public static void JugarInterrupcion() {
 
-        jugador.permitidoJugarCartas = true;
         cajaDialogo.SetActive(false);
     }
 
@@ -353,6 +420,8 @@ public class Partida : MonoBehaviour {
     // Robo -----------------------------------------------------------------------------------------------------------
 
     void Robo() {
+
+        Debug.Log("Robo del turno");
 
         faseActual = Fase.ROBO;
 
@@ -366,8 +435,9 @@ public class Partida : MonoBehaviour {
 
     void Mulligan() {
 
-        //StartCoroutine(RobarCartas(mulligan));
-        //Jugador Roba cartas
+        Debug.Log("Mulligan");
+
+        //Jugador y Oponente roban su primera mano
         faseActual = Fase.MULLIGAN;
         StartCoroutine(jugador.RobarCartas(jugador.mulligan));
         StartCoroutine(oponente.RobarCartas(oponente.mulligan));

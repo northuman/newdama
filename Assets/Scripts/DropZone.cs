@@ -51,27 +51,24 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
             if(carta != null && Partida.faseActual != Partida.Fase.MULLIGAN) {
 
-                if(carta.propietario.permitidoJugarCartas) {
+                if(carta.cartaEnMano) {
 
-                    if(carta.cartaEnMano) {
+                    if(carta.propietario.permitidoJugarCartas) {
 
                         if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA) {
 
-                            if(Partida.faseActual == Partida.Fase.PRINCIPAL || Partida.faseActual == Partida.Fase.PRINCIPAL2) {
+                            if(carta.propietario.tierraDelTurnoJugada == false && this.transform.parent != manoJugador.transform) {
 
-                                if(carta.propietario.tierraDelTurnoJugada == false && this.transform.parent != manoJugador.transform) {
+                                carta.NuevoPadre(tierrasJugador.transform);
+                                carta.CambiarEscala(0.75f);
+                                carta.cartaEnMano = false;
+                                carta.propietario.tierraDelTurnoJugada = true;
+                                tierrasJugador.GetComponent<DropZone>().Ordenar();
+                            }
 
-                                    carta.NuevoPadre(tierrasJugador.transform);
-                                    carta.CambiarEscala(0.75f);
-                                    carta.cartaEnMano = false;
-                                    carta.propietario.tierraDelTurnoJugada = true;
-                                    tierrasJugador.GetComponent<DropZone>().Ordenar();
-                                }
+                            else {
 
-                                else {
-
-                                    Debug.Log("Ya has jugado tierra este turno");
-                                }
+                                Debug.Log("Ya has jugado tierra este turno");
                             }
                         }
 
