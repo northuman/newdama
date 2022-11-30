@@ -16,13 +16,13 @@ public class JugarTierra : Nodo {
 
         bool jugarTierra = false;
 
-        oponente.TierrasEnMano();
+        List<Arrastrable> tierras = oponente.TierrasEnMano();
         
         if(Partida.turno == Partida.Turno.OPONENTE && Partida.faseActual == Partida.Fase.PRINCIPAL) {
 
             if(!oponente.tierraDelTurnoJugada) {
 
-                jugarTierra = oponente.JugarTierra();
+                jugarTierra = oponente.JugarTierra(tierras);
             }
         }
 

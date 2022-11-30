@@ -99,6 +99,7 @@ public class Jugador : MonoBehaviour {
     public void RestarVidaPorMana() {
 
         vida -= tierras.ManaSinUsar();
+        tierras.ReiniciarContador();
         ActualizarVida();
     }
 

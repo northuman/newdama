@@ -53,8 +53,6 @@ public class Tierras : MonoBehaviour {
             manaSinUsar += mana[i];
         }
 
-        ReiniciarContador();
-
         return manaSinUsar;
     }
 
@@ -123,6 +121,24 @@ public class Tierras : MonoBehaviour {
 
             mana = (int[])auxMana.Clone();
             ActualizarMana();
+        }
+
+        return manaSuficiente;
+    }
+
+    public bool SuficienteMana(List<Arrastrable> cartas) {
+
+        bool manaSuficiente = false;
+
+        for(int i=0; i<cartas.Count; i++) {
+
+            Carta carta = cartas[i].GetComponent<MostrarDatosCarta>().carta;
+
+            if(SuficienteMana(carta)) {
+
+                manaSuficiente = true;
+                break;
+            }
         }
 
         return manaSuficiente;

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class IA : Jugador {
 
-    private List<Arrastrable> tierrasEnMano;
+    public bool manaSuficienteJugarCriatura = false;
 
-    public void TierrasEnMano() {
+    public List<Arrastrable> TierrasEnMano() {
 
-        tierrasEnMano = new List<Arrastrable>();
+        List<Arrastrable> tierrasEnMano = new List<Arrastrable>();
         Arrastrable carta = null;
 
         for(int i=0; i<goMano.transform.childCount; i++) {
@@ -21,19 +21,69 @@ public class IA : Jugador {
             }
         }
 
-        Debug.Log("Tierras en mano: " + tierrasEnMano.Count);
+        return tierrasEnMano;
     }
-    
-    public bool JugarTierra() {
 
-        if(tierrasEnMano.Count > 0) {
+    public bool JugarTierra(List<Arrastrable> tierras) {
 
-            int tierraElegida = Random.Range(0, tierrasEnMano.Count-1);
-            tierrasEnMano[tierraElegida].transform.SetParent(this.goTierras.transform);
-            Debug.Log("La tierra que se intento jugar esta en" + tierrasEnMano[tierraElegida].transform.parent.name);
+        if(tierras.Count > 0) {
+
+            int tierraElegida = Random.Range(0, tierras.Count-1);
+            tierras[tierraElegida].transform.SetParent(this.goTierras.transform);
             tierraDelTurnoJugada = true;
         }
 
         return tierraDelTurnoJugada;
+    }
+
+    public List<Arrastrable> CriaturasEnMano() {
+
+        List<Arrastrable> criaturasEnMano = new List<Arrastrable>();
+        Arrastrable carta = null;
+
+        for(int i=0; i<goMano.transform.childCount; i++) {
+
+            carta = goMano.transform.GetChild(i).GetComponent<Arrastrable>();
+
+            if(carta && carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
+
+                criaturasEnMano.Add(carta);
+            }
+        }
+
+        return criaturasEnMano;
+    }
+
+    public bool JugarCriatura(List<Arrastrable> criaturas) {
+
+        bool jugarCriatura = false;
+
+        int j;
+        Arrastrable aux;
+
+        for(int i = criaturas.Count-1; i > 0; i--) {
+
+            j = Random.Range(0, i);
+            aux = criaturas[i];
+            criaturas[i] = criaturas[j];
+            criaturas[j] = aux;
+        }
+
+        if(criaturas.Count > 0) {
+
+            for(int i=0; i<criaturas.Count; i++) {
+
+                Carta carta = criaturas[i].GetComponent<MostrarDatosCarta>().carta;
+
+                if(this.tierras.SuficienteMana(carta)) {
+
+                    criaturas[i].transform.SetParent(this.goCriaturas.transform);
+                    jugarCriatura = true;
+                    break;
+                }   
+            }
+        }
+
+        return jugarCriatura;
     }
 }
