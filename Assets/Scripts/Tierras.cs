@@ -22,7 +22,7 @@ public class Tierras : MonoBehaviour {
         tierras.Add(tierra);
     }
 
-    public void AnyadirMana(Carta carta) {
+    public void AnyadirMana(Carta carta) { //Arreglar
 
         for(int i=0; i<5; i++) {
 
@@ -66,7 +66,7 @@ public class Tierras : MonoBehaviour {
         ActualizarMana();
     }
 
-    public bool SuficienteMana(Carta carta) {
+    public bool SuficienteMana(Carta carta) { 
 
         bool manaSuficiente = true;
         int[] auxMana = (int[])mana.Clone();
@@ -126,21 +126,52 @@ public class Tierras : MonoBehaviour {
         return manaSuficiente;
     }
 
-    public bool SuficienteMana(List<Arrastrable> cartas) {
+    //IA -----------------------------------------------------------------------------------
 
-        bool manaSuficiente = false;
+    public int ManaDisponible() {
 
-        for(int i=0; i<cartas.Count; i++) {
+        int manaDisponible = 0;
 
-            Carta carta = cartas[i].GetComponent<MostrarDatosCarta>().carta;
+        foreach(Arrastrable tierra in tierras) {
 
-            if(SuficienteMana(carta)) {
-
-                manaSuficiente = true;
-                break;
-            }
+            if(!tierra.cartaGirada) { manaDisponible++; }
         }
 
-        return manaSuficiente;
+        return manaDisponible;
     }
+
+    public bool SuficienteManaIA(Carta carta) {
+
+        if(SuficienteManaGenerico(carta)) {
+
+
+        }
+
+        return false;
+    }
+
+    public bool SuficienteManaEspecifico(Carta carta) {
+
+        
+
+        return false;
+    }
+
+    public bool SuficienteManaGenerico(Carta carta) {
+
+        bool suficienteMana = false;
+        int totalMana = tierras.Count;
+        int costeCarta = 0;
+
+        for(int i=0; i<carta.costeMana.Length; i++) {
+
+            costeCarta += carta.costeMana[i];
+        }
+
+        if(totalMana > costeCarta) { suficienteMana = true; }
+
+        return suficienteMana;
+    }
+
+    //IA -----------------------------------------------------------------------------------
 }

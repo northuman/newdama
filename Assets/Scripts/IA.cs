@@ -6,6 +6,16 @@ public class IA : Jugador {
 
     public bool manaSuficienteJugarCriatura = false;
 
+    public void PasarFase() {
+
+        Partida.pasarFase = true;
+    }
+
+    public void ContinuarFase() {
+
+        Partida.continuarFase = true;
+    }
+
     public List<Arrastrable> TierrasEnMano() {
 
         List<Arrastrable> tierrasEnMano = new List<Arrastrable>();
@@ -54,9 +64,7 @@ public class IA : Jugador {
         return criaturasEnMano;
     }
 
-    public bool JugarCriatura(List<Arrastrable> criaturas) {
-
-        bool jugarCriatura = false;
+    public List<Arrastrable> DesordenarCriaturasEnMano(List<Arrastrable> criaturas) { //Solo es para jugar aleatoriamente las criaturas
 
         int j;
         Arrastrable aux;
@@ -69,21 +77,24 @@ public class IA : Jugador {
             criaturas[j] = aux;
         }
 
-        if(criaturas.Count > 0) {
+        return criaturas;
+    }
 
-            for(int i=0; i<criaturas.Count; i++) {
+    public void JugarCarta(Arrastrable carta) {
 
-                Carta carta = criaturas[i].GetComponent<MostrarDatosCarta>().carta;
+        
+    }
 
-                if(this.tierras.SuficienteMana(carta)) {
+    public void DeclararAtacantes() {
 
-                    criaturas[i].transform.SetParent(this.goCriaturas.transform);
-                    jugarCriatura = true;
-                    break;
-                }   
+        foreach(Transform carta in goCriaturas.transform) {
+
+            Arrastrable criatura = carta.GetComponent<Arrastrable>();
+
+            if(!criatura.mareo && !criatura.cartaGirada) {
+
+                criatura.Atacar();
             }
         }
-
-        return jugarCriatura;
     }
 }

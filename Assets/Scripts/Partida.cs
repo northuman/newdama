@@ -9,7 +9,7 @@ public class Partida : MonoBehaviour {
 
     public enum Fase { MULLIGAN, MANTENIMIENTO, ROBO, PRINCIPAL, COMBATE, PRINCIPAL2, FIN };
     public enum Turno { JUGADOR, OPONENTE };
-    public enum Combate { ATACANTES, BLOQUEADORES, ORDEN_BLOQUEADORES, RESPUESTA_ATACANTE, RESPUESTA_DEFENSOR, DANYO }
+    public enum Combate { ATACANTES, BLOQUEADORES, ORDEN_BLOQUEADORES, RESPUESTA_ATACANTE, RESPUESTA_DEFENSOR, DANYO, CEMENTERIO }
 
     public static Fase faseActual = Fase.MULLIGAN;
     public static Turno turno = Turno.JUGADOR;
@@ -126,6 +126,7 @@ public class Partida : MonoBehaviour {
     void MandarCementerio() {
 
         Debug.Log("Mandar Cementerio");
+        momentoCombate = Combate.CEMENTERIO;
 
         jugador.MandarCementerio();
         oponente.MandarCementerio();
@@ -147,18 +148,6 @@ public class Partida : MonoBehaviour {
                 Arrastrable arrastrable = criatura.gameObject.GetComponent<Arrastrable>();
 
                 if(arrastrable.atacando) {
-
-                    /*if(arrastrable.bloqueadaPor.Count > 1) {
-
-                        variosBloqueos.Add(arrastrable);
-                        Debug.Log(arrastrable.carta.nombreCarta + " es bloqueada por " + arrastrable.bloqueadaPor.Count);
-                    }
-
-                    else {
-
-                        elResto.Add(arrastrable);
-                        Debug.Log(arrastrable.carta.nombreCarta + " es bloqueada por " + arrastrable.bloqueadaPor.Count);
-                    }*/
 
                     if(arrastrable.bloqueadaPor.Count == 1) {
 
@@ -185,45 +174,45 @@ public class Partida : MonoBehaviour {
 
                     else {
 
-                        arrastrable.InflingirDanyo();
+                        arrastrable.InflingirDanyo(Partida.oponente);
+                        Debug.Log("Ataca directamente: " + arrastrable.carta.nombreCarta);
+                    }
+                }
+            }
+        }
+
+        if(turno == Turno.OPONENTE) {
+
+            GameObject criaturas = Partida.oponente.goCriaturas;
+
+            for(int i=0; i<criaturas.transform.childCount; i++) {
+
+                Transform criatura = criaturas.transform.GetChild(i);
+                Arrastrable arrastrable = criatura.gameObject.GetComponent<Arrastrable>();
+
+                if(arrastrable.atacando) {
+
+                    if(arrastrable.bloqueadaPor.Count == 1) {
+
+                        arrastrable.Combate(arrastrable.bloqueadaPor[0]);
+                        Debug.Log("Atacante: " + arrastrable.carta.nombreCarta);
+                        Debug.Log("Bloqueador: " + arrastrable.bloqueadaPor[0].carta.nombreCarta);
+                    }
+
+                    else if(arrastrable.bloqueadaPor.Count > 1) {
+
+                        //Bloqueos
+                    }
+
+                    else {
+
+                        arrastrable.InflingirDanyo(Partida.jugador);
                         Debug.Log("Ataca directamente: " + arrastrable.carta.nombreCarta);
                     }
                 }
             }
 
-            /*for(int i=0; i<variosBloqueos.Count; i++) {
-
-                ModificarCajaDialogo(3);
-                cajaDialogo.SetActive(true);
-                botonAceptar.SetActive(false);
-                botonCancelar.SetActive(false);
-
-                momentoCombate = Combate.ORDEN_BLOQUEADORES;
-
-                for(int j=0; j<variosBloqueos[i].bloqueadaPor.Count; j++) {
-
-                    variosBloqueos[i].bloqueadaPor[j].gameObject.transform.SetParent(cajaDialogo.transform);
-                    Arrastrable.atacante = variosBloqueos[i];
-                }
-            }
-
-            momentoCombate = Combate.DANYO;
-
-            for(int i=0; i<elResto.Count; i++) {
-
-                if(elResto[i].bloqueadaPor.Count == 1) {
-
-                    elResto[i].Combate(elResto[i].bloqueadaPor[0]);
-                    Debug.Log("Atacante: " + elResto[i].carta.nombreCarta);
-                    Debug.Log("Bloqueador: " + elResto[i].bloqueadaPor[0].carta.nombreCarta);
-                }
-
-                else {
-
-                    elResto[i].InflingirDanyo();
-                    Debug.Log("Ataca directamente: " + elResto[i].carta.nombreCarta);
-                }
-            }*/
+            continuarFase = true;
         }
     }
 
@@ -278,10 +267,11 @@ public class Partida : MonoBehaviour {
             botonFases.GetComponent<Button>().onClick.AddListener(delegate { SetPasarFaseTrue(); });
         }
 
-        if(turno == Turno.OPONENTE && oponente.criaturasActivas > 0) {
+        else if(turno == Turno.OPONENTE && oponente.criaturasActivas > 0) {
 
             Debug.Log("Oponente declara Atacantes");
             momentoCombate = Combate.ATACANTES;
+            Debug.Log("Criaturas activas: " + oponente.criaturasActivas);
 
             //Cambiar Funcion del Boton de fases
             botonFases.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -308,6 +298,11 @@ public class Partida : MonoBehaviour {
 
             botonFases.GetComponent<Button>().onClick.RemoveAllListeners();
             botonFases.GetComponent<Button>().onClick.AddListener(delegate { SetPasarFaseTrue(); });
+        }
+
+        else {
+
+            pasarFase = true;
         }
 
         //Hacer brillar criaturas sin mareo
@@ -379,7 +374,9 @@ public class Partida : MonoBehaviour {
         if(jugador.ManaRestante() > 0) {
 
             StartCoroutine(PreguntarJugarCarta());
-            yield return new WaitUntil(GetContinuarFase);
+
+            if(turno == Turno.JUGADOR)
+                yield return new WaitUntil(GetContinuarFase);
         }
 
         EnderezarCartas();
@@ -387,7 +384,9 @@ public class Partida : MonoBehaviour {
 
     void EnderezarCartas() {
 
-        Debug.Log("Enderezar Tierras");
+        Debug.Log("Enderezar Cartas");
+        pasarFase = false;
+        continuarFase = false;
 
         if(turno == Turno.JUGADOR) { 
 

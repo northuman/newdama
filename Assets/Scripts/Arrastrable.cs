@@ -108,9 +108,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                     if(!cartaGirada) {
 
-                        GirarCarta();
-                        cartaGirada = true;
-                        atacando = true;
+                        Atacar();
                     }
                 }
 
@@ -145,10 +143,17 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
     }
 
-    public void InflingirDanyo() {
+    public void Atacar() {
 
-        Partida.oponente.vida -= carta.fuerza;
-        Partida.oponente.ActualizarVida();
+        GirarCarta();
+        cartaGirada = true;
+        atacando = true;
+    }
+
+    public void InflingirDanyo(Jugador jugador) {
+
+        jugador.vida -= carta.fuerza;
+        jugador.ActualizarVida();
     }
 
     public void Combate(Arrastrable otra) {
@@ -182,7 +187,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
     }
 
-    void GirarCarta() {
+    public void GirarCarta() {
 
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, -90f);
@@ -192,8 +197,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, 0f);
-        cartaGirada = false;
-        mareo = false;
     }
 
     void AumentarTamanyoCarta() {
@@ -303,5 +306,10 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             if(cartaGirada) { EnderezarCarta(); }
             this.transform.SetParent(padreOriginal);
         }
+    }
+
+    public Carta GetCarta() {
+
+        return this.GetComponent<MostrarDatosCarta>().carta;
     }
 }

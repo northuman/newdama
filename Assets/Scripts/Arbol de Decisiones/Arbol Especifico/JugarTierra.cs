@@ -22,12 +22,13 @@ public class JugarTierra : Nodo {
 
             if(!oponente.tierraDelTurnoJugada) {
 
+                Debug.Log("Jugando tierra");
+
                 jugarTierra = oponente.JugarTierra(tierras);
             }
         }
 
-        if(jugarTierra) { estado = EstadoNodo.EXITO; }
-        else { estado = EstadoNodo.FALLO; }
+        estado = EstadoNodo.EXITO;
 
         return estado;
     }

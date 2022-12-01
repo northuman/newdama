@@ -45,7 +45,7 @@ public class Jugador : MonoBehaviour {
 
             Arrastrable arrastrable = goTierras.transform.GetChild(i).GetComponent<Arrastrable>();
             if(arrastrable.cartaGirada) { arrastrable.EnderezarCarta(); }
-            
+            arrastrable.cartaGirada = false;
         }
     }
 
@@ -57,8 +57,10 @@ public class Jugador : MonoBehaviour {
 
             Arrastrable arrastrable = goCriaturas.transform.GetChild(i).GetComponent<Arrastrable>();
             if(arrastrable.cartaGirada) { arrastrable.EnderezarCarta(); }
-            arrastrable.mareo = false;
             criaturasActivas++;
+            arrastrable.atacando = false;
+            arrastrable.mareo = false;
+            arrastrable.cartaGirada = false;
         }
     }
 
