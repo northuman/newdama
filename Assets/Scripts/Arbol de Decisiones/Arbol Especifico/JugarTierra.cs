@@ -10,25 +10,25 @@ public class JugarTierra : Nodo {
     public JugarTierra(IA _oponente) {
 
         oponente = _oponente;
+        estado = EstadoNodo.FALLO;
     }
 
     public override EstadoNodo Evaluar() {
 
-        bool jugarTierra = false;
+        if(Partida.turno == Partida.Turno.OPONENTE && Partida.faseActual == Partida.Fase.PRINCIPAL
+            && !oponente.tierraDelTurnoJugada && oponente.tierraEnMano) {
 
-        List<Arrastrable> tierras = oponente.TierrasEnMano();
-        
-        if(Partida.turno == Partida.Turno.OPONENTE && Partida.faseActual == Partida.Fase.PRINCIPAL) {
+            if(estado == EstadoNodo.FALLO) {
 
-            if(!oponente.tierraDelTurnoJugada) {
-
-                Debug.Log("Jugando tierra");
-
-                jugarTierra = oponente.JugarTierra(tierras);
+                oponente.JugarTierraTras(2f);
+                estado = EstadoNodo.EXITO;
             }
         }
 
-        estado = EstadoNodo.EXITO;
+        if(oponente.tierraDelTurnoJugada || (!oponente.tierraDelTurnoJugada && !oponente.tierraEnMano)) {
+
+            estado = EstadoNodo.FALLO;
+        }
 
         return estado;
     }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Tierras : MonoBehaviour {
@@ -128,49 +129,285 @@ public class Tierras : MonoBehaviour {
 
     //IA -----------------------------------------------------------------------------------
 
-    public int ManaDisponible() {
+    public List<Arrastrable> TierrasSimplesEnMesa() {
 
-        int manaDisponible = 0;
+        List<Arrastrable> simplesEnMesa = new List<Arrastrable>();
+        Arrastrable arrastrable = null;
+        Carta carta = null;
 
-        foreach(Arrastrable tierra in tierras) {
+        for(int i=0; i<tierras.Count; i++) {
 
-            if(!tierra.cartaGirada) { manaDisponible++; }
+            arrastrable = tierras[i];
+            carta = arrastrable.GetCarta();
+
+            if(arrastrable && arrastrable.tipoCarta == Arrastrable.TipoCarta.TIERRA && !arrastrable.cartaGirada) {
+
+                if(carta.cantidadMana.SequenceEqual(carta.cantidadMana2))
+                    simplesEnMesa.Add(arrastrable);
+            }
         }
 
-        return manaDisponible;
+        return simplesEnMesa;
     }
 
-    public bool SuficienteManaIA(Carta carta) {
+    public List<Arrastrable> TierrasDoblesEnMesa() {
 
-        if(SuficienteManaGenerico(carta)) {
+        List<Arrastrable> doblesEnMesa = new List<Arrastrable>();
+        Arrastrable arrastrable = null;
+        Carta carta = null;
 
+        for(int i=0; i<tierras.Count; i++) {
 
+            arrastrable = tierras[i];
+            carta = arrastrable.GetCarta();
+
+            if(arrastrable && arrastrable.tipoCarta == Arrastrable.TipoCarta.TIERRA && !arrastrable.cartaGirada) {
+
+                if(!carta.cantidadMana.SequenceEqual(carta.cantidadMana2))
+                    doblesEnMesa.Add(arrastrable);
+            }
         }
 
-        return false;
+        return doblesEnMesa;
     }
 
-    public bool SuficienteManaEspecifico(Carta carta) {
+    public bool Jugable(Carta carta) {
 
-        
+        bool jugable = false;
+        int[] coste = (int[])carta.costeMana.Clone();
+        List<Arrastrable> basicas = TierrasSimplesEnMesa();
+        List<Arrastrable> dobles = TierrasDoblesEnMesa();
+        Carta tierra = null;
 
-        return false;
-    }
+        //Pagar coste especifico con tierras basicas
 
-    public bool SuficienteManaGenerico(Carta carta) {
+        for(int i=1; i<coste.Length; i++) {
 
-        bool suficienteMana = false;
-        int totalMana = tierras.Count;
-        int costeCarta = 0;
+            for(int j=0; j<basicas.Count; j++) {
 
-        for(int i=0; i<carta.costeMana.Length; i++) {
+                tierra = basicas[j].GetCarta();
 
-            costeCarta += carta.costeMana[i];
+                if(coste[i] == 0) { break; }
+                else if(tierra.cantidadMana[i] > 0) {
+
+                    coste[i] -= tierra.cantidadMana[i];
+                    basicas.Remove(basicas[j]);
+                }
+            }
         }
 
-        if(totalMana > costeCarta) { suficienteMana = true; }
+        bool manaEspecificoPagado = true;
+        bool manaGenericoPagado = false;
 
-        return suficienteMana;
+        for(int i=1; i<coste.Length; i++) {
+
+            if(coste[i] > 0) {
+
+                manaEspecificoPagado = false;
+            }
+        }
+
+        //Pagar el coste especifico restante con dobles
+
+        if(!manaEspecificoPagado) {
+
+            for(int i=1; i<coste.Length; i++) {
+
+                for(int j=0; j<dobles.Count; j++) {
+
+                    tierra = dobles[j].GetCarta();
+
+                    if(coste[i] == 0) { break; }
+                    else if(tierra.cantidadMana[i] > 0 || tierra.cantidadMana2[i] > 0) {
+
+                        coste[i] -= tierra.cantidadMana[i];
+                        dobles.Remove(dobles[j]);
+                    }
+                }
+            }
+
+            manaEspecificoPagado = true;
+
+            for(int i=1; i<coste.Length; i++) {
+
+                if(coste[i] > 0) {
+
+                    manaEspecificoPagado = false;
+                }
+            }
+        }
+
+        //Si se ha pagado todo el coste especifico
+
+        if(manaEspecificoPagado) {
+
+            //Pagar Generico empezando por basicas
+
+            for(int i=0; i<basicas.Count; i++) {
+
+                tierra = basicas[i].GetCarta();
+
+                if(tierra.cantidadMana[3] == 2) {
+
+                    coste[0] -= 2;
+                    basicas.Remove(basicas[i]);
+                }
+
+                else {
+
+                    coste[0]--;
+                    basicas.Remove(basicas[i]);
+                }
+
+                if(coste[0] == 0) { 
+                    
+                    manaGenericoPagado = true;
+                    break; 
+                }
+            }
+
+            if(!manaGenericoPagado) {
+
+                foreach(Arrastrable arr in dobles) {
+
+                    tierra = arr.GetCarta();
+
+                    coste[0]--;
+                    dobles.Remove(arr);
+
+                    if(coste[0] == 0) {
+
+                        manaGenericoPagado = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if(manaGenericoPagado && manaEspecificoPagado) {
+
+            jugable = true;
+        }
+
+        return jugable;
+    }
+
+    public void PagarCoste(Carta carta) {
+
+        int[] coste = (int[])carta.costeMana.Clone();
+        List<Arrastrable> basicas = TierrasSimplesEnMesa();
+        List<Arrastrable> dobles = TierrasDoblesEnMesa();
+        Carta tierra = null;
+
+        //Pagar coste especifico con tierras basicas
+
+        for(int i=1; i<coste.Length; i++) {
+
+            for(int j=0; j<basicas.Count; j++) {
+
+                tierra = basicas[j].GetCarta();
+
+                if(coste[i] == 0) { break; }
+                else if(tierra.cantidadMana[i] > 0) {
+
+                    coste[i] -= tierra.cantidadMana[i];
+                    basicas[j].GirarCarta();
+                    basicas.Remove(basicas[j]);
+                }
+            }
+        }
+
+        bool manaEspecificoPagado = true;
+        bool manaGenericoPagado = false;
+
+        for(int i=1; i<coste.Length; i++) {
+
+            if(coste[i] > 0) {
+
+                manaEspecificoPagado = false;
+            }
+        }
+
+        //Pagar el coste especifico restante con dobles
+
+        if(!manaEspecificoPagado) {
+
+            for(int i=1; i<coste.Length; i++) {
+
+                for(int j=0; j<dobles.Count; j++) {
+
+                    tierra = dobles[j].GetCarta();
+
+                    if(coste[i] == 0) { break; }
+                    else if(tierra.cantidadMana[i] > 0 || tierra.cantidadMana2[i] > 0) {
+
+                        coste[i] -= tierra.cantidadMana[i];
+                        dobles[j].GirarCarta();
+                        dobles.Remove(dobles[j]);
+                    }
+                }
+            }
+
+            manaEspecificoPagado = true;
+
+            for(int i=1; i<coste.Length; i++) {
+
+                if(coste[i] > 0) {
+
+                    manaEspecificoPagado = false;
+                }
+            }
+        }
+
+        //Si se ha pagado todo el coste especifico
+
+        if(manaEspecificoPagado) {
+
+            //Pagar Generico empezando por basicas
+
+            for(int i=0; i<basicas.Count; i++) {
+
+                tierra = basicas[i].GetCarta();
+
+                if(tierra.cantidadMana[3] == 2) {
+
+                    coste[0] -= 2;
+                    basicas[i].GirarCarta();
+                    basicas.Remove(basicas[i]);
+                }
+
+                else {
+
+                    coste[0]--;
+                    basicas[i].GirarCarta();
+                    basicas.Remove(basicas[i]);
+                }
+
+                if(coste[0] == 0) { 
+                    
+                    manaGenericoPagado = true;
+                    break; 
+                }
+            }
+
+            if(!manaGenericoPagado) {
+
+                for(int i=0; i<dobles.Count; i++) {
+
+                    tierra = dobles[i].GetCarta();
+
+                    coste[0]--;
+                    dobles[i].GirarCarta();
+                    dobles.Remove(dobles[i]);
+
+                    if(coste[0] == 0) {
+
+                        manaGenericoPagado = true;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     //IA -----------------------------------------------------------------------------------

@@ -97,7 +97,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                         propietario.AnyadirMana(carta);
                         GirarCarta();
-                        cartaGirada = true;
                         this.transform.SetAsLastSibling();
                     }
                 }
@@ -146,7 +145,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void Atacar() {
 
         GirarCarta();
-        cartaGirada = true;
         atacando = true;
     }
 
@@ -191,6 +189,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, -90f);
+        cartaGirada = true;
     }
 
     public void EnderezarCarta() {

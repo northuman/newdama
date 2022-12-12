@@ -14,8 +14,21 @@ public class Carta : ScriptableObject {
     public int fuerza;
     public int resistencia;
     public int[] cantidadMana;
+    public int[] cantidadMana2;
     //   in ro bl ve ne
     //int[0][0][0][0][0]
     public int fuerzaTemp;
     public int resistenciaTemp;
+
+    public int CosteTotal() {
+
+        int coste = 0;
+
+        for(int i=0; i<costeMana.Length; i++) {
+
+            coste += costeMana[i];
+        }
+
+        return coste;
+    }
 } 

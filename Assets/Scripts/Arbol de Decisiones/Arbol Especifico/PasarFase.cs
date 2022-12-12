@@ -14,6 +14,8 @@ public class PasarFase : Nodo {
 
     public override EstadoNodo Evaluar() {
 
+        estado = EstadoNodo.FALLO;
+
         if(Partida.turno == Partida.Turno.OPONENTE) {
 
             if(Partida.faseActual == Partida.Fase.PRINCIPAL ||

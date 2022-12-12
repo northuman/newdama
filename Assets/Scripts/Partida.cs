@@ -271,7 +271,6 @@ public class Partida : MonoBehaviour {
 
             Debug.Log("Oponente declara Atacantes");
             momentoCombate = Combate.ATACANTES;
-            Debug.Log("Criaturas activas: " + oponente.criaturasActivas);
 
             //Cambiar Funcion del Boton de fases
             botonFases.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -374,9 +373,7 @@ public class Partida : MonoBehaviour {
         if(jugador.ManaRestante() > 0) {
 
             StartCoroutine(PreguntarJugarCarta());
-
-            if(turno == Turno.JUGADOR)
-                yield return new WaitUntil(GetContinuarFase);
+            yield return new WaitUntil(GetContinuarFase);
         }
 
         EnderezarCartas();

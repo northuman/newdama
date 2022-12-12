@@ -18,24 +18,19 @@ public class JugarCriatura : Nodo {
         //Obtener Mana Disponible
         //Comprobar si puedo jugarlas una por una
 
-        List<Arrastrable> criaturas = oponente.CriaturasEnMano();
-        Debug.Log("Criaturas en mano: " + criaturas.Count);
-        criaturas = oponente.DesordenarCriaturasEnMano(criaturas);
+        if(Partida.turno == Partida.Turno.OPONENTE && Partida.faseActual == Partida.Fase.PRINCIPAL) {
 
-        bool suficienteMana = false;
+            Arrastrable criatura = oponente.PuedoJugarCriatura();
 
-        foreach(Arrastrable criatura in criaturas) {
+            if(criatura) {
 
-            suficienteMana = oponente.tierras.SuficienteManaIA(criatura.GetCarta());
-
-            if(suficienteMana) {
-                
-                oponente.JugarCarta(criatura);
-                break;
+                oponente.siguienteCarta = criatura;
+                oponente.JugarCartaTras(2f);
             }
-        }
 
-        if(!suficienteMana) { Debug.Log("No hay mana suficiente"); }
+            if(!oponente.siguienteCarta)
+            estado = EstadoNodo.FALLO;
+        }
 
         return estado;
     }

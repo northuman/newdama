@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class IA : Jugador {
 
     public bool manaSuficienteJugarCriatura = false;
+    public bool tierraEnMano = true;
+    public Arrastrable siguienteCarta = null;
 
     public void PasarFase() {
 
@@ -34,16 +37,73 @@ public class IA : Jugador {
         return tierrasEnMano;
     }
 
-    public bool JugarTierra(List<Arrastrable> tierras) {
+    public List<Arrastrable> TierrasSimplesEnMano() {
 
-        if(tierras.Count > 0) {
+        List<Arrastrable> simplesEnMano = new List<Arrastrable>();
+        Arrastrable arrastrable = null;
+        Carta carta = null;
 
-            int tierraElegida = Random.Range(0, tierras.Count-1);
-            tierras[tierraElegida].transform.SetParent(this.goTierras.transform);
-            tierraDelTurnoJugada = true;
+        for(int i=0; i<goMano.transform.childCount; i++) {
+
+            arrastrable = goMano.transform.GetChild(i).GetComponent<Arrastrable>();
+            carta = arrastrable.GetCarta();
+
+            if(arrastrable && arrastrable.tipoCarta == Arrastrable.TipoCarta.TIERRA) {
+
+                if(carta.cantidadMana.SequenceEqual(carta.cantidadMana2))
+                    simplesEnMano.Add(arrastrable);
+            }
         }
 
-        return tierraDelTurnoJugada;
+        return simplesEnMano;
+    }
+
+    public List<Arrastrable> TierrasDoblesEnMano() {
+
+        List<Arrastrable> doblesEnMano = new List<Arrastrable>();
+        Arrastrable arrastrable = null;
+        Carta carta = null;
+
+        for(int i=0; i<goMano.transform.childCount; i++) {
+
+            arrastrable = goMano.transform.GetChild(i).GetComponent<Arrastrable>();
+            carta = arrastrable.GetCarta();
+
+            if(arrastrable && arrastrable.tipoCarta == Arrastrable.TipoCarta.TIERRA) {
+
+                if(!carta.cantidadMana.SequenceEqual(carta.cantidadMana2))
+                    doblesEnMano.Add(arrastrable);
+            }
+        }
+
+        return doblesEnMano;
+    }
+
+    public void JugarTierraTras(float seg) {
+
+        Invoke("JugarTierra", seg);
+    }
+
+    public void JugarTierra() {
+
+        List<Arrastrable> tierrasMano = TierrasEnMano();
+
+        if(tierrasMano.Count > 0) {
+
+            int tierraElegida = Random.Range(0, tierrasMano.Count-1);
+            tierrasMano[tierraElegida].transform.SetParent(this.goTierras.transform);
+            tierras.tierras.Add(tierrasMano[tierraElegida]);
+
+            tierraDelTurnoJugada = true;
+            tierrasMano.RemoveAt(tierraElegida);
+
+            if(tierrasMano.Count > 0) { tierraEnMano = true; }
+        }
+
+        else {
+
+            tierraEnMano = false;
+        }
     }
 
     public List<Arrastrable> CriaturasEnMano() {
@@ -64,25 +124,60 @@ public class IA : Jugador {
         return criaturasEnMano;
     }
 
-    public List<Arrastrable> DesordenarCriaturasEnMano(List<Arrastrable> criaturas) { //Solo es para jugar aleatoriamente las criaturas
+    public List<Arrastrable> OrdenarCriaturasPorCoste(List<Arrastrable> criaturas) {
 
-        int j;
-        Arrastrable aux;
+        Arrastrable aux = null;
 
-        for(int i = criaturas.Count-1; i > 0; i--) {
+        for(int i=0; i<criaturas.Count; i++) {
 
-            j = Random.Range(0, i);
-            aux = criaturas[i];
-            criaturas[i] = criaturas[j];
-            criaturas[j] = aux;
+            for(int j=0; j<criaturas.Count-i; i++) {
+
+                if(criaturas[j].GetCarta().CosteTotal() > criaturas[j+1].GetCarta().CosteTotal()) {
+
+                    aux = criaturas[j];
+                    criaturas[j] = criaturas[j+1];
+                    criaturas[j+1] = aux;
+                }
+            }
         }
 
         return criaturas;
     }
 
-    public void JugarCarta(Arrastrable carta) {
+    public Arrastrable PuedoJugarCriatura() {
 
-        
+        Arrastrable puedoJugar = null;
+        List<Arrastrable> criaturasEnMano = OrdenarCriaturasPorCoste(CriaturasEnMano());
+        Carta criatura = null;
+
+        foreach(Arrastrable arrastrable in criaturasEnMano) {
+
+            criatura = arrastrable.GetCarta();
+            if(tierras.Jugable(criatura)) {
+
+                Debug.Log("Es jugable");
+                puedoJugar = arrastrable;
+                break;
+            }
+            //puedoJugar = arrastrable;
+            //break;
+        }
+
+        return puedoJugar;
+    }
+
+    public void JugarCartaTras(float seg) {
+
+        Invoke("JugarCarta", seg);
+    }
+
+    public void JugarCarta() {
+
+        Debug.Log("Entro a Pagar Coste");
+
+        tierras.PagarCoste(siguienteCarta.GetCarta());
+        siguienteCarta.transform.SetParent(goCriaturas.transform);
+        siguienteCarta = null;
     }
 
     public void DeclararAtacantes() {
