@@ -192,10 +192,40 @@ public class IA : Jugador {
             }
         }
     }
+    
+    //Nueva IA-----------------------------------------------------------------
+    
+    public bool AtacantesDisponibles() {
+
+        bool disponibles = false;
+
+        //Coger las criaturas en mesa
+        //Comprobar si estan enderezadas
+        //Si lo estan, comprobar que no tienen mareo
+
+        if(goCriaturas.transform.childCount > 0) {
+
+            foreach(Transform transform in goCriaturas.transform) {
+
+                Arrastrable carta = transform.GetComponent<Arrastrable>();
+
+                if(carta.cartaGirada && !carta.mareo) {
+
+                    disponibles = true;
+                    Debug.Log("Hay criaturas disponibles para atacar");
+                    break;
+                }
+            }
+        }
+
+        else { Debug.Log("O no hay o la cagaste mi rey"); }
+
+        return disponibles;
+    }
+    
+    //Nueva IA-----------------------------------------------------------------
 }
 
-//Nueva IA-----------------------------------------------------------------
 
 
 
-//Nueva IA-----------------------------------------------------------------
