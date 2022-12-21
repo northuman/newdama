@@ -13,24 +13,35 @@ public class ArbolDecision : MonoBehaviour {
     private List<Accion> acciones;
 
     private void Start() {
-        
-        oponente = this.GetComponent<IA>();
-        if(oponente) { Debug.Log(oponente.name); }
+
+        raiz = new NodoDecision();
+        actual = raiz;
+        oponente = GetComponent<IA>();
+        AccionAtaque aA = new AccionAtaque();
+
+        acciones = new List<Accion>();
+        acciones.Add(aA);
+        acciones.Add(new AccionJugarHechizo());
+        acciones.Add(new AccionUsarHabilidad());
+
+        SetOponente();
+        aA.EsValido();
     }
 
     public ArbolDecision() {
 
-        raiz = new NodoDecision();
-        actual = raiz;
-
-        acciones = new List<Accion>();
-        acciones.Add(new AccionAtaque());
-        acciones.Add(new AccionJugarHechizo());
-        acciones.Add(new AccionUsarHabilidad());
     }
 
     public void TomarDecision() {
 
         
+    }
+
+    public void SetOponente() {
+
+        foreach(Accion accion in acciones) {
+
+            accion.SetOponente(oponente);
+        }
     }
 }

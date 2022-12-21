@@ -19,20 +19,35 @@ public class AccionAtaque : Accion {
 
         bool atacantesDisponibles = false;
 
-        return false;
+        if(oponente.AtacantesDisponibles()) {
+
+            atacantesDisponibles = true;
+        }
+
+        return atacantesDisponibles;
     }
 
     private bool EsTurnoIA() {
 
-        return false;
+        bool turnoIA = false;
+
+        if(Partida.turno == Partida.Turno.OPONENTE) { turnoIA = true; }
+
+        return turnoIA;
     }
 
     private int CalcularDanyoInfligido() {
 
-        return 0;
+        //Calcular el danyo total que las criaturas de la IA haran al atacar
+
+        return oponente.DanyoTotal();
     }
 
     private int CalcularVidaGanadaOponente() {
+
+        //Calcular la vida que ganaria el oponente al bloquear o al morir criaturas
+
+        //int vidaGanada = jugador.VidaGanada();
 
         return 0;
     }

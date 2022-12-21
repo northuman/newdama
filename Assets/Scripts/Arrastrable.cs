@@ -36,7 +36,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         bloqueadaPor = new List<Arrastrable>();
         datosCarta = gameObject.GetComponent<MostrarDatosCarta>();
         carta = datosCarta.carta;
-        mareo = true;
         ObtenerTipoCarta();
     }
 

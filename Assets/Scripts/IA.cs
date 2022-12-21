@@ -205,22 +205,37 @@ public class IA : Jugador {
 
         if(goCriaturas.transform.childCount > 0) {
 
-            foreach(Transform transform in goCriaturas.transform) {
+            foreach(Transform t in goCriaturas.transform) {
 
-                Arrastrable carta = transform.GetComponent<Arrastrable>();
+                Arrastrable carta = t.GetComponent<Arrastrable>();
 
-                if(carta.cartaGirada && !carta.mareo) {
+                if(!carta.cartaGirada && !carta.mareo) {
 
                     disponibles = true;
-                    Debug.Log("Hay criaturas disponibles para atacar");
                     break;
                 }
             }
         }
 
-        else { Debug.Log("O no hay o la cagaste mi rey"); }
-
         return disponibles;
+    }
+
+    public int DanyoTotal() {
+
+        int danyo = 0;
+
+        foreach(Transform t in goCriaturas.transform) {
+
+            Arrastrable ar = t.GetComponent<Arrastrable>();
+            Carta carta = ar.GetCarta();
+
+            if(!ar.cartaGirada && !ar.mareo) {
+
+                danyo += carta.fuerza;
+            }
+        }
+
+        return danyo;
     }
     
     //Nueva IA-----------------------------------------------------------------

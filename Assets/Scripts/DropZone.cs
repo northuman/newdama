@@ -80,6 +80,8 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                                 carta.padreOriginal = pila.transform;
                                 carta.cartaEnMano = false;
+                                //if(!carta.prisa)
+                                carta.mareo = true;
                                 carta.AnyadirCartaPila();
                             }
                         }
