@@ -7,7 +7,7 @@ public class Partida : MonoBehaviour {
 
     const float ENTRETIEMPO = 1f;
 
-    public enum Fase { MULLIGAN, MANTENIMIENTO, ROBO, PRINCIPAL, COMBATE, PRINCIPAL2, FIN };
+    public enum Fase { MULLIGAN, MANTENIMIENTO, ROBO, PRINCIPAL, COMBATE, FIN };
     public enum Turno { JUGADOR, OPONENTE };
     public enum Combate { ATACANTES, BLOQUEADORES, ORDEN_BLOQUEADORES, RESPUESTA_ATACANTE, RESPUESTA_DEFENSOR, DANYO, CEMENTERIO }
 
@@ -66,11 +66,9 @@ public class Partida : MonoBehaviour {
             yield return new WaitUntil(GetPasarFase);
             if(primerTurno) { primerTurno = false; }
             else { Robo(); }
-            StartCoroutine(FasePrincipal(1));
+            StartCoroutine(FasePrincipal());
             yield return new WaitUntil(GetPasarFase);
             StartCoroutine(FaseCombate());
-            yield return new WaitUntil(GetPasarFase);
-            StartCoroutine(FasePrincipal(2));
             yield return new WaitUntil(GetPasarFase);
             EndTurn();
             yield return new WaitForSeconds(2f);
@@ -311,21 +309,11 @@ public class Partida : MonoBehaviour {
 
     // Fase Principal -------------------------------------------------------------------------------------------------
 
-    IEnumerator FasePrincipal(int n) {
+    IEnumerator FasePrincipal() {
         
         pasarFase = false;
-
-        if(n == 1) {
-
-            Debug.Log("Fase Principal");
-            faseActual = Fase.PRINCIPAL;
-        }
-
-        else {
-
-            Debug.Log("Fase Principal2");
-            faseActual = Fase.PRINCIPAL2;
-        }
+        Debug.Log("Fase Principal");
+        faseActual = Fase.PRINCIPAL;
         
         yield return new WaitForSeconds(ENTRETIEMPO);
 
