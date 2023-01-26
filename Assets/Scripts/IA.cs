@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class IA : Jugador {
 
+    public Jugador jugador;
+
     public void JugarPrincipal() {
 
         JugarTierra();
@@ -46,8 +48,6 @@ public class IA : Jugador {
 
     public void PagarCoste(int n) {
 
-        Debug.Log("El valor de n es: " + n);
-
         foreach(Transform child in goTierras.transform) {
 
             Arrastrable a = child.GetComponent<Arrastrable>();
@@ -56,12 +56,6 @@ public class IA : Jugador {
 
                 a.GirarCarta();
                 n--;
-                Debug.Log("Flauta");
-            }
-
-            else {
-
-                Debug.Log("Pito");
             }
 
             if(n <= 0) { break; }
@@ -85,6 +79,7 @@ public class IA : Jugador {
             PagarCoste(criatura.GetCarta().CosteTotal());
             criatura.padreOriginal = goCriaturas.transform;
             criatura.transform.SetParent(goCriaturas.transform);
+            criatura.mareo = true;
         }
 
         Partida.pasarFase = true;
@@ -114,7 +109,26 @@ public class IA : Jugador {
 
     public void Combate() {
 
-        Partida.pasarFase = true;
+        if(jugador.CriaturasEnMesa() == 0) {
+
+            AtacarConTodo();
+        }
+
+        //Partida.pasarFase = true;
+        //Partida.continuarFase = true;
+    }
+
+    public void AtacarConTodo() {
+
+        foreach(Transform child in goCriaturas.transform) {
+
+            Arrastrable a = child.GetComponent<Arrastrable>();
+
+            if(!a.mareo) {
+
+                a.Atacar();
+            }
+        }
     }
 
     //Combate ---------------------------------------------------------------------------------------------------

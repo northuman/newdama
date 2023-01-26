@@ -128,6 +128,11 @@ public class Partida : MonoBehaviour {
 
         jugador.MandarCementerio();
         oponente.MandarCementerio();
+
+        if(turno == Turno.OPONENTE) {
+
+            pasarFase = true;
+        }
     }
 
     void Enfrentamientos() {
@@ -218,8 +223,16 @@ public class Partida : MonoBehaviour {
 
         continuarFase = false;
 
-        Debug.Log("Declarar Bloqueadores");
-        momentoCombate = Combate.BLOQUEADORES;
+        if(jugador.criaturasActivas > 0) {
+
+            Debug.Log("Declarar Bloqueadores");
+            momentoCombate = Combate.BLOQUEADORES;
+        }
+
+        else {
+
+            continuarFase = true;
+        }
     }
 
     IEnumerator FaseCombate() {
@@ -274,7 +287,7 @@ public class Partida : MonoBehaviour {
             botonFases.GetComponent<Button>().onClick.RemoveAllListeners();
             botonFases.GetComponent<Button>().onClick.AddListener(delegate { ContinuarFase(); });
 
-            yield return new WaitUntil(GetContinuarFase);
+            //yield return new WaitUntil(GetContinuarFase);
 
             //if(cartas atacando)
             if(oponente.CriaturasAtacando() > 0) {

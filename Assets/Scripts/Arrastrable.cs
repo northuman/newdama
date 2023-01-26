@@ -293,12 +293,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         padreOriginal = padre;
     }
 
-    public void AnyadirCartaPila() {
-
-        padreOriginal = DropZone.pila.transform;
-        Pila.AnyadirCarta(this);
-    }
-
     public void IrCementerio() {
 
         if(this.cartaMuerta) {

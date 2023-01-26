@@ -177,6 +177,11 @@ public class Jugador : MonoBehaviour {
         yield return RobarCartas(--mulligan);
     }
 
+    public int CriaturasEnMesa() {
+
+        return goCriaturas.transform.GetChildCount();
+    }
+
     public int CriaturasAtacando() {
 
         int criaturasAtacando = 0;
