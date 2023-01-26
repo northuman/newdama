@@ -15,6 +15,7 @@ public class Jugador : MonoBehaviour {
     public GameObject goCriaturas;
     public GameObject goCementerio;
 
+    public Partida partida;
     public Baraja baraja;
     public Tierras tierras;
     public Cementerio cementerio;
@@ -27,6 +28,8 @@ public class Jugador : MonoBehaviour {
     public void Start() {
 
         baraja.propietario = this;
+        partida = GameObject.Find("Partida").GetComponent<Partida>();
+        if(partida == null) { Debug.Log("Partida No Encontrada"); }
     }
 
     public void Barajar() {
@@ -142,7 +145,7 @@ public class Jugador : MonoBehaviour {
 
         if(!Partida.quedarMano) {
 
-            yield return Partida.PreguntarMulligan();
+            yield return partida.PreguntarMulligan();
         }
     }
 

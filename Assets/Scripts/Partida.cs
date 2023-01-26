@@ -20,8 +20,8 @@ public class Partida : MonoBehaviour {
     public static bool pasarFase = false;
     public static bool continuarFase = false;
 
-    public static Jugador jugador;
-    public static Jugador oponente;
+    public Jugador jugador;
+    public IA oponente;
 
     public static GameObject cajaDialogo;
     public static GameObject botonAceptar;
@@ -36,7 +36,7 @@ public class Partida : MonoBehaviour {
     void EmpezarPartida() {
 
         jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
-        oponente = GameObject.Find("Oponente").GetComponent<Jugador>();
+        oponente = GameObject.Find("Oponente").GetComponent<IA>();
         //manoJugador = GameObject.Find("Mano Jugador");
 
         botonFases = GameObject.Find("Boton Fases").GetComponent<Button>();
@@ -156,7 +156,7 @@ public class Partida : MonoBehaviour {
 
                     else if (arrastrable.bloqueadaPor.Count > 1) {
 
-                        ModificarCajaDialogo(3);
+                        ModificarCajaDialogo(2);
                         cajaDialogo.SetActive(true);
                         botonAceptar.SetActive(false);
                         botonCancelar.SetActive(false);
@@ -172,7 +172,7 @@ public class Partida : MonoBehaviour {
 
                     else {
 
-                        arrastrable.InflingirDanyo(Partida.oponente);
+                        arrastrable.InflingirDanyo(oponente);
                         Debug.Log("Ataca directamente: " + arrastrable.carta.nombreCarta);
                     }
                 }
@@ -181,7 +181,7 @@ public class Partida : MonoBehaviour {
 
         if(turno == Turno.OPONENTE) {
 
-            GameObject criaturas = Partida.oponente.goCriaturas;
+            GameObject criaturas = oponente.goCriaturas;
 
             for(int i=0; i<criaturas.transform.childCount; i++) {
 
@@ -204,7 +204,7 @@ public class Partida : MonoBehaviour {
 
                     else {
 
-                        arrastrable.InflingirDanyo(Partida.jugador);
+                        arrastrable.InflingirDanyo(jugador);
                         Debug.Log("Ataca directamente: " + arrastrable.carta.nombreCarta);
                     }
                 }
@@ -324,7 +324,8 @@ public class Partida : MonoBehaviour {
 
         else if(turno == Turno.OPONENTE) {
 
-            oponente.permitidoJugarCartas = true;
+            //oponente.permitidoJugarCartas = true;
+            oponente.JugarPrincipal();
         }
 
         else {
@@ -357,12 +358,6 @@ public class Partida : MonoBehaviour {
         Debug.Log("Mantenimiento");
         faseActual = Fase.MANTENIMIENTO;
         yield return new WaitForSeconds(ENTRETIEMPO);
-
-        if(jugador.ManaRestante() > 0) {
-
-            StartCoroutine(PreguntarJugarCarta());
-            yield return new WaitUntil(GetContinuarFase);
-        }
 
         EnderezarCartas();
     }
@@ -453,7 +448,7 @@ public class Partida : MonoBehaviour {
     //Modificar Dialogo
     //Motivo 1 -> Mulligan
 
-    static void ModificarCajaDialogo(int motivo) {
+    void ModificarCajaDialogo(int motivo) {
 
         TMPro.TMP_Text textoDialogo = cajaDialogo.transform.GetChild(0).gameObject.GetComponent<TMPro.TMP_Text>(); //Texto de Pregunta
         TMPro.TMP_Text textoAceptar = botonAceptar.transform.GetChild(0).GetComponent<TMPro.TMP_Text>(); //Boton Aceptar
@@ -479,38 +474,17 @@ public class Partida : MonoBehaviour {
 
             case 2:
 
-                textoDialogo.text = "¿Desea jugar alguna carta antes de pasar de fase?";
-
-                textoAceptar.text = "Jugar Carta";
-                botonAceptar.GetComponent<Button>().onClick.AddListener(delegate { JugarInterrupcion(); });
-
-                textoCancelar.text = "Continuar";
-                botonCancelar.GetComponent<Button>().onClick.AddListener(delegate { ContinuarTurno(); });
-
-                break;
-
-            case 3:
-
                 textoDialogo.text = "¿A qué bloqueador desea atacar primero?";
 
                 break;
         }
     }
 
-    public static IEnumerator PreguntarMulligan() {
+    public IEnumerator PreguntarMulligan() {
 
         yield return new WaitForSeconds(ENTRETIEMPO);
 
         ModificarCajaDialogo(1);
-
-        cajaDialogo.SetActive(true);
-    }
-
-    IEnumerator PreguntarJugarCarta() {
-
-        yield return new WaitForSeconds(ENTRETIEMPO);
-
-        ModificarCajaDialogo(2);
 
         cajaDialogo.SetActive(true);
     }

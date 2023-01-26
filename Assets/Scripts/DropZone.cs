@@ -11,12 +11,15 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     public static GameObject tierrasJugador;
     public static GameObject criaturasJugador;
 
+    public Jugador jugador;
+
     void Start() {
         
         pila = GameObject.Find("Pila");
         manoJugador = GameObject.Find("Mano Jugador");
         tierrasJugador = GameObject.Find("Tierras Jugador");
         criaturasJugador = GameObject.Find("Criaturas Jugador");
+        jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
     }
     
     public void OnPointerEnter(PointerEventData datosEvento) {
@@ -74,7 +77,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                         if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
 
-                            bool jugarCarta = Partida.jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
+                            bool jugarCarta = jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
 
                             if(jugarCarta) {
 

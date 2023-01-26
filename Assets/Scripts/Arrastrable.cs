@@ -27,6 +27,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public TipoCarta tipoCarta = TipoCarta.NULO;
 
     public Jugador propietario;
+    public Jugador jugador;
+    public IA oponente;
     public Carta carta;
     MostrarDatosCarta datosCarta;
 
@@ -37,6 +39,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         datosCarta = gameObject.GetComponent<MostrarDatosCarta>();
         carta = datosCarta.carta;
         ObtenerTipoCarta();
+        jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
+        oponente = GameObject.Find("Oponente").GetComponent<IA>();
     }
 
     public void OnBeginDrag(PointerEventData datosEvento) {
@@ -102,7 +106,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                 if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
                     Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR
-                    && propietario == Partida.jugador && mareo == false) {
+                    && propietario == jugador && mareo == false) {
 
                     if(!cartaGirada) {
 
