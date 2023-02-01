@@ -199,6 +199,21 @@ public class Jugador : MonoBehaviour {
         return enderezadas;
     }
 
+    public int CantidadCriaturasActivas() {
+
+        int activas = 0;
+
+        foreach(Transform child in goCriaturas.transform) {
+
+            if(!child.GetComponent<Arrastrable>().cartaGirada && !child.GetComponent<Arrastrable>().mareo) {
+
+                activas++;
+            }
+        }
+
+        return activas;
+    }
+
     public Arrastrable CriaturaEnMesa() {
 
         return goCriaturas.transform.GetChild(0).GetComponent<Arrastrable>();

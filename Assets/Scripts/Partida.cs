@@ -190,6 +190,8 @@ public class Partida : MonoBehaviour {
 
             for(int i=0; i<criaturas.transform.childCount; i++) {
 
+                Debug.Log("Atacante " + i);
+
                 Transform criatura = criaturas.transform.GetChild(i);
                 Arrastrable arrastrable = criatura.gameObject.GetComponent<Arrastrable>();
 

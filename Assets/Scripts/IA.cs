@@ -169,7 +169,14 @@ public class IA : Jugador {
         int[] estadisticasIA = EstadisticasSumadas();
         int[] estadisticasJugador = jugador.EstadisticasSumadas();
 
-        if(estadisticasIA[0] >= estadisticasJugador[1] && estadisticasIA[1] > estadisticasJugador[0]) {
+        EntraDanyoSuficiente();
+
+        if(EntraDanyoSuficiente()) {
+
+            AtacarConTodo();
+        }
+
+        else if(estadisticasIA[0] >= estadisticasJugador[1] && estadisticasIA[1] > estadisticasJugador[0]) {
 
             foreach(Arrastrable criaturaIA in criaturasIA) {
 
@@ -205,8 +212,42 @@ public class IA : Jugador {
 
         else {
 
-            Debug.Log("Me salto el if");
+            Debug.Log("Me da miedito atacar");
         }
+    }
+
+    public bool EntraDanyoSuficiente() {
+
+        Debug.Log("Entro a calcularlo");
+
+        //Contamos cuantas criaturas tiene el jugador
+        //Contamos cuantas tiene la IA
+        //Restamos ese numero
+        //Si la cantidad de criaturas que no pueden ser bloqueadas tienen el danyo suficiente pegamos con todo
+        //GG
+
+        int diferenciaCriaturas = CantidadCriaturasActivas() - jugador.CantidadCriaturasEnderezadas();
+
+        Debug.Log("La diferencia de criaturas es de: " + diferenciaCriaturas);
+
+        if(diferenciaCriaturas > 0) {
+
+            List<Arrastrable> criaturasIA = OrdenarCriaturasEstadisticas(CriaturasEnMesa());
+
+            int danyoAsegurado = 0;
+
+            for(int i=0; i<diferenciaCriaturas; i++) {
+
+                danyoAsegurado += criaturasIA[criaturasIA.Count-1-i].GetCarta().fuerzaTemp;
+            }
+
+            if(danyoAsegurado > jugador.vida) {
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public bool AtaqueDirectoFavorable(Carta cartaIA, Carta cartaJugador) {
