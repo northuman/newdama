@@ -14,14 +14,32 @@ public class IA : Jugador {
         Combate();
     }
 
+    //
+
+    public new IEnumerator RobarCartas(int cantidad) {
+
+        for(int i=cantidad; i>0; i--) {
+
+            yield return new WaitForSeconds(TIEMPO_ROBO);
+            RobarCarta();
+        }
+    }
+
+    //
+
     //Tierras ---------------------------------------------------------------------------------------------------
 
-    public void JugarTierra() {
+    /*public void JugarTierra() {
 
         //Partimos de que todas seran basicas
 
         //Mirar si tengo tierra en mano
         //Jugarla
+        
+    }*/
+
+    public void JugarTierra() {
+
         Arrastrable tierra = BuscarTierra();
         if(tierra != null) {
 
@@ -109,16 +127,23 @@ public class IA : Jugador {
 
     public void Combate() {
 
-        if(jugador.CriaturasEnMesa() == 0) {
+        if(criaturasActivas > 0) {
 
-            AtacarConTodo();
+            if(jugador.CantidadCriaturasEnMesa() == 0) {
+
+                AtacarConTodo();
+            }
+
+            else {
+
+                AtaqueSelectivo();
+            }
         }
-
-        //Partida.pasarFase = true;
-        //Partida.continuarFase = true;
     }
 
     public void AtacarConTodo() {
+
+        //Intentar guardar alguna criatura para bloquear en caso de poca vida
 
         foreach(Transform child in goCriaturas.transform) {
 
@@ -131,7 +156,78 @@ public class IA : Jugador {
         }
     }
 
+    public void AtaqueSelectivo() {
+
+        List<Arrastrable> criaturasIA = OrdenarCriaturasEstadisticas(CriaturasEnMesa());
+        List<Arrastrable> criaturasJugador = OrdenarCriaturasEstadisticas(jugador.CriaturasEnMesa());
+
+        List<Arrastrable> atacantes = new List<Arrastrable>();
+        int[] estadisticasIA = EstadisticasSumadas();
+        int[] estadisticasJugador = jugador.EstadisticasSumadas();
+
+        if(estadisticasIA[0] >= estadisticasJugador[1] && estadisticasIA[1] > estadisticasJugador[0]) {
+
+            foreach(Arrastrable criaturaIA in criaturasIA) {
+
+                foreach(Arrastrable criaturaJug in criaturasJugador) {
+
+                    if (criaturaIA.GetCarta().fuerzaTemp >= criaturaJug.GetCarta().resistenciaTemp &&
+                        criaturaIA.GetCarta().resistenciaTemp > criaturaJug.GetCarta().fuerzaTemp) {
+
+                        atacantes.Add(criaturaIA);
+                    }
+
+                    else if(CantidadCriaturasEnMesa() > jugador.CantidadCriaturasEnMesa()) {
+
+                        if (criaturaIA.GetCarta().fuerzaTemp >= criaturaJug.GetCarta().resistenciaTemp &&
+                            criaturaIA.GetCarta().resistenciaTemp >= criaturaJug.GetCarta().fuerzaTemp) {
+
+                            atacantes.Add(criaturaIA);
+                        }
+                    }
+
+                    else { break; }
+                }
+            }
+
+            foreach(Arrastrable criaturaIA in atacantes) {
+
+                criaturaIA.Atacar();
+            }
+        }
+
+        else {
+
+            Debug.Log("Me salto el if");
+        }
+    }
+
+    public bool AtaqueDirectoFavorable(Carta cartaIA, Carta cartaJugador) {
+
+        return (cartaIA.fuerza >= cartaJugador.resistencia && cartaIA.resistencia > cartaJugador.fuerza);
+    }
+
     //Combate ---------------------------------------------------------------------------------------------------
+
+    /*
+
+    Caso 1:
+    El jugador no tiene criaturas 
+    atacar con todo
+
+    Caso 2:
+    Ambos una criatura
+        la del oponente mas fuerte -> ataca
+        la del jugador mas fuerte -> nada
+        ambas iguales -> nada
+
+    Caso 3:
+    Muchas criaturas, a simplificar
+        la suma de ataques del oponente es mayor a la de las resistencias -> con todo
+        la suma es menor -> nada
+        ambas iguales -> solo las mas fuertes
+
+    */
 }
 
 

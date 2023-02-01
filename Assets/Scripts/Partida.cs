@@ -497,6 +497,8 @@ public class Partida : MonoBehaviour {
 
         yield return new WaitForSeconds(ENTRETIEMPO);
 
+        Debug.Log("Pregunto Mulligan");
+
         ModificarCajaDialogo(1);
 
         cajaDialogo.SetActive(true);

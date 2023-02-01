@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Jugador : MonoBehaviour {
 
-    const float TIEMPO_ROBO = 0.5f;
+    public const float TIEMPO_ROBO = 0.5f;
 
     public bool permitidoJugarCartas = false;
 
@@ -151,6 +151,8 @@ public class Jugador : MonoBehaviour {
 
     public void DevolverManoInicial() {
 
+        Debug.Log("Me llaman");
+
         Partida.cajaDialogo.SetActive(false);
 
         StartCoroutine(DevolverCartas(mulligan));
@@ -177,9 +179,46 @@ public class Jugador : MonoBehaviour {
         yield return RobarCartas(--mulligan);
     }
 
-    public int CriaturasEnMesa() {
+    public int CantidadCriaturasEnMesa() {
 
-        return goCriaturas.transform.GetChildCount();
+        return goCriaturas.transform.childCount;
+    }
+
+    public Arrastrable CriaturaEnMesa() {
+
+        return goCriaturas.transform.GetChild(0).GetComponent<Arrastrable>();
+    }
+
+    public List<Arrastrable> CriaturasEnMesa() {
+
+        List<Arrastrable> criaturas = new List<Arrastrable>();
+
+        foreach(Transform child in goCriaturas.transform) {
+
+            criaturas.Add(child.GetComponent<Arrastrable>());
+        }
+
+        return criaturas;
+    }
+
+    public List<Arrastrable> OrdenarCriaturasEstadisticas(List<Arrastrable> criaturas) {
+
+        Arrastrable aux = null;
+
+        for(int i=0; i<(criaturas.Count)-1; i++) {
+
+            for(int j=0; j<(criaturas.Count)-i-1; j++) {
+
+                if(criaturas[j].GetCarta().fuerza < criaturas[j+1].GetCarta().fuerza) {
+
+                    aux = criaturas[j];
+                    criaturas[j] = criaturas[j+1];
+                    criaturas[j+1] = aux;
+                }
+            }
+        }
+
+        return criaturas;
     }
 
     public int CriaturasAtacando() {
@@ -193,5 +232,19 @@ public class Jugador : MonoBehaviour {
         }
 
         return criaturasAtacando;
+    }
+
+    public int[] EstadisticasSumadas() {
+
+        int[] estadisticas = new int[2];
+        List<Arrastrable> criaturas = CriaturasEnMesa();
+
+        foreach(Arrastrable criatura in criaturas) {
+
+            estadisticas[0] += criatura.GetCarta().fuerzaTemp;
+            estadisticas[1] += criatura.GetCarta().resistenciaTemp;
+        }
+
+        return estadisticas;
     }
 }

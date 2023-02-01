@@ -115,7 +115,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 }
 
                 if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
-                    Partida.momentoCombate == Partida.Combate.BLOQUEADORES && Partida.turno == Partida.Turno.JUGADOR) {
+                    Partida.momentoCombate == Partida.Combate.BLOQUEADORES && Partida.turno == Partida.Turno.OPONENTE) {
 
                     if(!bloqueador) {
 
