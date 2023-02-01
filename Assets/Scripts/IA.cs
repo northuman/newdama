@@ -188,7 +188,7 @@ public class IA : Jugador {
                         atacantes.Add(criaturaIA);
                     }
 
-                    else if(CantidadCriaturasEnMesa() > jugador.CantidadCriaturasEnMesa()) {
+                    else if(CantidadCriaturasActivas() > jugador.CantidadCriaturasEnMesa()) {
 
                         if (criaturaIA.GetCarta().fuerzaTemp >= criaturaJug.GetCarta().resistenciaTemp &&
                             criaturaIA.GetCarta().resistenciaTemp >= criaturaJug.GetCarta().fuerzaTemp) {
@@ -207,6 +207,11 @@ public class IA : Jugador {
 
                     criaturaIA.Atacar();
                 }
+            }
+
+            if(atacantes.Count == 0 && (CantidadCriaturasActivas()/jugador.CantidadCriaturasEnderezadas()) >= 3) {
+
+                AtacarConTodo();
             }
         }
 
