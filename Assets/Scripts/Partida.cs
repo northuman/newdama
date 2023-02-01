@@ -223,15 +223,18 @@ public class Partida : MonoBehaviour {
 
         continuarFase = false;
 
-        if(jugador.criaturasActivas > 0) {
+        if(turno == Turno.OPONENTE) {
 
-            Debug.Log("Declarar Bloqueadores");
-            momentoCombate = Combate.BLOQUEADORES;
-        }
+            if(jugador.CantidadCriaturasEnderezadas() > 0) {
 
-        else {
+                Debug.Log("Declarar Bloqueadores");
+                momentoCombate = Combate.BLOQUEADORES;
+            }
 
-            continuarFase = true;
+            else {
+
+                continuarFase = true;
+            }
         }
     }
 
@@ -338,6 +341,7 @@ public class Partida : MonoBehaviour {
         else if(turno == Turno.OPONENTE) {
 
             //oponente.permitidoJugarCartas = true;
+            //StartCoroutine(oponente.JugarPrincipal());
             oponente.JugarPrincipal();
         }
 
@@ -347,9 +351,14 @@ public class Partida : MonoBehaviour {
         }
     }
 
-    bool GetPasarFase() {
+    public static bool GetPasarFase() {
 
         return pasarFase;
+    }
+
+    public static void SetPasarFase() {
+
+        pasarFase = true;
     }
 
     // Fase Principal -------------------------------------------------------------------------------------------------

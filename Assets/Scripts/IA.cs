@@ -5,12 +5,16 @@ using UnityEngine;
 
 public class IA : Jugador {
 
+    const float TIEMPO_ESPERA = 2f;
+
     public Jugador jugador;
 
     public void JugarPrincipal() {
 
         JugarTierra();
+        //yield return new WaitForSeconds(TIEMPO_ESPERA);
         JugarCriatura();
+        //yield return new WaitForSeconds(TIEMPO_ESPERA);
         Combate();
     }
 
@@ -192,7 +196,10 @@ public class IA : Jugador {
 
             foreach(Arrastrable criaturaIA in atacantes) {
 
-                criaturaIA.Atacar();
+                if(!criaturaIA.mareo) {
+
+                    criaturaIA.Atacar();
+                }
             }
         }
 
