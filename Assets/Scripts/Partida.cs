@@ -343,8 +343,8 @@ public class Partida : MonoBehaviour {
         else if(turno == Turno.OPONENTE) {
 
             //oponente.permitidoJugarCartas = true;
-            //StartCoroutine(oponente.JugarPrincipal());
-            oponente.JugarPrincipal();
+            StartCoroutine(oponente.JugarPrincipal());
+            //oponente.JugarPrincipal();
         }
 
         else {

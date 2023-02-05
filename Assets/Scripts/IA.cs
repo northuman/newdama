@@ -9,12 +9,12 @@ public class IA : Jugador {
 
     public Jugador jugador;
 
-    public void JugarPrincipal() {
+    public IEnumerator JugarPrincipal() {
 
         JugarTierra();
-        //yield return new WaitForSeconds(TIEMPO_ESPERA);
+        yield return new WaitForSeconds(TIEMPO_ESPERA);
         JugarCriatura();
-        //yield return new WaitForSeconds(TIEMPO_ESPERA);
+        yield return new WaitForSeconds(TIEMPO_ESPERA);
         Combate();
     }
 
@@ -104,7 +104,7 @@ public class IA : Jugador {
             criatura.mareo = true;
         }
 
-        Partida.pasarFase = true;
+        //Partida.pasarFase = true;
     }
 
     public Arrastrable CriaturaJugable(int mana) {
@@ -143,6 +143,8 @@ public class IA : Jugador {
                 AtaqueSelectivo();
             }
         }
+
+        Partida.pasarFase = true;
     }
 
     public void AtacarConTodo() {
