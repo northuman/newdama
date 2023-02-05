@@ -196,6 +196,8 @@ public class Jugador : MonoBehaviour {
             }
         }
 
+        Debug.Log("Enderezadas Juagdor: " + enderezadas);
+
         return enderezadas;
     }
 
@@ -210,6 +212,8 @@ public class Jugador : MonoBehaviour {
                 activas++;
             }
         }
+
+        Debug.Log("Activas IA: " + activas);
 
         return activas;
     }

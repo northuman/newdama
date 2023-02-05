@@ -272,10 +272,58 @@ public class IA : Jugador {
         
         if(atacantes > 0) {
 
-            Debug.Log("Hay " + atacantes + " atacantes");
+            int danyoTotal = ContarDanyo();
+            Debug.Log("Danyo total: " + danyoTotal);
+
+            //Sumar fuerza total de los atacantes
+            
+            //Si es menor que la vida de la IA
+            //Buscar bloqueador ideal
+            //Si no hay, buscar doble bloqueo bueno
+            //Si tampoco hay dejar pasar a menos que sea letal
+
+            //Si es mayor que la vida
+            //Bloquear seguro al mas fuerte con el mas debil
+            //Sumar de nuevo el ataque de los restantes y repetir
+
+            
         }
 
         Partida.continuarFase = true;
+    }
+
+    public bool BuscarBloqueadorIdeal(Arrastrable arrastrableOponente) {
+
+        foreach(Transform child in goCriaturas.transform) {
+
+            Arrastrable arrastrable = child.GetComponent<Arrastrable>();
+            Carta criatura = arrastrable.GetCarta();
+            Carta criaturaOponente = arrastrableOponente.GetCarta();
+            
+            if(criatura.fuerzaTemp >= criaturaOponente.resistenciaTemp 
+            && criatura.resistenciaTemp > criaturaOponente.fuerzaTemp) {
+
+                arrastrableOponente.bloqueadaPor.Add(arrastrable);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public int ContarDanyo() {
+
+        int danyo = 0;
+
+        foreach(Transform child in jugador.goCriaturas.transform) {
+
+            Arrastrable criatura = child.GetComponent<Arrastrable>();
+
+            if(criatura.atacando)
+            danyo += criatura.GetCarta().fuerzaTemp;
+        }
+
+        return danyo;
     }
 
     public int ContarAtacantes() {
