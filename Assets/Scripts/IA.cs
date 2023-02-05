@@ -264,25 +264,34 @@ public class IA : Jugador {
 
     //Combate ---------------------------------------------------------------------------------------------------
 
-    /*
+    //Bloqueo ---------------------------------------------------------------------------------------------------
 
-    Caso 1:
-    El jugador no tiene criaturas 
-    atacar con todo
+    public void Bloqueadores() {
 
-    Caso 2:
-    Ambos una criatura
-        la del oponente mas fuerte -> ataca
-        la del jugador mas fuerte -> nada
-        ambas iguales -> nada
+        int atacantes = ContarAtacantes();
+        
+        if(atacantes > 0) {
 
-    Caso 3:
-    Muchas criaturas, a simplificar
-        la suma de ataques del oponente es mayor a la de las resistencias -> con todo
-        la suma es menor -> nada
-        ambas iguales -> solo las mas fuertes
+            Debug.Log("Hay " + atacantes + " atacantes");
+        }
 
-    */
+        Partida.continuarFase = true;
+    }
+
+    public int ContarAtacantes() {
+
+        int atacantes = 0;
+
+        foreach(Transform child in jugador.goCriaturas.transform) {
+
+            Arrastrable criatura = child.GetComponent<Arrastrable>();
+            if(criatura.atacando) { atacantes++; }
+        }
+
+        return atacantes;
+    }
+
+    //Bloqueo ---------------------------------------------------------------------------------------------------
 }
 
 

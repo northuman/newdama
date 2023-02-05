@@ -128,11 +128,7 @@ public class Partida : MonoBehaviour {
 
         jugador.MandarCementerio();
         oponente.MandarCementerio();
-
-        if(turno == Turno.OPONENTE) {
-
-            pasarFase = true;
-        }
+        pasarFase = true;
     }
 
     void Enfrentamientos() {
@@ -182,6 +178,8 @@ public class Partida : MonoBehaviour {
                     }
                 }
             }
+
+            continuarFase = true;
         }
 
         if(turno == Turno.OPONENTE) {
@@ -265,8 +263,9 @@ public class Partida : MonoBehaviour {
             //if(cartas atacando)
             if(jugador.CriaturasAtacando() > 0) {
 
-                Bloqueadores();
-                //yield return new WaitUntil(GetPasarFase);
+                //Bloqueadores();
+                continuarFase = false; //Si no se pasa la fase de bloqueadores directamente
+                oponente.Bloqueadores();
                 yield return new WaitUntil(GetContinuarFase);
                 Enfrentamientos();
                 yield return new WaitUntil(GetContinuarFase);
