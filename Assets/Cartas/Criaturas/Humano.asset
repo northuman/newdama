@@ -10,17 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
-  m_Name: "Drag\xF3n 1"
+  m_Name: Humano
   m_EditorClassIdentifier: 
-  nombreCarta: "Drag\xF3n 2"
+  nombreCarta: Humano
   costeMana: 0000000001000000000000000000000000000000
   palabrasClave: Vuela
   descripcion: 
   tipoCarta: Criatura
-  tiposConcretos: "Drag\xF3n"
+  tiposConcretos: Humano
   fuerza: 2
   resistencia: 3
   cantidadMana: 
   cantidadMana2: 
-  fuerzaTemp: 2
-  resistenciaTemp: 1

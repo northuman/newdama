@@ -122,6 +122,8 @@ public class IA : Jugador {
 
     public void Combate() {
 
+        Partida.faseActual = Partida.Fase.COMBATE;
+
         if(criaturasActivas > 0) {
 
             if(jugador.CantidadCriaturasEnMesa() == 0) {
@@ -274,14 +276,17 @@ public class IA : Jugador {
 
             int danyoAsegurado = 0;
 
-            for(int i=0; i<diferenciaCriaturas; i++) {
+            if(diferenciaCriaturas > 0) {
 
-                danyoAsegurado += criaturas[criaturas.Count-1-i].fuerzaTemp;
-            }
+                for(int i=0; i<diferenciaCriaturas && i<criaturas.Count; i++) {
 
-            if(danyoAsegurado > vida) {
+                    danyoAsegurado += criaturas[criaturas.Count-1-i].fuerzaTemp;
+                }
 
-                return true;
+                if(danyoAsegurado > vida) {
+
+                    return true;
+                }
             }
         }
 
@@ -307,6 +312,7 @@ public class IA : Jugador {
             Debug.Log("Danyo total: " + danyoTotal);
 
             List<Arrastrable> sinBloquear = jugador.CriaturasAtacando();
+            List<Arrastrable> setForDestruction = new List<Arrastrable>();
 
             if(danyoTotal < vida) {
 
@@ -318,7 +324,49 @@ public class IA : Jugador {
                     }
                 }
 
-                //foreach(Arrastrable sinBloquear)
+                foreach(Arrastrable criatura in sinBloquear) {
+
+                    Debug.Log("INTENTO BLOQUEOS MULTIPLES");
+
+                    foreach(Transform child in goCriaturas.transform) {
+
+                        Arrastrable a1 = child.GetComponent<Arrastrable>();
+
+                        foreach(Transform child2 in goCriaturas.transform) {
+
+                            Arrastrable a2 = child2.GetComponent<Arrastrable>();
+
+                            if(a1 != a2) {
+
+                                Debug.Log("PAREJA DISPONIBLE");
+                                Debug.Log("SUMA FUERZAS: " + (a1.fuerzaTemp + a2.fuerzaTemp));
+                                Debug.Log("SUMA RESISTENCIAS: " + (a1.resistenciaTemp + a2.resistenciaTemp));
+
+                                if(!a1.bloqueando && !a2.bloqueando 
+                                && a1.fuerzaTemp + a2.fuerzaTemp >= criatura.resistenciaTemp
+                                && a1.resistenciaTemp + a2.resistenciaTemp > criatura.fuerzaTemp) {
+
+                                    a1.bloqueando = true;
+                                    a2.bloqueando = true;
+                                    criatura.bloqueadaPor.Add(a1);
+                                    criatura.bloqueadaPor.Add(a2);
+                                    Partida.momentoCombate = Partida.Combate.ORDEN_BLOQUEADORES;
+                                    //Partida.ModificarBoton();
+                                }
+
+                                else {
+
+                                    Debug.Log("APRENDE A CONTAR");
+                                }
+                            }
+
+                            else {
+
+                                Debug.Log("SON LA MISMA");
+                            }
+                        }
+                    }
+                }
             }
 
             //Sumar fuerza total de los atacantes
@@ -331,11 +379,10 @@ public class IA : Jugador {
             //Si es mayor que la vida
             //Bloquear seguro al mas fuerte con el mas debil
             //Sumar de nuevo el ataque de los restantes y repetir
-
-
         }
 
-        Partida.continuarFase = true;
+        Partida.pasarFase = false;
+        //Partida.continuarFase = true;
     }
 
     public bool BuscarBloqueadorIdeal(Arrastrable arrastrableOponente) {

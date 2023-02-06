@@ -179,7 +179,7 @@ public class Partida : MonoBehaviour {
                 }
             }
 
-            continuarFase = true;
+            //continuarFase = true;
         }
 
         if(turno == Turno.OPONENTE) {
@@ -253,6 +253,8 @@ public class Partida : MonoBehaviour {
 
             Debug.Log("Jugador declara Atacantes");
             momentoCombate = Combate.ATACANTES;
+
+            ModificarCajaDialogo(2);
 
             //Cambiar Funcion del Boton de fases
             botonFases.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -366,13 +368,14 @@ public class Partida : MonoBehaviour {
 
     // Mantenimiento --------------------------------------------------------------------------------------------------
 
-    bool GetContinuarFase() {
+    public static bool GetContinuarFase() {
 
         return continuarFase;
     }
 
     void ContinuarFase() {
 
+        Debug.Log("CONTINUAR FASE");
         continuarFase = true;
     }
 

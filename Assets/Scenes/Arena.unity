@@ -632,7 +632,7 @@ MonoBehaviour:
   goCriaturas: {fileID: 443294889}
   goCementerio: {fileID: 1253635628}
   partida: {fileID: 0}
-  baraja: {fileID: 331038492}
+  baraja: {fileID: 1966286123}
   tierras: {fileID: 1804677718}
   cementerio: {fileID: 1253635633}
   vida: 20
@@ -4479,10 +4479,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propietario: {fileID: 0}
   cartas:
-  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
-  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
-  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
-  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
+  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
+  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
+  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
+  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
   - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
   - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
   - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}

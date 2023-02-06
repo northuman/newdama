@@ -124,7 +124,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     }
                 }
 
-                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
+                /*if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
                     Partida.momentoCombate == Partida.Combate.BLOQUEADORES && Partida.turno == Partida.Turno.OPONENTE) {
 
                     if(!bloqueador) {
@@ -137,7 +137,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         this.bloqueadaPor.Add(bloqueador);
                         bloqueador = null;
                     }
-                }
+                }*/
 
                 if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
                     && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
@@ -171,13 +171,13 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         //Ataque y vida de ambos
         this.resistenciaTemp = this.resistenciaTemp - otra.fuerzaTemp;  
-        otra.resistenciaTemp = otra.resistenciaTemp - this.fuerzaTemp;  
+        otra.resistenciaTemp = otra.resistenciaTemp - this.fuerzaTemp;
 
         if(Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
 
             if(otra.resistenciaTemp < 0) { 
 
-                this.fuerzaTemp = this.fuerzaTemp + otra.resistenciaTemp; 
+                this.fuerzaTemp = -otra.resistenciaTemp; 
                 otra.resistenciaTemp = 0;
 
                 if(this.fuerzaTemp < 0) { this.fuerzaTemp = 0; } 
