@@ -326,8 +326,6 @@ public class IA : Jugador {
 
                 foreach(Arrastrable criatura in sinBloquear) {
 
-                    Debug.Log("INTENTO BLOQUEOS MULTIPLES");
-
                     foreach(Transform child in goCriaturas.transform) {
 
                         Arrastrable a1 = child.GetComponent<Arrastrable>();
@@ -337,10 +335,6 @@ public class IA : Jugador {
                             Arrastrable a2 = child2.GetComponent<Arrastrable>();
 
                             if(a1 != a2) {
-
-                                Debug.Log("PAREJA DISPONIBLE");
-                                Debug.Log("SUMA FUERZAS: " + (a1.fuerzaTemp + a2.fuerzaTemp));
-                                Debug.Log("SUMA RESISTENCIAS: " + (a1.resistenciaTemp + a2.resistenciaTemp));
 
                                 if(!a1.bloqueando && !a2.bloqueando 
                                 && a1.fuerzaTemp + a2.fuerzaTemp >= criatura.resistenciaTemp
@@ -353,16 +347,6 @@ public class IA : Jugador {
                                     Partida.momentoCombate = Partida.Combate.ORDEN_BLOQUEADORES;
                                     //Partida.ModificarBoton();
                                 }
-
-                                else {
-
-                                    Debug.Log("APRENDE A CONTAR");
-                                }
-                            }
-
-                            else {
-
-                                Debug.Log("SON LA MISMA");
                             }
                         }
                     }
