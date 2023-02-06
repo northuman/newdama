@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
-  m_Name: Trasgo
+  m_Name: "Drag\xF3n 1"
   m_EditorClassIdentifier: 
-  nombreCarta: Trasgo
+  nombreCarta: "Drag\xF3n 2"
   costeMana: 0000000001000000000000000000000000000000
-  palabrasClave: 
+  palabrasClave: Vuela
   descripcion: 
   tipoCarta: Criatura
-  tiposConcretos: Trasgo
+  tiposConcretos: "Drag\xF3n"
   fuerza: 2
-  resistencia: 2
+  resistencia: 3
   cantidadMana: 
   cantidadMana2: 
   fuerzaTemp: 2
-  resistenciaTemp: 2
+  resistenciaTemp: 1

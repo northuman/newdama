@@ -17,6 +17,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public bool cartaMuerta = false;
     public bool cartaEnMano = true;
     public bool atacando = false;
+    public bool bloqueando = false;
     public bool mareo = false;
     public static Arrastrable bloqueador = null;
     public static Arrastrable atacante = null;

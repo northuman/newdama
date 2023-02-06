@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: "Drag\xF3n"
   m_EditorClassIdentifier: 
   nombreCarta: "Drag\xF3n"
-  costeMana: 0000000002000000000000000000000000000000
+  costeMana: 0000000001000000000000000000000000000000
   palabrasClave: Vuela
   descripcion: 
   tipoCarta: Criatura
@@ -21,5 +21,6 @@ MonoBehaviour:
   fuerza: 4
   resistencia: 4
   cantidadMana: 
-  fuerzaTemp: 2
-  resistenciaTemp: 2
+  cantidadMana2: 
+  fuerzaTemp: 4
+  resistenciaTemp: 4

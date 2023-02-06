@@ -33,15 +33,6 @@ public class IA : Jugador {
 
     //Tierras ---------------------------------------------------------------------------------------------------
 
-    /*public void JugarTierra() {
-
-        //Partimos de que todas seran basicas
-
-        //Mirar si tengo tierra en mano
-        //Jugarla
-        
-    }*/
-
     public void JugarTierra() {
 
         Arrastrable tierra = BuscarTierra();
@@ -178,6 +169,14 @@ public class IA : Jugador {
             AtacarConTodo();
         }
 
+        else if(jugador.CantidadCriaturasEnderezadas() == 0) {
+
+            if(!ReciboDanyoSuficiente()) {
+
+                AtacarConTodo();
+            }
+        }
+
         else if(estadisticasIA[0] >= estadisticasJugador[1] && estadisticasIA[1] > estadisticasJugador[0]) {
 
             foreach(Arrastrable criaturaIA in criaturasIA) {
@@ -211,10 +210,15 @@ public class IA : Jugador {
                 }
             }
 
-            if(atacantes.Count == 0 && (CantidadCriaturasActivas()/jugador.CantidadCriaturasEnderezadas()) >= 3) {
+            /*if(jugador.CantidadCriaturasEnderezadas() == 0) {
 
                 AtacarConTodo();
             }
+
+            else if(atacantes.Count == 0 && (CantidadCriaturasActivas()/jugador.CantidadCriaturasEnderezadas()) >= 3) {
+
+                AtacarConTodo();
+            }*/
         }
 
         else {
@@ -224,8 +228,6 @@ public class IA : Jugador {
     }
 
     public bool EntraDanyoSuficiente() {
-
-        Debug.Log("Entro a calcularlo");
 
         //Contamos cuantas criaturas tiene el jugador
         //Contamos cuantas tiene la IA
@@ -257,6 +259,35 @@ public class IA : Jugador {
         return false;
     }
 
+    public bool ReciboDanyoSuficiente() {
+
+        Debug.Log("CANTIDAD CRIATURAS EN MESA JUGADOR: " + jugador.CantidadCriaturasEnMesa());
+        Debug.Log("CANTIDAD CRIATURAS ENDEREZADAS IA: " + CantidadCriaturasEnderezadas());
+
+        int diferenciaCriaturas = CantidadCriaturasEnderezadas() - jugador.CantidadCriaturasEnMesa();
+
+        Debug.Log("La diferencia de criaturas es de: " + diferenciaCriaturas);
+
+        if(diferenciaCriaturas > 0) {
+
+            List<Arrastrable> criaturas = OrdenarCriaturasEstadisticas(jugador.CriaturasEnMesa());
+
+            int danyoAsegurado = 0;
+
+            for(int i=0; i<diferenciaCriaturas; i++) {
+
+                danyoAsegurado += criaturas[criaturas.Count-1-i].GetCarta().fuerzaTemp;
+            }
+
+            if(danyoAsegurado > vida) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public bool AtaqueDirectoFavorable(Carta cartaIA, Carta cartaJugador) {
 
         return (cartaIA.fuerza >= cartaJugador.resistencia && cartaIA.resistencia > cartaJugador.fuerza);
@@ -274,6 +305,19 @@ public class IA : Jugador {
 
             int danyoTotal = ContarDanyo();
             Debug.Log("Danyo total: " + danyoTotal);
+
+            List<Arrastrable> sinBloquear = jugador.CriaturasAtacando();
+
+            if(danyoTotal < vida) {
+
+                foreach(Transform child in jugador.goCriaturas.transform) {
+
+                    if(BuscarBloqueadorIdeal(child.GetComponent<Arrastrable>())) {
+
+                        sinBloquear.Remove(child.GetComponent<Arrastrable>());
+                    }
+                }
+            }
 
             //Sumar fuerza total de los atacantes
             
@@ -300,9 +344,12 @@ public class IA : Jugador {
             Carta criatura = arrastrable.GetCarta();
             Carta criaturaOponente = arrastrableOponente.GetCarta();
             
-            if(criatura.fuerzaTemp >= criaturaOponente.resistenciaTemp 
+            if(!arrastrable.bloqueando && criatura.fuerzaTemp >= criaturaOponente.resistenciaTemp 
             && criatura.resistenciaTemp > criaturaOponente.fuerzaTemp) {
 
+                Debug.Log(arrastrable.GetCarta().nombreCarta + " BLOQUEA A " + arrastrableOponente.GetCarta().nombreCarta);
+
+                arrastrable.bloqueando = true;
                 arrastrableOponente.bloqueadaPor.Add(arrastrable);
                 return true;
             }

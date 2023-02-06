@@ -261,7 +261,7 @@ public class Partida : MonoBehaviour {
             yield return new WaitUntil(GetContinuarFase);
 
             //if(cartas atacando)
-            if(jugador.CriaturasAtacando() > 0) {
+            if(jugador.CantidadCriaturasAtacando() > 0) {
 
                 //Bloqueadores();
                 continuarFase = false; //Si no se pasa la fase de bloqueadores directamente
@@ -273,7 +273,7 @@ public class Partida : MonoBehaviour {
                 yield return new WaitUntil(GetContinuarFase);
             }
 
-            else if(jugador.CriaturasAtacando() == 0) {
+            else if(jugador.CantidadCriaturasAtacando() == 0) {
 
                 pasarFase = true;
             }
@@ -294,7 +294,7 @@ public class Partida : MonoBehaviour {
             //yield return new WaitUntil(GetContinuarFase);
 
             //if(cartas atacando)
-            if(oponente.CriaturasAtacando() > 0) {
+            if(oponente.CantidadCriaturasAtacando() > 0) {
 
                 Bloqueadores();
                 //yield return new WaitUntil(GetPasarFase);
@@ -305,7 +305,7 @@ public class Partida : MonoBehaviour {
                 yield return new WaitUntil(GetContinuarFase);
             }
 
-            else if(oponente.CriaturasAtacando() == 0) {
+            else if(oponente.CantidadCriaturasAtacando() == 0) {
 
                 pasarFase = true;
             }

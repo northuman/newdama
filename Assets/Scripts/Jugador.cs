@@ -196,7 +196,7 @@ public class Jugador : MonoBehaviour {
             }
         }
 
-        Debug.Log("Enderezadas Juagdor: " + enderezadas);
+        Debug.Log("Enderezadas Jugador: " + enderezadas);
 
         return enderezadas;
     }
@@ -255,7 +255,20 @@ public class Jugador : MonoBehaviour {
         return criaturas;
     }
 
-    public int CriaturasAtacando() {
+    public List<Arrastrable> CriaturasAtacando() {
+
+        List<Arrastrable> atacantes = new List<Arrastrable>();
+
+        foreach(Transform child in goCriaturas.transform) {
+
+            if(child.GetComponent<Arrastrable>().atacando)
+            atacantes.Add(child.GetComponent<Arrastrable>());
+        }
+
+        return OrdenarCriaturasEstadisticas(atacantes);
+    }
+
+    public int CantidadCriaturasAtacando() {
 
         int criaturasAtacando = 0;
 
