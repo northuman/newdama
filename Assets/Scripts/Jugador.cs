@@ -288,8 +288,8 @@ public class Jugador : MonoBehaviour {
 
         foreach(Arrastrable criatura in criaturas) {
 
-            estadisticas[0] += criatura.GetCarta().fuerzaTemp;
-            estadisticas[1] += criatura.GetCarta().resistenciaTemp;
+            estadisticas[0] += criatura.fuerzaTemp;
+            estadisticas[1] += criatura.resistenciaTemp;
         }
 
         return estadisticas;

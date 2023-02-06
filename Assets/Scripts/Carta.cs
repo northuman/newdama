@@ -17,8 +17,6 @@ public class Carta : ScriptableObject {
     public int[] cantidadMana2;
     //   in ro bl ve ne
     //int[0][0][0][0][0]
-    public int fuerzaTemp;
-    public int resistenciaTemp;
 
     public int CosteTotal() {
 

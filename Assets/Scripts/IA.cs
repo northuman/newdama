@@ -183,16 +183,16 @@ public class IA : Jugador {
 
                 foreach(Arrastrable criaturaJug in criaturasJugador) {
 
-                    if (criaturaIA.GetCarta().fuerzaTemp >= criaturaJug.GetCarta().resistenciaTemp &&
-                        criaturaIA.GetCarta().resistenciaTemp > criaturaJug.GetCarta().fuerzaTemp) {
+                    if (criaturaIA.fuerzaTemp >= criaturaJug.resistenciaTemp &&
+                        criaturaIA.resistenciaTemp > criaturaJug.fuerzaTemp) {
 
                         atacantes.Add(criaturaIA);
                     }
 
                     else if(CantidadCriaturasActivas() > jugador.CantidadCriaturasEnMesa()) {
 
-                        if (criaturaIA.GetCarta().fuerzaTemp >= criaturaJug.GetCarta().resistenciaTemp &&
-                            criaturaIA.GetCarta().resistenciaTemp >= criaturaJug.GetCarta().fuerzaTemp) {
+                        if (criaturaIA.fuerzaTemp >= criaturaJug.resistenciaTemp &&
+                            criaturaIA.resistenciaTemp >= criaturaJug.fuerzaTemp) {
 
                             atacantes.Add(criaturaIA);
                         }
@@ -247,7 +247,7 @@ public class IA : Jugador {
 
             for(int i=0; i<diferenciaCriaturas; i++) {
 
-                danyoAsegurado += criaturasIA[criaturasIA.Count-1-i].GetCarta().fuerzaTemp;
+                danyoAsegurado += criaturasIA[criaturasIA.Count-1-i].fuerzaTemp;
             }
 
             if(danyoAsegurado > jugador.vida) {
@@ -276,7 +276,7 @@ public class IA : Jugador {
 
             for(int i=0; i<diferenciaCriaturas; i++) {
 
-                danyoAsegurado += criaturas[criaturas.Count-1-i].GetCarta().fuerzaTemp;
+                danyoAsegurado += criaturas[criaturas.Count-1-i].fuerzaTemp;
             }
 
             if(danyoAsegurado > vida) {
@@ -317,6 +317,8 @@ public class IA : Jugador {
                         sinBloquear.Remove(child.GetComponent<Arrastrable>());
                     }
                 }
+
+                //foreach(Arrastrable sinBloquear)
             }
 
             //Sumar fuerza total de los atacantes
@@ -330,7 +332,7 @@ public class IA : Jugador {
             //Bloquear seguro al mas fuerte con el mas debil
             //Sumar de nuevo el ataque de los restantes y repetir
 
-            
+
         }
 
         Partida.continuarFase = true;
@@ -341,11 +343,9 @@ public class IA : Jugador {
         foreach(Transform child in goCriaturas.transform) {
 
             Arrastrable arrastrable = child.GetComponent<Arrastrable>();
-            Carta criatura = arrastrable.GetCarta();
-            Carta criaturaOponente = arrastrableOponente.GetCarta();
             
-            if(!arrastrable.bloqueando && criatura.fuerzaTemp >= criaturaOponente.resistenciaTemp 
-            && criatura.resistenciaTemp > criaturaOponente.fuerzaTemp) {
+            if(!arrastrable.bloqueando && arrastrable.fuerzaTemp >= arrastrableOponente.resistenciaTemp 
+            && arrastrable.resistenciaTemp > arrastrableOponente.fuerzaTemp) {
 
                 Debug.Log(arrastrable.GetCarta().nombreCarta + " BLOQUEA A " + arrastrableOponente.GetCarta().nombreCarta);
 
@@ -367,7 +367,7 @@ public class IA : Jugador {
             Arrastrable criatura = child.GetComponent<Arrastrable>();
 
             if(criatura.atacando)
-            danyo += criatura.GetCarta().fuerzaTemp;
+            danyo += criatura.fuerzaTemp;
         }
 
         return danyo;

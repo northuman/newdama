@@ -13,6 +13,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     GameObject placeholder = null;
 
     public Vector3 escalaOriginal;
+    public int fuerzaTemp;
+    public int resistenciaTemp;
     public bool cartaGirada = false;
     public bool cartaMuerta = false;
     public bool cartaEnMano = true;
@@ -39,9 +41,16 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         bloqueadaPor = new List<Arrastrable>();
         datosCarta = gameObject.GetComponent<MostrarDatosCarta>();
         carta = datosCarta.carta;
+        ResetearEstadisticas();
         ObtenerTipoCarta();
         jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
         oponente = GameObject.Find("Oponente").GetComponent<IA>();
+    }
+
+    public void ResetearEstadisticas() {
+
+        fuerzaTemp = this.carta.fuerza;
+        resistenciaTemp = this.carta.resistencia;
     }
 
     public void OnBeginDrag(PointerEventData datosEvento) {
@@ -161,29 +170,29 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void Combate(Arrastrable otra) {
 
         //Ataque y vida de ambos
-        this.carta.resistenciaTemp = this.carta.resistenciaTemp - otra.carta.fuerzaTemp;  
-        otra.carta.resistenciaTemp = otra.carta.resistenciaTemp - this.carta.fuerzaTemp;  
+        this.resistenciaTemp = this.resistenciaTemp - otra.fuerzaTemp;  
+        otra.resistenciaTemp = otra.resistenciaTemp - this.fuerzaTemp;  
 
         if(Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
 
-            if(otra.carta.resistenciaTemp < 0) { 
+            if(otra.resistenciaTemp < 0) { 
 
-                this.carta.fuerzaTemp = this.carta.fuerzaTemp + otra.carta.resistenciaTemp; 
-                otra.carta.resistenciaTemp = 0;
+                this.fuerzaTemp = this.fuerzaTemp + otra.resistenciaTemp; 
+                otra.resistenciaTemp = 0;
 
-                if(this.carta.fuerzaTemp < 0) { this.carta.fuerzaTemp = 0; } 
+                if(this.fuerzaTemp < 0) { this.fuerzaTemp = 0; } 
             }
         }
 
         this.datosCarta.ActualizarEstadisticas();
         otra.datosCarta.ActualizarEstadisticas();
 
-        if(this.carta.resistenciaTemp <= 0) {
+        if(this.resistenciaTemp <= 0) {
 
             this.cartaMuerta = true;
         }
 
-        if(otra.carta.resistenciaTemp <= 0) {
+        if(otra.resistenciaTemp <= 0) {
 
             otra.cartaMuerta = true;
         }

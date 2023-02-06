@@ -29,8 +29,8 @@ public class MostrarDatosCarta : MonoBehaviour {
         palabrasClave.text = carta.palabrasClave;
         descripcion.text = carta.descripcion;
 
-        carta.fuerzaTemp = carta.fuerza;
-        carta.resistenciaTemp = carta.resistencia;
+        arrastrable.fuerzaTemp = carta.fuerza;
+        arrastrable.resistenciaTemp = carta.resistencia;
 
         goFuerza = gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
         .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
@@ -256,15 +256,15 @@ public class MostrarDatosCarta : MonoBehaviour {
 
     public void ActualizarEstadisticas() {
 
-        fuerza.text = carta.fuerzaTemp.ToString();
-        resistencia.text = carta.resistenciaTemp.ToString();
+        fuerza.text = arrastrable.fuerzaTemp.ToString();
+        resistencia.text = arrastrable.resistenciaTemp.ToString();
 
-        if(carta.fuerzaTemp > carta.fuerza) {
+        if(arrastrable.fuerzaTemp > carta.fuerza) {
 
             goFuerza.color = new Color32(0, 255, 0, 255); //Verde
         }
 
-        else if (carta.fuerzaTemp < carta.fuerza) {
+        else if (arrastrable.fuerzaTemp < carta.fuerza) {
 
             goFuerza.color = new Color32(255, 0, 0, 255); //Rojo
         }
@@ -275,12 +275,12 @@ public class MostrarDatosCarta : MonoBehaviour {
         }
 
 
-        if(carta.resistenciaTemp > carta.resistencia) {
+        if(arrastrable.resistenciaTemp > carta.resistencia) {
 
             goResistencia.color = new Color32(0, 255, 0, 255); //Verde
         }
 
-        else if (carta.resistenciaTemp < carta.resistencia) {
+        else if (arrastrable.resistenciaTemp < carta.resistencia) {
 
             goResistencia.color = new Color32(255, 0, 0, 255); //Rojo
         }
