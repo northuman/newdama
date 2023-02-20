@@ -38,6 +38,7 @@ public class IA : Jugador {
         Arrastrable tierra = BuscarTierra();
         if(tierra != null) {
 
+            tierra.cartaEnMano = false;
             tierra.padreOriginal = goTierras.transform;
             tierra.transform.SetParent(goTierras.transform);
         }
@@ -93,6 +94,7 @@ public class IA : Jugador {
             criatura.padreOriginal = goCriaturas.transform;
             criatura.transform.SetParent(goCriaturas.transform);
             criatura.mareo = true;
+            criatura.cartaEnMano = false;
         }
 
         //Partida.pasarFase = true;

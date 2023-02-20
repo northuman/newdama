@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System;
 
 public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler {
     
@@ -33,18 +34,89 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Jugador jugador;
     public IA oponente;
     public Carta carta;
-    MostrarDatosCarta datosCarta;
+    public MostrarDatosCarta datosCarta;
+    public List<Efecto> efectos;
+    public Efecto resolviendo;
 
-    void Start() {
+    private float update = 0.0f;
+
+    private void Start() {
         
         escalaOriginal = this.transform.localScale;
         bloqueadaPor = new List<Arrastrable>();
         datosCarta = gameObject.GetComponent<MostrarDatosCarta>();
         carta = datosCarta.carta;
+        efectos = ClonarEfectos(carta.efectos);
         ResetearEstadisticas();
         ObtenerTipoCarta();
         jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
         oponente = GameObject.Find("Oponente").GetComponent<IA>();
+    }
+
+    private void Update() {
+        
+        update += Time.deltaTime;
+
+        if(resolviendo) {
+
+            if(update > 2.0f) {
+
+                update = 0.0f;
+                ResolverEfecto(resolviendo);
+                resolviendo = null;
+            }
+        }
+
+        else if (update > 1.0f) {
+
+            update = 0.0f;
+            ComprobarEfecto();
+        }
+    }
+
+    public List<Efecto> ClonarEfectos(List<Efecto> es) {
+
+        List<Efecto> listaClonada = new List<Efecto>();
+
+        foreach(Efecto e in es) {
+
+            if(e) { listaClonada.Add(Instantiate(e)); }
+        }
+
+        return listaClonada;
+    }
+
+    public void ComprobarEfecto() {
+
+        //Recorrer Todos los efectos
+        //Comprobar su condicion
+        //Si es el momento adecuado activar el efecto
+
+        foreach(Efecto efecto in efectos) {
+
+            if(efecto) {
+
+                switch(efecto.condicion) {
+
+                    case 0: //Nada mas la carta entra al campo de batalla
+
+                        if(tipoCarta == TipoCarta.CONJURO) {
+
+                            if(!efecto.resuleto && this.transform.parent == GameObject.Find("Pila").transform) {
+
+                                resolviendo = efecto;
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+    }
+
+    public void ResolverEfecto(Efecto efecto) {
+
+        efecto.resuleto = true;
+        Debug.Log("Resolvemos Efecto");
     }
 
     public void ResetearEstadisticas() {
@@ -123,21 +195,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         Atacar();
                     }
                 }
-
-                /*if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
-                    Partida.momentoCombate == Partida.Combate.BLOQUEADORES && Partida.turno == Partida.Turno.OPONENTE) {
-
-                    if(!bloqueador) {
-
-                        bloqueador = this;
-                    }
-
-                    else if(this.atacando) { 
-
-                        this.bloqueadaPor.Add(bloqueador);
-                        bloqueador = null;
-                    }
-                }*/
 
                 if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
                     && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {

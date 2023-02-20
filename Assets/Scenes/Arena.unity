@@ -159,7 +159,7 @@ MonoBehaviour:
   goCriaturas: {fileID: 774902005}
   goCementerio: {fileID: 1015532950}
   partida: {fileID: 0}
-  baraja: {fileID: 608032451}
+  baraja: {fileID: 1966286123}
   tierras: {fileID: 198378010}
   cementerio: {fileID: 1015532955}
   vida: 20
@@ -632,7 +632,7 @@ MonoBehaviour:
   goCriaturas: {fileID: 443294889}
   goCementerio: {fileID: 1253635628}
   partida: {fileID: 0}
-  baraja: {fileID: 1966286123}
+  baraja: {fileID: 608032451}
   tierras: {fileID: 1804677718}
   cementerio: {fileID: 1253635633}
   vida: 20
@@ -742,7 +742,7 @@ GameObject:
   - component: {fileID: 331038493}
   - component: {fileID: 331038492}
   m_Layer: 0
-  m_Name: Baraja 1
+  m_Name: Baraja (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1673,7 +1673,7 @@ GameObject:
   - component: {fileID: 608032452}
   - component: {fileID: 608032451}
   m_Layer: 0
-  m_Name: Baraja 2
+  m_Name: Baraja (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4577,7 +4577,7 @@ GameObject:
   - component: {fileID: 1966286124}
   - component: {fileID: 1966286123}
   m_Layer: 0
-  m_Name: Baraja 2 (1)
+  m_Name: Baraja (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4597,15 +4597,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propietario: {fileID: 0}
   cartas:
-  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
-  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
-  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
-  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
-  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
-  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
-  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
-  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
-  - {fileID: 11400000, guid: e08cc185c0ac97749b9bdc401f5f951e, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}

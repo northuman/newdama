@@ -77,7 +77,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                         if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
 
-                            bool jugarCarta = jugador.tierras.SuficienteMana(carta.gameObject.GetComponent<MostrarDatosCarta>().carta);
+                            bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
 
                             if(jugarCarta) {
 
@@ -85,6 +85,17 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                                 carta.cartaEnMano = false;
                                 //if(!carta.prisa)
                                 carta.mareo = true;
+                            }
+                        }
+
+                        if(carta.tipoCarta == Arrastrable.TipoCarta.CONJURO) {
+
+                            bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
+
+                            if(jugarCarta) {
+
+                                carta.padreOriginal = pila.transform;
+                                carta.cartaEnMano = false;
                             }
                         }
                     }

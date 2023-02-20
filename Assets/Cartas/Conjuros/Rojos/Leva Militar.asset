@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
+  m_Name: Leva Militar
+  m_EditorClassIdentifier: 
+  nombreCarta: Leva Militar
+  costeMana: 0000000001000000000000000000000000000000
+  palabrasClave: 
+  descripcion: 
+  tipoCarta: Conjuro
+  tiposConcretos: 
+  fuerza: 0
+  resistencia: 0
+  cantidadMana: 
+  cantidadMana2: 
+  efectos:
+  - {fileID: 11400000, guid: 439766a16168e9a458b496d0474f6bec, type: 2}
+  - {fileID: 0}
