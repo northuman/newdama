@@ -97,6 +97,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             if(efecto) {
 
                 switch(efecto.condicion) {
+                    
 
                     case 0: //Nada mas la carta entra al campo de batalla
 
@@ -116,7 +117,21 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void ResolverEfecto(Efecto efecto) {
 
         efecto.resuleto = true;
-        Debug.Log("Resolvemos Efecto");
+        Debug.Log("Resolvemos Efecto de tipo: " + efecto.habilidad);
+
+        switch(efecto.habilidad) {
+
+            case 0:
+
+                StartCoroutine(propietario.RobarCartas(efecto.cantidad));
+                Debug.Log("Intento Robar Cartas");
+                break;
+
+            case 1:
+                Debug.Log("Descartar " + efecto.cantidad + " cartas");
+                StartCoroutine(propietario.DescartarCartas(efecto.cantidad));
+                break;
+        }
     }
 
     public void ResetearEstadisticas() {
@@ -176,36 +191,46 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             if(datosEvento.button == PointerEventData.InputButton.Left) {
 
-                if(tipoCarta == TipoCarta.TIERRA && gameObject.transform.parent == DropZone.tierrasJugador.transform) {
+                if(propietario.descartando == true) {
 
-                    if(!cartaGirada) {
-
-                        propietario.AnyadirMana(carta);
-                        GirarCarta();
-                        this.transform.SetAsLastSibling();
-                    }
+                    cartaMuerta = true;
+                    IrCementerio();
+                    propietario.DescartarCarta();
                 }
 
-                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
-                    Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR
-                    && propietario == jugador && mareo == false) {
+                else {
 
-                    if(!cartaGirada) {
+                    if(tipoCarta == TipoCarta.TIERRA && gameObject.transform.parent == DropZone.tierrasJugador.transform) {
 
-                        Atacar();
+                        if(!cartaGirada) {
+
+                            propietario.AnyadirMana(carta);
+                            GirarCarta();
+                            this.transform.SetAsLastSibling();
+                        }
                     }
-                }
 
-                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
-                    && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
+                    if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
+                        Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR
+                        && propietario == jugador && mareo == false) {
 
-                    atacante.Combate(this);
-                    this.transform.SetParent(this.padreOriginal);
+                        if(!cartaGirada) {
 
-                    if(Partida.cajaDialogo.transform.childCount <= 3) {
+                            Atacar();
+                        }
+                    }
 
-                        Partida.cajaDialogo.SetActive(false);
-                        Partida.momentoCombate = Partida.Combate.DANYO;
+                    if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
+                        && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
+
+                        atacante.Combate(this);
+                        this.transform.SetParent(this.padreOriginal);
+
+                        if(Partida.cajaDialogo.transform.childCount <= 3) {
+
+                            Partida.cajaDialogo.SetActive(false);
+                            Partida.momentoCombate = Partida.Combate.DANYO;
+                        }
                     }
                 }
             }

@@ -23,5 +23,5 @@ MonoBehaviour:
   cantidadMana: 
   cantidadMana2: 
   efectos:
+  - {fileID: 11400000, guid: 2c3f25335a28ebb4bae33e98a7bacfb2, type: 2}
   - {fileID: 11400000, guid: 439766a16168e9a458b496d0474f6bec, type: 2}
-  - {fileID: 0}

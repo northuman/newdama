@@ -25,6 +25,9 @@ public class Jugador : MonoBehaviour {
     public int criaturasActivas = 0;
     public bool tierraDelTurnoJugada = false;
 
+    public bool descartando = false;
+    public int cartasPorDescartar = 0;
+
     public void Start() {
 
         baraja.propietario = this;
@@ -147,6 +150,27 @@ public class Jugador : MonoBehaviour {
 
             yield return partida.PreguntarMulligan();
         }
+    }
+
+    public IEnumerator DescartarCartas(int cantidad) {
+
+        if(cantidad > 0) {
+            cartasPorDescartar = cantidad;
+            Debug.Log("CartasPorDescartar: " + cartasPorDescartar);
+            descartando = true; 
+        }
+        yield return SeguirDescartando();
+    }
+
+    public void DescartarCarta() {
+
+        cartasPorDescartar--;
+        if(cartasPorDescartar <= 0) { descartando = false; }
+    }
+
+    public bool SeguirDescartando() {
+
+        return !descartando;
     }
 
     public void DevolverManoInicial() {
