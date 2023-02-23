@@ -37,8 +37,9 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public MostrarDatosCarta datosCarta;
     public List<Efecto> efectos;
     public Efecto resolviendo;
+    public bool efectosResueltos = false;
 
-    private float update = 0.0f;
+    private float updateTime = 0.0f;
 
     private void Start() {
         
@@ -54,23 +55,26 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     }
 
     private void Update() {
-        
-        update += Time.deltaTime;
 
-        if(resolviendo) {
+        if(!cartaMuerta) {
 
-            if(update > 2.0f) {
+            updateTime += Time.deltaTime;
 
-                update = 0.0f;
-                ResolverEfecto(resolviendo);
-                resolviendo = null;
+            if(resolviendo) {
+
+                if(updateTime > 2.0f) {
+
+                    updateTime = 0.0f;
+                    ResolverEfecto(resolviendo);
+                    resolviendo = null;
+                }
             }
-        }
 
-        else if (update > 1.0f) {
+            else if (updateTime > 1.0f) {
 
-            update = 0.0f;
-            ComprobarEfecto();
+                updateTime = 0.0f;
+                ComprobarEfecto();
+            }
         }
     }
 
@@ -92,18 +96,21 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         //Comprobar su condicion
         //Si es el momento adecuado activar el efecto
 
+        int cantidadResueltos = 0;
+
         foreach(Efecto efecto in efectos) {
 
             if(efecto) {
 
+                if(efecto.resuelto) { cantidadResueltos++; }
+
                 switch(efecto.condicion) {
-                    
 
                     case 0: //Nada mas la carta entra al campo de batalla
 
                         if(tipoCarta == TipoCarta.CONJURO) {
 
-                            if(!efecto.resuleto && this.transform.parent == GameObject.Find("Pila").transform) {
+                            if(!efecto.resuelto && this.transform.parent == GameObject.Find("Pila").transform) {
 
                                 resolviendo = efecto;
                             }
@@ -112,11 +119,18 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 }
             }
         }
+
+        if(tipoCarta == TipoCarta.CONJURO && cantidadResueltos >= efectos.Count) {
+
+            Debug.Log("CANTIDAD RESUELTOS: " + cantidadResueltos);
+            cartaMuerta = true;
+            IrCementerio();
+            propietario.descartando = false;
+        }
     }
 
     public void ResolverEfecto(Efecto efecto) {
 
-        efecto.resuleto = true;
         Debug.Log("Resolvemos Efecto de tipo: " + efecto.habilidad);
 
         switch(efecto.habilidad) {
@@ -124,12 +138,13 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             case 0:
 
                 StartCoroutine(propietario.RobarCartas(efecto.cantidad));
+                efecto.resuelto = true;
                 Debug.Log("Intento Robar Cartas");
                 break;
 
             case 1:
                 Debug.Log("Descartar " + efecto.cantidad + " cartas");
-                StartCoroutine(propietario.DescartarCartas(efecto.cantidad));
+                StartCoroutine(propietario.DescartarCartas(efecto));
                 break;
         }
     }
@@ -389,6 +404,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         if(this.cartaMuerta) {
 
+            cartaEnMano = false;
             padreOriginal = propietario.goCementerio.transform;
             CambiarEscala(0.6f);
             if(cartaGirada) { EnderezarCarta(); }

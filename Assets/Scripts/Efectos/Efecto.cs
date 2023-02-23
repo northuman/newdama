@@ -8,5 +8,5 @@ public class Efecto : ScriptableObject {
     public int condicion;
     public int habilidad;
     public int cantidad;
-    public bool resuleto = false;
+    public bool resuelto = false;
 }

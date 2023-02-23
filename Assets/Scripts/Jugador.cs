@@ -152,19 +152,21 @@ public class Jugador : MonoBehaviour {
         }
     }
 
-    public IEnumerator DescartarCartas(int cantidad) {
+    public IEnumerator DescartarCartas(Efecto efecto) {
 
-        if(cantidad > 0) {
-            cartasPorDescartar = cantidad;
-            Debug.Log("CartasPorDescartar: " + cartasPorDescartar);
-            descartando = true; 
+        if(efecto.cantidad > 0) {
+            cartasPorDescartar = efecto.cantidad;
+            descartando = true;
+            Debug.Log("DESCARTANDO: " + descartando);
         }
-        yield return SeguirDescartando();
+        yield return new WaitUntil(SeguirDescartando);
+        efecto.resuelto = true;
     }
 
     public void DescartarCarta() {
 
         cartasPorDescartar--;
+        Debug.Log("CartasPorDescartar: " + cartasPorDescartar);
         if(cartasPorDescartar <= 0) { descartando = false; }
     }
 
