@@ -166,6 +166,8 @@ MonoBehaviour:
   mulligan: 7
   criaturasActivas: 0
   tierraDelTurnoJugada: 0
+  descartando: 0
+  cartasPorDescartar: 0
 --- !u!4 &89439332
 Transform:
   m_ObjectHideFlags: 0
@@ -639,6 +641,8 @@ MonoBehaviour:
   mulligan: 7
   criaturasActivas: 0
   tierraDelTurnoJugada: 0
+  descartando: 0
+  cartasPorDescartar: 0
   jugador: {fileID: 89439331}
 --- !u!1 &263357434
 GameObject:
@@ -4597,15 +4601,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propietario: {fileID: 0}
   cartas:
-  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
-  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
-  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
-  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
-  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
-  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
-  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
-  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
-  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}

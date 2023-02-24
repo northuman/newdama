@@ -10,6 +10,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     public static GameObject manoJugador;
     public static GameObject tierrasJugador;
     public static GameObject criaturasJugador;
+    public static GameObject encantamientosJugador;
 
     public Jugador jugador;
 
@@ -19,6 +20,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         manoJugador = GameObject.Find("Mano Jugador");
         tierrasJugador = GameObject.Find("Tierras Jugador");
         criaturasJugador = GameObject.Find("Criaturas Jugador");
+        encantamientosJugador = GameObject.Find("Encantamientos Jugador");
         jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
     }
     
@@ -58,44 +60,59 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                     if(carta.propietario.permitidoJugarCartas) {
 
-                        if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA) {
+                        if(this.gameObject.name != manoJugador.gameObject.name) {
 
-                            if(carta.propietario.tierraDelTurnoJugada == false && this.transform.parent != manoJugador.transform) {
+                            if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA) {
 
-                                carta.NuevoPadre(tierrasJugador.transform);
-                                carta.CambiarEscala(0.75f);
-                                carta.cartaEnMano = false;
-                                carta.propietario.tierraDelTurnoJugada = true;
-                                tierrasJugador.GetComponent<DropZone>().Ordenar();
+                                if(carta.propietario.tierraDelTurnoJugada == false && this.transform.parent != manoJugador.transform) {
+
+                                    carta.NuevoPadre(tierrasJugador.transform);
+                                    carta.CambiarEscala(0.75f);
+                                    carta.cartaEnMano = false;
+                                    carta.propietario.tierraDelTurnoJugada = true;
+                                    tierrasJugador.GetComponent<DropZone>().Ordenar();
+                                }
+
+                                else {
+
+                                    Debug.Log("Ya has jugado tierra este turno");
+                                }
                             }
 
-                            else {
+                            if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
 
-                                Debug.Log("Ya has jugado tierra este turno");
+                                bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
+
+                                if(jugarCarta) {
+
+                                    carta.NuevoPadre(criaturasJugador.transform);
+                                    carta.cartaEnMano = false;
+                                    //if(!carta.prisa)
+                                    carta.mareo = true;
+                                }
                             }
-                        }
 
-                        if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
+                            if(carta.tipoCarta == Arrastrable.TipoCarta.CONJURO) {
 
-                            bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
+                                bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
 
-                            if(jugarCarta) {
+                                if(jugarCarta) {
 
-                                carta.padreOriginal = criaturasJugador.transform;
-                                carta.cartaEnMano = false;
-                                //if(!carta.prisa)
-                                carta.mareo = true;
+                                    carta.NuevoPadre(pila.transform);
+                                    carta.cartaEnMano = false;
+                                }
                             }
-                        }
 
-                        if(carta.tipoCarta == Arrastrable.TipoCarta.CONJURO) {
+                            if(carta.tipoCarta == Arrastrable.TipoCarta.ARTEFACTO || carta.tipoCarta == Arrastrable.TipoCarta.ENCANTEMIENTO) {
 
-                            bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
+                                bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
 
-                            if(jugarCarta) {
+                                if(jugarCarta) {
 
-                                carta.padreOriginal = pila.transform;
-                                carta.cartaEnMano = false;
+                                    carta.NuevoPadre(encantamientosJugador.transform);
+                                    carta.CambiarEscala(0.75f);
+                                    carta.cartaEnMano = false;
+                                }
                             }
                         }
                     }

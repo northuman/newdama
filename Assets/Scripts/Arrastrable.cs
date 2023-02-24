@@ -249,6 +249,25 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     }
                 }
             }
+
+            if(datosEvento.button == PointerEventData.InputButton.Right) {
+
+                //Si tiene un Efecto Activado
+                List<Activado> activados = GetActivados();
+                if(activados.Count == 1) {
+
+                    if(propietario.tierras.SuficienteMana(activados[0])) {
+
+                        resolviendo = activados[0];
+                        Debug.Log("HEMOS LLEGADO");
+                    }
+
+                    else {
+
+                        
+                    }
+                }
+            }
         }
     }
 
@@ -415,5 +434,20 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Carta GetCarta() {
 
         return this.GetComponent<MostrarDatosCarta>().carta;
+    }
+
+    public List<Activado> GetActivados() {
+
+        List<Activado> activados = new List<Activado>();
+
+        foreach(Efecto efecto in efectos) {
+
+            if(efecto is Activado) {
+
+                activados.Add((Activado)efecto);
+            }
+        }
+
+        return activados;
     }
 }

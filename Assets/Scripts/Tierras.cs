@@ -127,6 +127,66 @@ public class Tierras : MonoBehaviour {
         return manaSuficiente;
     }
 
+    public bool SuficienteMana(Activado efecto) { 
+
+        bool manaSuficiente = true;
+        int[] auxMana = (int[])mana.Clone();
+
+        //Restar todo el mana especifico
+        for(int i=1; i<5; i++) {
+
+            if(auxMana[i] < efecto.costeActivacion[i]) {
+
+                manaSuficiente = false;
+                break;
+            }
+
+            else {
+
+                auxMana[i] -= efecto.costeActivacion[i];
+            }
+        }
+
+        //Comprobar si se puede pagar el mana generico
+        if(manaSuficiente) {
+
+            int manaGenerico = efecto.costeActivacion[0];
+            int mayorCantidad = 0;
+            int mayorPosicion = -1;
+
+            while(manaGenerico > 0) {
+
+                for(int i=0; i<5; i++) {
+
+                    if(auxMana[i] > mayorCantidad) {
+
+                        mayorPosicion = i;
+                        mayorCantidad = auxMana[i];
+                    }
+                }
+
+                if(mayorPosicion == -1) {
+
+                    manaSuficiente = false;
+                    break;
+                }
+
+                auxMana[mayorPosicion]--;
+                manaGenerico--;
+                mayorCantidad = 0;
+                mayorPosicion = -1;
+            }
+        }
+
+        if(manaSuficiente) {
+
+            mana = (int[])auxMana.Clone();
+            ActualizarMana();
+        }
+
+        return manaSuficiente;
+    }
+
     //IA -----------------------------------------------------------------------------------
 
     public List<Arrastrable> TierrasSimplesEnMesa() {

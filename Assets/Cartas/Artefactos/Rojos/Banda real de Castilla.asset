@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
-  m_Name: Leva Militar
+  m_Name: Banda real de Castilla
   m_EditorClassIdentifier: 
-  nombreCarta: Leva Militar
+  nombreCarta: Banda real de Castilla
   costeMana: 0000000001000000000000000000000000000000
   palabrasClave: 
-  descripcion: Roba 2 cartas. Descarta 1 carta.
-  tipoCarta: Conjuro
+  descripcion: Equipar 1. Siempre que la criatura equipada ataque, hasta dos criaturas
+    atacantes obtienen +1/+1 y arrollar.
+  tipoCarta: Artefacto
   tiposConcretos: 
   fuerza: 0
   resistencia: 0
   cantidadMana: 
   cantidadMana2: 
   efectos:
-  - {fileID: 11400000, guid: 2c3f25335a28ebb4bae33e98a7bacfb2, type: 2}
-  - {fileID: 11400000, guid: 439766a16168e9a458b496d0474f6bec, type: 2}
+  - {fileID: 11400000, guid: f6575aa1b24c4bf4084a2228f5967822, type: 2}

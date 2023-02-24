@@ -9,4 +9,5 @@ public class Efecto : ScriptableObject {
     public int habilidad;
     public int cantidad;
     public bool resuelto = false;
+    public Arrastrable objetivo = null;
 }
