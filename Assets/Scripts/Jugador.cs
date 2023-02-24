@@ -26,6 +26,9 @@ public class Jugador : MonoBehaviour {
     public bool tierraDelTurnoJugada = false;
 
     public bool descartando = false;
+    public bool equipando = false;
+    public Arrastrable cartaEquipada = null;
+    public Arrastrable equipo = null;
     public int cartasPorDescartar = 0;
 
     public void Start() {
@@ -157,7 +160,6 @@ public class Jugador : MonoBehaviour {
         if(efecto.cantidad > 0) {
             cartasPorDescartar = efecto.cantidad;
             descartando = true;
-            Debug.Log("DESCARTANDO: " + descartando);
         }
         yield return new WaitUntil(SeguirDescartando);
         efecto.resuelto = true;
@@ -175,9 +177,34 @@ public class Jugador : MonoBehaviour {
         return !descartando;
     }
 
-    public void DevolverManoInicial() {
+    public IEnumerator EquiparCarta(Efecto efecto) {
 
-        Debug.Log("Me llaman");
+        if(!efecto.objetivo) {
+
+            equipando = true;
+            yield return new WaitUntil(EquipandoCarta);
+            efecto.objetivo = cartaEquipada;
+            equipo.EscribirNombreEquipada(efecto);
+            cartaEquipada = null;
+            equipo = null;
+
+            //efecto.objetivo = cartaEquipada;
+            //a.EscribirNombreEquipada(efecto);
+            //cartaEquipada = null;
+        }
+
+        else {
+
+            Debug.Log("ALGO EXTRANYO PASABA");
+        }
+    }
+
+    public bool EquipandoCarta() {
+
+        return !equipando;
+    }
+
+    public void DevolverManoInicial() {
 
         Partida.cajaDialogo.SetActive(false);
 

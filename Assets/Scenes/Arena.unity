@@ -167,6 +167,9 @@ MonoBehaviour:
   criaturasActivas: 0
   tierraDelTurnoJugada: 0
   descartando: 0
+  equipando: 0
+  cartaEquipada: {fileID: 0}
+  equipo: {fileID: 0}
   cartasPorDescartar: 0
 --- !u!4 &89439332
 Transform:
@@ -642,6 +645,9 @@ MonoBehaviour:
   criaturasActivas: 0
   tierraDelTurnoJugada: 0
   descartando: 0
+  equipando: 0
+  cartaEquipada: {fileID: 0}
+  equipo: {fileID: 0}
   cartasPorDescartar: 0
   jugador: {fileID: 89439331}
 --- !u!1 &263357434
@@ -4601,11 +4607,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propietario: {fileID: 0}
   cartas:
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
+  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
+  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
+  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
+  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
   - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
   - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
   - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}

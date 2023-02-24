@@ -36,7 +36,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Carta carta;
     public MostrarDatosCarta datosCarta;
     public List<Efecto> efectos;
-    public Efecto resolviendo;
+    public static Efecto resolviendo;
     public bool efectosResueltos = false;
 
     private float updateTime = 0.0f;
@@ -102,7 +102,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             if(efecto) {
 
-                if(efecto.resuelto) { cantidadResueltos++; }
+                if(efecto.resuelto || efecto is Activado) { cantidadResueltos++; } //|| efecto is Aura
 
                 switch(efecto.condicion) {
 
@@ -145,6 +145,11 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             case 1:
                 Debug.Log("Descartar " + efecto.cantidad + " cartas");
                 StartCoroutine(propietario.DescartarCartas(efecto));
+                break;
+
+            case 2:
+                Debug.Log("Selecciona la criatura a la que equipar la carta");
+                StartCoroutine(propietario.EquiparCarta(efecto));
                 break;
         }
     }
@@ -206,11 +211,17 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             if(datosEvento.button == PointerEventData.InputButton.Left) {
 
-                if(propietario.descartando == true) {
+                if(propietario.descartando) {
 
                     cartaMuerta = true;
                     IrCementerio();
                     propietario.DescartarCarta();
+                }
+
+                else if(propietario.equipando) {
+
+                    propietario.cartaEquipada = this;
+                    propietario.equipando = false;
                 }
 
                 else {
@@ -259,12 +270,11 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     if(propietario.tierras.SuficienteMana(activados[0])) {
 
                         resolviendo = activados[0];
-                        Debug.Log("HEMOS LLEGADO");
-                    }
 
-                    else {
+                        if(activados[0].habilidad == 2) {
 
-                        
+                            propietario.equipo = this;
+                        }
                     }
                 }
             }
@@ -449,5 +459,21 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
 
         return activados;
+    }
+
+    public void EscribirNombreEquipada(Efecto efecto) {
+
+        if(efecto.objetivo) {
+
+            string buscar = "Marco Carta/Caracteristicas/Marco Descripcion/Caja Descripcion/Extras";
+            string texto = "Equipada a " + efecto.objetivo.GetCarta().nombreCarta;
+            gameObject.transform.Find(buscar).GetComponentInChildren<TMPro.TextMeshProUGUI>().text = texto;
+        }
+
+        else {
+
+            string buscar = "Marco Carta/Caracteristicas/Marco Descripcion/Caja Descripcion/Extras";
+            gameObject.transform.Find(buscar).GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "";
+        }
     }
 }

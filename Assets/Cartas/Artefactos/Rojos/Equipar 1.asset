@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 172e33a2058d03848973dd623621b5b9, type: 3}
   m_Name: Equipar 1
   m_EditorClassIdentifier: 
-  condicion: 1
+  condicion: -1
   habilidad: 2
-  cantidad: 1
+  cantidad: 0
   resuelto: 0
   objetivo: {fileID: 0}
+  costeActivacion: 0100000000000000000000000000000000000000
