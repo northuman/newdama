@@ -1,0 +1,11 @@
+Efectos:
+    Condiciones:
+        0. Al entrar al campo de batalla
+        1. Auras
+
+    Habilidades:
+        -1. Activadas (No necesitan estar comprobandose, no necesitan numero asignado)
+        0. Robar X cartas
+        1. Descartar X cartas
+        2. Equipar
+        3. Buff +X/+X

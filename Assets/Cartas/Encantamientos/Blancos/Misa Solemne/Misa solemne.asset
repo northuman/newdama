@@ -10,16 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
-  m_Name: Bula pontificia
+  m_Name: Misa solemne
   m_EditorClassIdentifier: 
-  nombreCarta: Bula pontificia
+  nombreCarta: Misa solemne
   costeMana: 0000000001000000000000000000000000000000
   palabrasClave: 
-  descripcion: 
-  tipoCarta: 
+  descripcion: Todas tus criaturas que no sean negras obtienen +1/+1.
+  tipoCarta: Encantamiento
   tiposConcretos: 
   fuerza: 0
   resistencia: 0
   cantidadMana: 
   cantidadMana2: 
-  efectos: []
+  efectos:
+  - {fileID: 11400000, guid: fb581dde1cdca5440a67aabff1194fd4, type: 2}

@@ -1,0 +1,16 @@
+1. Cuando entra una criatura nueva, debe ser buffada
+2. Cuando juego otra aura igual, se reinicia todo
+
+Cuando juego aura, se resetean las estadisticas temporales
+de todas las criaturas afectadas y se les pone en false
+la condicion de buffo del jugador aplicado
+
+Despues se modifican las estadisticas del jugador sobre 
+buffos y debuffos
+
+Entonces se aplican a todos otra vez desde el Update
+del Jugador
+
+Luego cuando entra una criatura, se debe de aplicar el 
+buffo o debuffo correspondiente desde el Update de jugador
+comprobando que su booleano esta en false

@@ -22,6 +22,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public bool atacando = false;
     public bool bloqueando = false;
     public bool mareo = false;
+    public bool buffoJugadorAplicado = false;
     public static Arrastrable bloqueador = null;
     public static Arrastrable atacante = null;
     public List<Arrastrable> bloqueadaPor = null;
@@ -31,8 +32,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public TipoCarta tipoCarta = TipoCarta.NULO;
 
     public Jugador propietario;
-    public Jugador jugador;
-    public IA oponente;
+    public static Jugador jugador;
+    public static IA oponente;
     public Carta carta;
     public MostrarDatosCarta datosCarta;
     public List<Efecto> efectos;
@@ -96,42 +97,56 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         //Comprobar su condicion
         //Si es el momento adecuado activar el efecto
 
-        int cantidadResueltos = 0;
+        if(!cartaEnMano && !cartaMuerta) {
 
-        foreach(Efecto efecto in efectos) {
+            int cantidadResueltos = 0;
 
-            if(efecto) {
+            foreach(Efecto efecto in efectos) {
 
-                if(efecto.resuelto || efecto is Activado) { cantidadResueltos++; } //|| efecto is Aura
+                if(efecto) {
 
-                switch(efecto.condicion) {
+                    if(efecto.resuelto || efecto is Activado) { cantidadResueltos++; } //|| efecto is Aura
 
-                    case 0: //Nada mas la carta entra al campo de batalla
+                    switch(efecto.condicion) {
 
-                        if(tipoCarta == TipoCarta.CONJURO) {
+                        case 0: //Nada mas la carta entra al campo de batalla
 
-                            if(!efecto.resuelto && this.transform.parent == GameObject.Find("Pila").transform) {
+                            if(tipoCarta == TipoCarta.CONJURO) {
 
-                                resolviendo = efecto;
+                                if(!efecto.resuelto && this.transform.parent == GameObject.Find("Pila").transform) {
+
+                                    resolviendo = efecto;
+                                }
                             }
-                        }
-                        break;
+
+                            break;
+                        
+                        case 1:
+
+                            if(tipoCarta == TipoCarta.ENCANTEMIENTO && efecto is Aura) {
+
+                                if(!efecto.resuelto) {
+
+                                    propietario.AnyadirAura((Aura)efecto);
+                                    efecto.resuelto = true;
+                                }
+                            }
+                            break;
+                    }
                 }
             }
-        }
 
-        if(tipoCarta == TipoCarta.CONJURO && cantidadResueltos >= efectos.Count) {
+            if(tipoCarta == TipoCarta.CONJURO && cantidadResueltos >= efectos.Count) {
 
-            Debug.Log("CANTIDAD RESUELTOS: " + cantidadResueltos);
-            cartaMuerta = true;
-            IrCementerio();
-            propietario.descartando = false;
+                Debug.Log("CANTIDAD RESUELTOS: " + cantidadResueltos);
+                cartaMuerta = true;
+                IrCementerio();
+                propietario.descartando = false;
+            }
         }
     }
 
     public void ResolverEfecto(Efecto efecto) {
-
-        Debug.Log("Resolvemos Efecto de tipo: " + efecto.habilidad);
 
         switch(efecto.habilidad) {
 
@@ -151,6 +166,11 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 Debug.Log("Selecciona la criatura a la que equipar la carta");
                 StartCoroutine(propietario.EquiparCarta(efecto));
                 break;
+            
+            case 3:
+                Debug.Log("Probando");
+                //BuffarMesa(efecto);
+                break;
         }
     }
 
@@ -158,6 +178,13 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         fuerzaTemp = this.carta.fuerza;
         resistenciaTemp = this.carta.resistencia;
+        buffoJugadorAplicado = false;
+    }
+
+    public void AplicarBuffo(int[] estadisticas) {
+
+        this.fuerzaTemp += estadisticas[0];
+        this.resistenciaTemp += estadisticas[1];
     }
 
     public void OnBeginDrag(PointerEventData datosEvento) {
@@ -261,7 +288,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 }
             }
 
-            if(datosEvento.button == PointerEventData.InputButton.Right) {
+            if(Partida.turno == Partida.Turno.JUGADOR 
+                && datosEvento.button == PointerEventData.InputButton.Right) {
 
                 //Si tiene un Efecto Activado
                 List<Activado> activados = GetActivados();
@@ -444,6 +472,12 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Carta GetCarta() {
 
         return this.GetComponent<MostrarDatosCarta>().carta;
+    }
+
+    public void ActualizarEstadisticas() {
+
+        if(tipoCarta == TipoCarta.CRIATURA)
+            GetComponent<MostrarDatosCarta>().ActualizarEstadisticas();
     }
 
     public List<Activado> GetActivados() {

@@ -261,12 +261,12 @@ public class MostrarDatosCarta : MonoBehaviour {
 
         if(arrastrable.fuerzaTemp > carta.fuerza) {
 
-            goFuerza.color = new Color32(0, 255, 0, 255); //Verde
+            goFuerza.color = new Color32(30, 120, 60, 255); //Verde
         }
 
         else if (arrastrable.fuerzaTemp < carta.fuerza) {
 
-            goFuerza.color = new Color32(255, 0, 0, 255); //Rojo
+            goFuerza.color = new Color32(120, 60, 30, 255); //Rojo
         }
 
         else {
@@ -277,12 +277,12 @@ public class MostrarDatosCarta : MonoBehaviour {
 
         if(arrastrable.resistenciaTemp > carta.resistencia) {
 
-            goResistencia.color = new Color32(0, 255, 0, 255); //Verde
+            goResistencia.color = new Color32(30, 120, 60, 255); //Verde
         }
 
         else if (arrastrable.resistenciaTemp < carta.resistencia) {
 
-            goResistencia.color = new Color32(255, 0, 0, 255); //Rojo
+            goResistencia.color = new Color32(120, 60, 30, 255); //Rojo
         }
 
         else {

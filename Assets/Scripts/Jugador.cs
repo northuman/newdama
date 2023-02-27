@@ -14,11 +14,13 @@ public class Jugador : MonoBehaviour {
     public GameObject goTierras;
     public GameObject goCriaturas;
     public GameObject goCementerio;
+    public GameObject goEncantamientos;
 
     public Partida partida;
     public Baraja baraja;
     public Tierras tierras;
     public Cementerio cementerio;
+    public Jugador oponente;
 
     public int vida = 20;
     public int mulligan = 7;
@@ -31,11 +33,30 @@ public class Jugador : MonoBehaviour {
     public Arrastrable equipo = null;
     public int cartasPorDescartar = 0;
 
-    public void Start() {
+    public int[] mejoraEstadisticasPropias;
+    public int[] bajadaEstadisticasPropias;
+    public int[] mejoraEstadisticasOponente;
+    public int[] bajadaEstadisticasOponente;
+    public bool auraJugada = false;
+
+    private float updateTime = 0.0f;
+
+    private void Start() {
 
         baraja.propietario = this;
         partida = GameObject.Find("Partida").GetComponent<Partida>();
         if(partida == null) { Debug.Log("Partida No Encontrada"); }
+    }
+
+    private void Update() {
+        
+        updateTime += Time.deltaTime;
+
+        if (updateTime > 1.0f && auraJugada) {
+
+            updateTime = 0.0f;
+            AplicarBuffosPropios();
+        }
     }
 
     public void Barajar() {
@@ -100,7 +121,7 @@ public class Jugador : MonoBehaviour {
     public void ActualizarVida() {
 
         TMPro.TMP_Text text = contadorVida.transform.GetChild(0).GetComponent<TMPro.TMP_Text>();
-        //contadorVida.GetComponent<TMPro.TMP_Text>();
+
         if(text) {
 
             text.text = vida.ToString();
@@ -187,10 +208,6 @@ public class Jugador : MonoBehaviour {
             equipo.EscribirNombreEquipada(efecto);
             cartaEquipada = null;
             equipo = null;
-
-            //efecto.objetivo = cartaEquipada;
-            //a.EscribirNombreEquipada(efecto);
-            //cartaEquipada = null;
         }
 
         else {
@@ -202,6 +219,56 @@ public class Jugador : MonoBehaviour {
     public bool EquipandoCarta() {
 
         return !equipando;
+    }
+
+    public void AnyadirAura(Aura aura) {
+        
+        auraJugada = true;
+        if(aura.mejoraEstadisticasPropias.Length == 2) {
+
+            ResetearEstadisticasPropias();
+            //ResetearEstadisticasOponente();
+            mejoraEstadisticasPropias[0] += aura.mejoraEstadisticasPropias[0];
+            mejoraEstadisticasPropias[1] += aura.mejoraEstadisticasPropias[1];
+        }
+    }
+
+    public void ResetearEstadisticasPropias() {
+
+        foreach(Transform child in goCriaturas.transform) {
+
+            Debug.Log("CHILD: " + child.name);
+
+            Arrastrable a = child.GetComponent<Arrastrable>();
+            a.ResetearEstadisticas();
+        }
+    }
+
+    public void ResetearEstadisticasOponente() {
+
+        foreach(Transform child in oponente.goCriaturas.transform) {
+
+            Arrastrable a = child.GetComponent<Arrastrable>();
+            a.ResetearEstadisticas();
+        }
+    }
+
+    public void AplicarBuffosPropios() {
+
+        foreach(Transform child in goCriaturas.transform) {
+
+            Arrastrable a = child.GetComponent<Arrastrable>();
+
+            if(a && !a.buffoJugadorAplicado) {
+
+                if(mejoraEstadisticasPropias.Length == 2)
+                    a.AplicarBuffo(mejoraEstadisticasPropias);
+                if(bajadaEstadisticasPropias.Length == 2)
+                    a.AplicarBuffo(bajadaEstadisticasPropias);
+                a.ActualizarEstadisticas();
+                a.buffoJugadorAplicado = true;
+            }
+        }
     }
 
     public void DevolverManoInicial() {
