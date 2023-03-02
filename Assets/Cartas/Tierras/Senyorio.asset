@@ -10,17 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
-  m_Name: Roja
+  m_Name: Senyorio
   m_EditorClassIdentifier: 
-  nombreCarta: "Monta\xF1a"
+  nombreCarta: "Se\xF1or\xEDo"
   costeMana: 
   palabrasClave: 
   descripcion: "Girar: A\xF1ade R a tu reserva de man\xE1."
+  flavour: "\u201CLos se\xF1or\xEDos conforman las tierras en las que los distintos
+    se\xF1ores ejercen su jurisdicci\xF3n sobre el conjunto de sus vasallos. Los
+    se\xF1or\xEDos m\xE1s grandes albergaban se\xF1or\xEDos de nobles menores, vasallos
+    del propietario, lo que conforma la pir\xE1mide jer\xE1rquica del feudalismo\u201D."
   tipoCarta: Tierra
   tiposConcretos: "Monta\xF1a"
   fuerza: 0
   resistencia: 0
   cantidadMana: 0000000001000000000000000000000000000000
   cantidadMana2: 0000000001000000000000000000000000000000
-  fuerzaTemp: 0
-  resistenciaTemp: 0
+  efectos: []

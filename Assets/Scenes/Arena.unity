@@ -1717,15 +1717,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propietario: {fileID: 0}
   cartas:
-  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
-  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
-  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
-  - {fileID: 11400000, guid: e2e7bddcd9ad3cb4fb2ec541d766c377, type: 2}
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
-  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}

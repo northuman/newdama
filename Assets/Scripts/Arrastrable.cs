@@ -116,18 +116,32 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                                 if(!efecto.resuelto && this.transform.parent == GameObject.Find("Pila").transform) {
 
                                     resolviendo = efecto;
+                                    efecto.resuelto = true;
                                 }
                             }
 
                             break;
                         
-                        case 1:
+                        case 1: //Ser un Aura
 
                             if(tipoCarta == TipoCarta.ENCANTEMIENTO && efecto is Aura) {
 
                                 if(!efecto.resuelto) {
 
                                     propietario.AnyadirAura((Aura)efecto);
+                                    efecto.resuelto = true;
+                                }
+                            }
+                            break;
+
+                        case 2: //Al atacar
+                            
+                            if (tipoCarta == TipoCarta.CRIATURA
+                                && atacando) {
+
+                                if(!efecto.resuelto) {
+
+                                    resolviendo = efecto;
                                     efecto.resuelto = true;
                                 }
                             }
@@ -166,10 +180,12 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 Debug.Log("Selecciona la criatura a la que equipar la carta");
                 StartCoroutine(propietario.EquiparCarta(efecto));
                 break;
-            
+
             case 3:
-                Debug.Log("Probando");
-                //BuffarMesa(efecto);
+                
+                Debug.Log("Hacer danyo al oponente");
+                //StartCoroutine(propietario.oponente.)
+                propietario.oponente.RecibirDanyoEfecto(efecto);
                 break;
         }
     }

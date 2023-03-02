@@ -128,6 +128,17 @@ public class Jugador : MonoBehaviour {
         }
     }
 
+    public void RecibirDanyo(int cantidad) {
+
+        vida -= cantidad;
+        ActualizarVida();
+    }
+
+    public void RecibirDanyoEfecto(Efecto efecto) {
+
+        RecibirDanyo(efecto.cantidad);
+    }
+
     public void RestarVidaPorMana() {
 
         vida -= tierras.ManaSinUsar();

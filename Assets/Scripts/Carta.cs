@@ -9,6 +9,7 @@ public class Carta : ScriptableObject {
     public int[] costeMana;
     public string palabrasClave;
     public string descripcion;
+    public string flavour;
     public string tipoCarta;
     public string tiposConcretos;
     public int fuerza;

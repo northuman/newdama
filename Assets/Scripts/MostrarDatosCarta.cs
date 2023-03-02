@@ -13,6 +13,7 @@ public class MostrarDatosCarta : MonoBehaviour {
     public TMPro.TMP_Text costeMana;
     public TMPro.TMP_Text palabrasClave;
     public TMPro.TMP_Text descripcion;
+    public TMPro.TMP_Text flavour;
     public TMPro.TMP_Text tipos;
     public TMPro.TMP_Text fuerza;
     public TMPro.TMP_Text resistencia;
@@ -28,6 +29,9 @@ public class MostrarDatosCarta : MonoBehaviour {
         costeMana.text = StringCosteMana();
         palabrasClave.text = carta.palabrasClave;
         descripcion.text = carta.descripcion;
+        if(carta.flavour != null && carta.flavour != "") 
+            flavour.text = carta.flavour;
+
 
         arrastrable.fuerzaTemp = carta.fuerza;
         arrastrable.resistenciaTemp = carta.resistencia;
