@@ -14,11 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreCarta: Escudero
   costeMana: 0000000001000000000000000000000000000000
-  palabrasClave: "Com\xFAn"
+  palabrasClave: 
   descripcion: "Cuando el Escudero ataque, hace 1 de da\xF1o al jugador atacado."
-  flavour: 
+  flavour: "-Cinco d\xEDas de viaje y no hemos siquiera pernoctado en alg\xFAn mes\xF3n
+    o en alguna de las numerosas posadas del camino que lleva a Toledo. Empiezo a
+    creer que a mi se\xF1or le complace ver a su humilde servidor andar grandes distancias
+    sin descanso ni montura. \u201CAjusta la armadura\u201D, \u201Calc\xE1nzame mi
+    yelmo\u201D, \u201Cprepara la montura\u201D... Estoy harto de seguir las \xF3rdenes
+    de este caballero, un hidalgo demasiado orgulloso para reconocer que no dispone
+    ni de fortuna, ni de gloria alguna."
   tipoCarta: Criatura
-  tiposConcretos: 
+  tiposConcretos: "Com\xFAn"
   fuerza: 1
   resistencia: 1
   cantidadMana: 

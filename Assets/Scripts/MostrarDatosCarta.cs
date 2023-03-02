@@ -119,7 +119,7 @@ public class MostrarDatosCarta : MonoBehaviour {
 
         if(carta.tipoCarta.Contains("Tierra")) {
 
-            if(carta.tiposConcretos.Contains("Montaña")) {
+            if(carta.tiposConcretos.Contains("Señorío")) {
 
                 color1.color = colores[0];
                 color2.color = colores[0];

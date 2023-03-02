@@ -21,7 +21,7 @@ MonoBehaviour:
     se\xF1or\xEDos m\xE1s grandes albergaban se\xF1or\xEDos de nobles menores, vasallos
     del propietario, lo que conforma la pir\xE1mide jer\xE1rquica del feudalismo\u201D."
   tipoCarta: Tierra
-  tiposConcretos: "Monta\xF1a"
+  tiposConcretos: "Se\xF1or\xEDo"
   fuerza: 0
   resistencia: 0
   cantidadMana: 0000000001000000000000000000000000000000

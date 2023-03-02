@@ -390,7 +390,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         escalaOriginal = this.transform.localScale;
 
-        this.transform.localScale = new Vector3(2f, 2f, 2f);
+        this.transform.localScale = new Vector3(3f, 3f, 3f);
     }
 
     void ReducirTamanyoCarta() {
