@@ -203,11 +203,13 @@ public class Jugador : MonoBehaviour {
         if(!efecto.objetivo) {
 
             equipando = true;
+            Debug.Log("HASTA AQUI LLEGAMOS");
             yield return new WaitUntil(EquipandoCarta);
             efecto.objetivo = cartaEquipada;
             equipo.EscribirNombreEquipada(efecto);
             cartaEquipada = null;
             equipo = null;
+            Debug.Log("HASTA AQUI TAMBIEN");
         }
 
         else {

@@ -37,7 +37,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Carta carta;
     public MostrarDatosCarta datosCarta;
     public List<Efecto> efectos;
-    public static Efecto resolviendo;
+    public Efecto resolviendo;
     public bool efectosResueltos = false;
 
     private float updateTime = 0.0f;
@@ -151,7 +151,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         switch(efecto.habilidad) {
 
             case 0:
-
+                
                 StartCoroutine(propietario.RobarCartas(efecto.cantidad));
                 efecto.resuelto = true;
                 Debug.Log("Intento Robar Cartas");
@@ -263,7 +263,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         }
                     }
 
-                    if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
+                    else if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
                         Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR
                         && propietario == jugador && mareo == false) {
 
@@ -273,7 +273,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         }
                     }
 
-                    if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
+                    else if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
                         && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
 
                         atacante.Combate(this);
@@ -284,6 +284,11 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                             Partida.cajaDialogo.SetActive(false);
                             Partida.momentoCombate = Partida.Combate.DANYO;
                         }
+                    }
+
+                    else {
+
+                        Debug.Log("NOTE CLICK PERO ME LA PELAS");
                     }
                 }
             }
