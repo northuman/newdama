@@ -10,3 +10,5 @@ Efectos:
         1. Descartar X cartas
         2. Equipar
         3. Hacer X danyos a cara
+        4. Dar palabra clave
+        5. Prisa //mareo = false

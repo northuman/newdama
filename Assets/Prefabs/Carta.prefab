@@ -305,8 +305,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -15, y: -34.3}
-  m_SizeDelta: {x: 80, y: 10}
+  m_AnchoredPosition: {x: -15, y: -28}
+  m_SizeDelta: {x: 80, y: 8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2652684536619750634
 CanvasRenderer:
@@ -367,7 +367,7 @@ MonoBehaviour:
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 6
+  m_fontSizeMin: 4
   m_fontSizeMax: 8
   m_fontStyle: 0
   m_HorizontalAlignment: 1
@@ -1229,7 +1229,6 @@ MonoBehaviour:
   carta: {fileID: 0}
   datosCarta: {fileID: 0}
   efectos: []
-  resolviendo: {fileID: 0}
   efectosResueltos: 0
 --- !u!114 &5095618355771707942
 MonoBehaviour:

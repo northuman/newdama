@@ -27,6 +27,7 @@ public class Jugador : MonoBehaviour {
     public int criaturasActivas = 0;
     public bool tierraDelTurnoJugada = false;
 
+    public Efecto resolviendo = null;
     public bool descartando = false;
     public bool equipando = false;
     public Arrastrable cartaEquipada = null;
@@ -209,18 +210,28 @@ public class Jugador : MonoBehaviour {
         return !descartando;
     }
 
+    public IEnumerator DarPalabrasClave(Efecto efecto) {
+
+        if(!efecto.objetivo) {
+
+            equipando = true;
+            yield return new WaitUntil(EquipandoCarta);
+            efecto.objetivo = cartaEquipada;
+            cartaEquipada.DarPalabrasClave(efecto);
+            cartaEquipada = null;
+        }
+    }
+
     public IEnumerator EquiparCarta(Efecto efecto) {
 
         if(!efecto.objetivo) {
 
             equipando = true;
-            Debug.Log("HASTA AQUI LLEGAMOS");
             yield return new WaitUntil(EquipandoCarta);
             efecto.objetivo = cartaEquipada;
             equipo.EscribirNombreEquipada(efecto);
             cartaEquipada = null;
             equipo = null;
-            Debug.Log("HASTA AQUI TAMBIEN");
         }
 
         else {

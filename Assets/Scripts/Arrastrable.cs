@@ -37,7 +37,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Carta carta;
     public MostrarDatosCarta datosCarta;
     public List<Efecto> efectos;
-    public Efecto resolviendo;
+    //public Efecto resolviendo;
     public bool efectosResueltos = false;
 
     private float updateTime = 0.0f;
@@ -61,13 +61,13 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             updateTime += Time.deltaTime;
 
-            if(resolviendo) {
+            if(propietario.resolviendo) {
 
                 if(updateTime > 2.0f) {
 
                     updateTime = 0.0f;
-                    ResolverEfecto(resolviendo);
-                    resolviendo = null;
+                    ResolverEfecto(propietario.resolviendo);
+                    propietario.resolviendo = null;
                 }
             }
 
@@ -111,11 +111,22 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                         case 0: //Nada mas la carta entra al campo de batalla
 
+                            updateTime = 2f;
+
                             if(tipoCarta == TipoCarta.CONJURO) {
 
                                 if(!efecto.resuelto && this.transform.parent == GameObject.Find("Pila").transform) {
 
-                                    resolviendo = efecto;
+                                    propietario.resolviendo = efecto;
+                                    efecto.resuelto = true;
+                                }
+                            }
+
+                            if(tipoCarta == TipoCarta.CRIATURA) {
+
+                                if(!efecto.resuelto && !cartaEnMano) { //&& this.transform.parent == propietario.goCriaturas
+                                    
+                                    propietario.resolviendo = efecto;
                                     efecto.resuelto = true;
                                 }
                             }
@@ -126,7 +137,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                             if(tipoCarta == TipoCarta.ENCANTEMIENTO && efecto is Aura) {
 
-                                if(!efecto.resuelto) {
+                                if(!cartaEnMano && !efecto.resuelto) {
 
                                     propietario.AnyadirAura((Aura)efecto);
                                     efecto.resuelto = true;
@@ -141,7 +152,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                                 if(!efecto.resuelto) {
 
-                                    resolviendo = efecto;
+                                    propietario.resolviendo = efecto;
                                     efecto.resuelto = true;
                                 }
                             }
@@ -186,6 +197,18 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 Debug.Log("Hacer danyo al oponente");
                 //StartCoroutine(propietario.oponente.)
                 propietario.oponente.RecibirDanyoEfecto(efecto);
+                break;
+
+            case 4:
+                
+                Debug.Log("Otorga palabra clave a " + efecto.cantidad + " criatura/as");
+                StartCoroutine(propietario.DarPalabrasClave(efecto));
+                break;
+
+            case 5:
+                Debug.Log(this.GetCarta().nombreCarta + " TIENE PRISA");
+                this.mareo = false;
+                propietario.criaturasActivas++;
                 break;
         }
     }
@@ -263,8 +286,11 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                 else if(propietario.equipando) {
 
-                    propietario.cartaEquipada = this;
-                    propietario.equipando = false;
+                    //if(CumpleCondicionColores()) {
+
+                        propietario.cartaEquipada = this;
+                        propietario.equipando = false;
+                    //}
                 }
 
                 else {
@@ -318,7 +344,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                     if(propietario.tierras.SuficienteMana(activados[0])) {
 
-                        resolviendo = activados[0];
+                        propietario.resolviendo = activados[0];
 
                         if(activados[0].habilidad == 2) {
 
@@ -516,6 +542,13 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         return activados;
     }
 
+    public bool CumpleCondicionColores() {
+
+        
+
+        return false;
+    }
+
     public void EscribirNombreEquipada(Efecto efecto) {
 
         if(efecto.objetivo) {
@@ -529,6 +562,26 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             string buscar = "Marco Carta/Caracteristicas/Marco Descripcion/Caja Descripcion/Extras";
             gameObject.transform.Find(buscar).GetComponentInChildren<TMPro.TextMeshProUGUI>().text = "";
+        }
+    }
+
+    public void DarPalabrasClave(Efecto efecto) {
+
+        if(efecto.objetivo) {
+
+            string buscar = "Marco Carta/Caracteristicas/Marco Descripcion/Caja Descripcion/Palabras Clave";
+            string texto = "";
+            
+            foreach(string palabraClave in efecto.otorgarPalabrasClave) {
+
+                //AnyadirEfectoPalabraClave(palabraClave);
+
+                if(texto == "")
+                    texto += palabraClave + ".";
+                else
+                    texto += " " + palabraClave + ".";
+            }
+            gameObject.transform.Find(buscar).GetComponentInChildren<TMPro.TextMeshProUGUI>().text = texto;
         }
     }
 }

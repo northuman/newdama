@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
+  m_Name: Gentilhombre
+  m_EditorClassIdentifier: 
+  nombreCarta: Gentilhombre
+  costeMana: 0100000001000000000000000000000000000000
+  palabrasClave: Prisa
+  descripcion: Cuando el Gentilhombre entre al campo de batalla, otorga prisa a la
+    criatura roja objetivo.
+  flavour: "-Su Majestad, han llegado noticias desde Italia. La ciudad de Mil\xE1n
+    ha sido al fin tomada por el ej\xE9rcito comandado por el capit\xE1n Olivares.
+    Es el propio capit\xE1n quien le informa del gran \xE9xito de la campa\xF1a con
+    p\xE9rdidas m\xEDnimas en nuestras filas durante el asedio. \xA1Incluso llega
+    a afirmar que hemos requisado numerosas piezas de artiller\xEDa enemigas que
+    podr\xEDamos usar en nuestro favor!"
+  tipoCarta: Criatura
+  tiposConcretos: 
+  fuerza: 1
+  resistencia: 1
+  cantidadMana: 
+  cantidadMana2: 
+  efectos:
+  - {fileID: 11400000, guid: a46b204d633a0f542bde60e8ca3e54b5, type: 2}

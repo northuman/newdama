@@ -168,6 +168,7 @@ MonoBehaviour:
   mulligan: 7
   criaturasActivas: 0
   tierraDelTurnoJugada: 0
+  resolviendo: {fileID: 0}
   descartando: 0
   equipando: 0
   cartaEquipada: {fileID: 0}
@@ -653,6 +654,7 @@ MonoBehaviour:
   mulligan: 7
   criaturasActivas: 0
   tierraDelTurnoJugada: 0
+  resolviendo: {fileID: 0}
   descartando: 0
   equipando: 0
   cartaEquipada: {fileID: 0}
@@ -1722,10 +1724,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
   - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
   - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
-  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
-  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
-  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
-  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: efab2ac3a96f71048b1880b2847accdc, type: 2}
+  - {fileID: 11400000, guid: efab2ac3a96f71048b1880b2847accdc, type: 2}
+  - {fileID: 11400000, guid: efab2ac3a96f71048b1880b2847accdc, type: 2}
+  - {fileID: 11400000, guid: efab2ac3a96f71048b1880b2847accdc, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
@@ -2744,7 +2746,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 331038492}
+      - m_Target: {fileID: 608032451}
         m_TargetAssemblyTypeName: Baraja, Assembly-CSharp
         m_MethodName: RobarCarta
         m_Mode: 1
