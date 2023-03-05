@@ -206,8 +206,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 break;
 
             case 5:
-                Debug.Log(this.GetCarta().nombreCarta + " TIENE PRISA");
-                this.mareo = false;
+                Debug.Log(this.GetCarta().nombreCarta + " Tiene prisa");
+                mareo = false;
                 propietario.criaturasActivas++;
                 break;
         }
@@ -284,13 +284,19 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     propietario.DescartarCarta();
                 }
 
-                else if(propietario.equipando) {
+                else if(propietario.equipando && !propietario.resolviendo) {
 
-                    //if(CumpleCondicionColores()) {
+                    propietario.cartaEquipada = this;
+                    propietario.equipando = false;
+                }
+
+                else if(propietario.equipando && propietario.resolviendo) {
+
+                    if(CumpleCondicionColores(propietario.resolviendo)) {
 
                         propietario.cartaEquipada = this;
                         propietario.equipando = false;
-                    //}
+                    }
                 }
 
                 else {
@@ -542,11 +548,53 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         return activados;
     }
 
-    public bool CumpleCondicionColores() {
+    public bool CumpleCondicionColores(Efecto efecto) {
 
-        
+        if(efecto == null) {
+
+            Debug.Log("ESTO FALLA");
+        }
+
+        if(efecto.coloresNoAfectados == null || efecto.coloresNoAfectados.Length == 0) {
+
+            return true; 
+        }
+
+        else if(CompararColores(GetColores(), efecto.coloresNoAfectados)) {
+            
+            return true;
+        }
 
         return false;
+    }
+
+    public bool[] GetColores() {
+
+        bool[] colores = new bool[5];
+
+        for(int i=0; i<5; i++) {
+
+            if(i>0 && GetCarta().costeMana[i] > 0) { colores[i] = true; }
+            else { colores[i] = false; }
+        }
+
+        return colores;
+    }
+
+    public bool CompararColores(bool[] coloresCarta, bool[] coloresNoAfectados) { //Si la carta debe ser afecta devuelve verdadero
+
+        bool afectada = true;
+
+        for(int i=0; i<5; i++) {
+
+            if(coloresNoAfectados[i] && coloresCarta[i]) { 
+                
+                afectada = false;
+                break;
+            }
+        }
+
+        return afectada;
     }
 
     public void EscribirNombreEquipada(Efecto efecto) {
@@ -580,6 +628,14 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     texto += palabraClave + ".";
                 else
                     texto += " " + palabraClave + ".";
+
+                switch(palabraClave) {
+
+                    case "Prisa":
+                        mareo = false;
+                        propietario.criaturasActivas++;
+                        break;
+                }
             }
             gameObject.transform.Find(buscar).GetComponentInChildren<TMPro.TextMeshProUGUI>().text = texto;
         }

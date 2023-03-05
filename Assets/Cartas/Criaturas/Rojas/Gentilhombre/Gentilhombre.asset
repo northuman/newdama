@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombreCarta: Gentilhombre
   costeMana: 0100000001000000000000000000000000000000
-  palabrasClave: Prisa
+  palabrasClave: 
   descripcion: Cuando el Gentilhombre entre al campo de batalla, otorga prisa a la
     criatura roja objetivo.
   flavour: "-Su Majestad, han llegado noticias desde Italia. La ciudad de Mil\xE1n
