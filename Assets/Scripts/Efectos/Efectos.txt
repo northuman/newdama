@@ -1,5 +1,6 @@
 Efectos:
     Condiciones:
+        -1. Clickar algo
         0. Al entrar al campo de batalla
         1. Auras
         2. Al atacar

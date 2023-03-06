@@ -12,7 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c296d74cddddaa44a83c6b8a1bf19f58, type: 3}
   m_Name: Descartar 1
   m_EditorClassIdentifier: 
-  condicion: 0
+  condicion: -1
   habilidad: 1
   cantidad: 1
-  resuleto: 0
+  palabrasClave: []
+  otorgarPalabrasClave: []
+  mejoraEstadisticasPropias: 
+  bajadaEstadisticasPropias: 
+  mejoraEstadisticasOponente: 
+  bajadaEstadisticasOponente: 
+  coloresNoAfectados: 
+  resuelto: 0
+  objetivo: {fileID: 0}

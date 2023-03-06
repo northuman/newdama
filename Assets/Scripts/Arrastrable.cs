@@ -37,7 +37,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Carta carta;
     public MostrarDatosCarta datosCarta;
     public List<Efecto> efectos;
-    public bool efectosResueltos = false;
+    //public bool efectosResueltos = false;
+    public int cantidadResueltos = 0;
 
     public List<Efecto> resolviendo = new List<Efecto>();
 
@@ -99,15 +100,24 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         if(!cartaEnMano && !cartaMuerta) {
 
-            int cantidadResueltos = 0;
+            cantidadResueltos = 0;
 
             foreach(Efecto efecto in efectos) {
 
                 if(efecto) {
 
-                    if(efecto.resuelto || efecto is Activado) { cantidadResueltos++; } //|| efecto is Aura
+                    //if(efecto.resuelto || efecto is Activado) { cantidadResueltos++; } //|| efecto is Aura
 
                     switch(efecto.condicion) {
+
+                        case -1: //Clickar en algo
+
+                            if(tipoCarta == TipoCarta.CONJURO) {
+
+                                resolviendo.Add(efecto);
+                                propietario.clickable = efecto;
+                            }
+                            break;
 
                         case 0: //Nada mas la carta entra al campo de batalla
 
@@ -182,13 +192,24 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 }
             }
 
-            if(tipoCarta == TipoCarta.CONJURO && cantidadResueltos >= efectos.Count) {
+            if(tipoCarta == TipoCarta.CONJURO && EfectosResueltos()) {
 
                 cartaMuerta = true;
                 IrCementerio();
-                propietario.descartando = false;
             }
         }
+    }
+
+    public bool EfectosResueltos() {
+
+        bool resueltos = true;
+
+        foreach(Efecto e in efectos) {
+
+            if(!e.resuelto) { resueltos = false; }
+        }
+
+        return resueltos;
     }
 
     public void ResolverEfecto(Efecto efecto) {
@@ -307,6 +328,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 if(propietario.descartando) {
 
                     cartaMuerta = true;
+                    cartaEnMano = false;
                     IrCementerio();
                     propietario.DescartarCarta();
                 }

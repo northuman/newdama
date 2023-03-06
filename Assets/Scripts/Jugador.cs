@@ -40,6 +40,8 @@ public class Jugador : MonoBehaviour {
     public int[] reduccionIncolora;
     public bool auraJugada = false;
     public Arrastrable criaturaJugada = null;
+    
+    public Efecto clickable = null;
 
     private float updateTime = 0.0f;
 
@@ -211,6 +213,12 @@ public class Jugador : MonoBehaviour {
         cartasPorDescartar--;
         Debug.Log("CartasPorDescartar: " + cartasPorDescartar);
         if(cartasPorDescartar <= 0) { descartando = false; }
+        if(clickable) {
+
+            clickable.resuelto = true;
+            clickable = null;
+        }
+
     }
 
     public bool SeguirDescartando() {

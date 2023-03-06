@@ -8,12 +8,16 @@ public class IA : Jugador {
     const float TIEMPO_ESPERA = 2f;
 
     public Jugador jugador;
+    public bool finJugarCriaturas = false;
 
     public IEnumerator JugarPrincipal() {
 
         JugarTierra();
         yield return new WaitForSeconds(TIEMPO_ESPERA);
-        JugarCriatura();
+        JugarEncantamiento();
+        yield return new WaitForSeconds(TIEMPO_ESPERA);
+        StartCoroutine(JugarCriaturas());
+        yield return new WaitUntil(GetFinJugarCriaturas);
         yield return new WaitForSeconds(TIEMPO_ESPERA);
         Combate();
     }
@@ -78,24 +82,34 @@ public class IA : Jugador {
 
     //Criaturas -------------------------------------------------------------------------------------------------
 
-    public void JugarCriatura() {
+    public IEnumerator JugarCriaturas() {
 
         //Ver cuanto mana tengo
         //Ver cuantas criaturas tengo en la mano cuyo coste puedo pagar
         //Jugar una de esas criaturas
 
         int manaDisponible = ManaRestante();
-        
-        Arrastrable criatura = CriaturaJugable(manaDisponible);
 
-        if(criatura) {
+        Arrastrable criatura = CriaturaJugable(manaDisponible);
+        
+        while(criatura != null) {
 
             PagarCoste(criatura.GetCarta().CosteTotal());
             criatura.padreOriginal = goCriaturas.transform;
             criatura.transform.SetParent(goCriaturas.transform);
             criatura.mareo = true;
             criatura.cartaEnMano = false;
+            manaDisponible = ManaRestante();
+            criatura = CriaturaJugable(manaDisponible);
+            yield return new WaitForSeconds(1.0f);
         }
+
+        finJugarCriaturas = true;
+    }
+
+    public bool GetFinJugarCriaturas() {
+
+        return finJugarCriaturas;
     }
 
     public Arrastrable CriaturaJugable(int mana) {
@@ -117,6 +131,43 @@ public class IA : Jugador {
     }
 
     //Criaturas -------------------------------------------------------------------------------------------------
+
+    //Encantamientos --------------------------------------------------------------------------------------------
+
+    public void JugarEncantamiento() {
+
+        int manaDisponible = ManaRestante();
+
+        Arrastrable encantamiento = EncantamientoJugable(manaDisponible);
+
+        if(encantamiento) {
+
+            PagarCoste(encantamiento.GetCarta().CosteTotal());
+            encantamiento.padreOriginal = goEncantamientos.transform;
+            encantamiento.transform.SetParent(goEncantamientos.transform);
+            encantamiento.cartaEnMano = false;
+        }
+    }
+
+    public Arrastrable EncantamientoJugable(int mana) {
+
+        foreach(Transform child in goMano.transform) {
+
+            Arrastrable a = child.GetComponent<Arrastrable>();
+
+            if(a.tipoCarta == Arrastrable.TipoCarta.ENCANTEMIENTO) {
+
+                if(a.GetCarta().CosteTotal() <= mana) {
+
+                    return a;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    //Encantamientos --------------------------------------------------------------------------------------------
 
     //Combate ---------------------------------------------------------------------------------------------------
 
