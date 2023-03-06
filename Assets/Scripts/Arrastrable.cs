@@ -40,6 +40,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     //public bool efectosResueltos = false;
     public int cantidadResueltos = 0;
 
+    public GameObject clon;
+
     public List<Efecto> resolviendo = new List<Efecto>();
 
     private float updateTime = 0.0f;
@@ -318,6 +320,27 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         Destroy(placeholder);
     }
+
+    public void OnPointerClick() {
+
+
+    }
+
+    /*public void OnPointerEnter(PointerEventData eventData) {
+        
+        GameObject clon = Instantiate(this.gameObject, transform.position, transform.rotation);
+        clon.transform.SetParent(transform.parent);
+        Destroy(clon.GetComponent<Arrastrable>());
+        clon.GetComponent<LayoutElement>().ignoreLayout = true;
+        clon.transform.localScale = transform.localScale * 3.0f;
+        clon.transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + 400, transform.localPosition.z);
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        
+        Debug.Log("SALE");
+        Destroy(clon);
+    }*/
 
     public void OnPointerClick(PointerEventData datosEvento) {
 
