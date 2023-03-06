@@ -389,7 +389,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void InflingirDanyo(Jugador jugador) {
 
-        jugador.vida -= carta.fuerza;
+        jugador.vida -= fuerzaTemp;
         jugador.ActualizarVida();
     }
 
@@ -513,6 +513,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             //this.gameObject.transform = DropZone.criaturasJugador.transform;
             padreOriginal = propietario.goCriaturas.transform;
             this.transform.SetParent(padreOriginal);
+            cartaEnMano = false;
             mareo = true;
         }
 

@@ -85,9 +85,10 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                                 if(jugarCarta) {
 
-                                    carta.NuevoPadre(criaturasJugador.transform);
-                                    carta.cartaEnMano = false;
+                                    carta.ColocarCarta();
                                     carta.propietario.criaturaJugada = carta;
+                                    /*carta.NuevoPadre(criaturasJugador.transform);
+                                    carta.cartaEnMano = false;*/
                                 }
                             }
 

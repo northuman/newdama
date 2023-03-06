@@ -394,7 +394,7 @@ public class Jugador : MonoBehaviour {
 
             for(int j=0; j<(criaturas.Count)-i-1; j++) {
 
-                if(criaturas[j].GetCarta().fuerza < criaturas[j+1].GetCarta().fuerza) {
+                if(criaturas[j].fuerzaTemp < criaturas[j+1].fuerzaTemp) {
 
                     aux = criaturas[j];
                     criaturas[j] = criaturas[j+1];

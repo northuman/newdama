@@ -385,6 +385,10 @@ public class Partida : MonoBehaviour {
         faseActual = Fase.MANTENIMIENTO;
         yield return new WaitForSeconds(ENTRETIEMPO);
 
+        jugador.ResetearEstadisticasPropias();
+        jugador.AplicarBuffosPropios();
+        oponente.ResetearEstadisticasPropias();
+        oponente.AplicarBuffosPropios();
         EnderezarCartas();
     }
 
