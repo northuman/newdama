@@ -3,6 +3,7 @@ Efectos:
         0. Al entrar al campo de batalla
         1. Auras
         2. Al atacar
+        3. Cuando una criatura entra al campo de batalla
 
     Habilidades:
         -1. Activadas (No necesitan estar comprobandose, no necesitan numero asignado)
@@ -12,3 +13,4 @@ Efectos:
         3. Hacer X danyos a cara
         4. Dar palabra clave
         5. Prisa //mareo = false
+        6. Ganar Vidas

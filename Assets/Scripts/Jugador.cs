@@ -27,7 +27,6 @@ public class Jugador : MonoBehaviour {
     public int criaturasActivas = 0;
     public bool tierraDelTurnoJugada = false;
 
-    public Efecto resolviendo = null;
     public bool descartando = false;
     public bool equipando = false;
     public Arrastrable cartaEquipada = null;
@@ -39,6 +38,7 @@ public class Jugador : MonoBehaviour {
     public int[] mejoraEstadisticasOponente;
     public int[] bajadaEstadisticasOponente;
     public bool auraJugada = false;
+    public Arrastrable criaturaJugada = null;
 
     private float updateTime = 0.0f;
 
@@ -131,13 +131,20 @@ public class Jugador : MonoBehaviour {
 
     public void RecibirDanyo(int cantidad) {
 
-        vida -= cantidad;
-        ActualizarVida();
+        if(cantidad > 0) {
+
+            vida -= cantidad;
+            ActualizarVida();
+        }
     }
 
-    public void RecibirDanyoEfecto(Efecto efecto) {
+    public void GanarVidas(int cantidad) {
 
-        RecibirDanyo(efecto.cantidad);
+        if(cantidad > 0) {
+
+            vida += cantidad;
+            ActualizarVida();
+        }
     }
 
     public void RestarVidaPorMana() {

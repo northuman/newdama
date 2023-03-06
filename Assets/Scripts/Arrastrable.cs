@@ -37,8 +37,9 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Carta carta;
     public MostrarDatosCarta datosCarta;
     public List<Efecto> efectos;
-    //public Efecto resolviendo;
     public bool efectosResueltos = false;
+
+    public List<Efecto> resolviendo = new List<Efecto>();
 
     private float updateTime = 0.0f;
 
@@ -61,13 +62,12 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             updateTime += Time.deltaTime;
 
-            if(propietario.resolviendo) {
+            if(resolviendo.Count > 0) {
 
                 if(updateTime > 2.0f) {
 
                     updateTime = 0.0f;
-                    ResolverEfecto(propietario.resolviendo);
-                    propietario.resolviendo = null;
+                    ResolverEfecto(resolviendo[0]);
                 }
             }
 
@@ -117,7 +117,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                                 if(!efecto.resuelto && this.transform.parent == GameObject.Find("Pila").transform) {
 
-                                    propietario.resolviendo = efecto;
+                                    resolviendo.Add(efecto);
                                     efecto.resuelto = true;
                                 }
                             }
@@ -126,7 +126,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                                 if(!efecto.resuelto && !cartaEnMano) { //&& this.transform.parent == propietario.goCriaturas
                                     
-                                    propietario.resolviendo = efecto;
+                                    resolviendo.Add(efecto);
                                     efecto.resuelto = true;
                                 }
                             }
@@ -152,10 +152,22 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                                 if(!efecto.resuelto) {
 
-                                    propietario.resolviendo = efecto;
+                                    resolviendo.Add(efecto);
                                     efecto.resuelto = true;
                                 }
                             }
+                            break;
+
+                        case 3: //Cuando una criatura entra al campo de batalla
+                            
+                            if  (tipoCarta == TipoCarta.CRIATURA
+                                && propietario.criaturaJugada
+                                && propietario.criaturaJugada != this) {
+                                
+                                resolviendo.Add(efecto);
+                                //propietario.criaturaJugada = null;
+                            }
+
                             break;
                     }
                 }
@@ -194,9 +206,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             case 3:
                 
-                Debug.Log("Hacer danyo al oponente");
-                //StartCoroutine(propietario.oponente.)
-                propietario.oponente.RecibirDanyoEfecto(efecto);
+                Debug.Log(propietario.name + " hace danyo a su oponente");
+                propietario.oponente.RecibirDanyo(efecto.cantidad);
                 break;
 
             case 4:
@@ -210,7 +221,15 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 mareo = false;
                 propietario.criaturasActivas++;
                 break;
+
+            case 6:
+                Debug.Log(propietario.name + " gana " + efecto.cantidad + " vida/as");
+                propietario.GanarVidas(efecto.cantidad);
+                resolviendo.Remove(efecto);
+                propietario.criaturaJugada = null;
+                break;
         }
+        resolviendo.Remove(efecto);
     }
 
     public void ResetearEstadisticas() {
@@ -284,15 +303,15 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     propietario.DescartarCarta();
                 }
 
-                else if(propietario.equipando && !propietario.resolviendo) {
+                else if(propietario.equipando && resolviendo.Count == 0) {
 
                     propietario.cartaEquipada = this;
                     propietario.equipando = false;
                 }
 
-                else if(propietario.equipando && propietario.resolviendo) {
+                else if(propietario.equipando && resolviendo.Count > 0) {
 
-                    if(CumpleCondicionColores(propietario.resolviendo)) {
+                    if(CumpleCondicionColores(resolviendo[0])) {
 
                         propietario.cartaEquipada = this;
                         propietario.equipando = false;
@@ -350,7 +369,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                     if(propietario.tierras.SuficienteMana(activados[0])) {
 
-                        propietario.resolviendo = activados[0];
+                        resolviendo.Add(activados[0]);
 
                         if(activados[0].habilidad == 2) {
 

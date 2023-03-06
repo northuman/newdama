@@ -126,7 +126,7 @@ public class MostrarDatosCarta : MonoBehaviour {
                 primerColor = true;
             }
 
-            if(carta.tiposConcretos.Contains("Llanura")) {
+            if(carta.tiposConcretos.Contains("Parroquia")) {
                 
                 if(!primerColor) {
 

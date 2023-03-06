@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
+  m_Name: Capellan
+  m_EditorClassIdentifier: 
+  nombreCarta: "Capell\xE1n"
+  costeMana: 0000000000000000010000000000000000000000
+  palabrasClave: 
+  descripcion: Cada vez que una criatura entre al campo de batalla, gana 1 vida.
+  flavour: "-Tan solo en una tarde he debido dar la extrema unci\xF3n por lo menos
+    a 50 hombres que se encontraban agonizando en el campo de batalla. Cuando la
+    orden me encomend\xF3 a las labores religiosas en los ej\xE9rcitos del rey, no
+    me imaginaba este horror. Este no es lugar para Dios. La guerra hace que los
+    reba\xF1os de fieles se conviertan en lobos sanguinarios. Ma\xF1ana debo levantarme
+    temprano para la misa antes del combate. Dios m\xEDo, ay\xFAdame a persistir
+    en mi dif\xEDcil labor."
+  tipoCarta: Criatura
+  tiposConcretos: 
+  fuerza: 1
+  resistencia: 1
+  cantidadMana: 
+  cantidadMana2: 
+  efectos:
+  - {fileID: 11400000, guid: 543cac3e83a70b4459996b5858ecbc81, type: 2}

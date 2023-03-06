@@ -87,8 +87,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                                     carta.NuevoPadre(criaturasJugador.transform);
                                     carta.cartaEnMano = false;
-                                    //if(!carta.prisa)
-                                    carta.mareo = true;
+                                    carta.propietario.criaturaJugada = carta;
                                 }
                             }
 

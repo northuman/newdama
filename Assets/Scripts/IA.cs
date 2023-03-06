@@ -96,8 +96,6 @@ public class IA : Jugador {
             criatura.mareo = true;
             criatura.cartaEnMano = false;
         }
-
-        //Partida.pasarFase = true;
     }
 
     public Arrastrable CriaturaJugable(int mana) {

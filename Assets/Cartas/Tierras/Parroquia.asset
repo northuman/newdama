@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
+  m_Name: Parroquia
+  m_EditorClassIdentifier: 
+  nombreCarta: Parroquia
+  costeMana: 
+  palabrasClave: 
+  descripcion: "Girar: A\xF1ade B a tu reserva de man\xE1."
+  flavour: "\u201CLas parroquias son los distritos organizados por la Iglesia para
+    distribuir y ordenar las distintas comunidades cristianas en iglesias parroquiales.
+    Estos distritos se unen para formar las di\xF3cesis, lideradas por un obispo.
+    A su vez, el conjunto de di\xF3cesis forma las archidi\xF3cesis, organizadas
+    por los arzobispos\u201D."
+  tipoCarta: Tierra
+  tiposConcretos: Parroquia
+  fuerza: 0
+  resistencia: 0
+  cantidadMana: 0000000000000000010000000000000000000000
+  cantidadMana2: 0000000000000000010000000000000000000000
+  efectos: []
