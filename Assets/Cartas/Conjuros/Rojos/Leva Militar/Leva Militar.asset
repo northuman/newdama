@@ -16,7 +16,10 @@ MonoBehaviour:
   costeMana: 0000000001000000000000000000000000000000
   palabrasClave: 
   descripcion: Roba 2 cartas. Descarta 1 carta.
-  flavour: 
+  flavour: "\u201CPor el v\xEDnculo que une al vasallo con su se\xF1or, el primero
+    deber\xE1 prestar sus servicios al segundo, ya sea trabajando las tierras, o
+    prestando auxilio militar. Cuando el se\xF1or necesite de este \xFAltimo, har\xE1
+    llamar a las levas\u201D."
   tipoCarta: Conjuro
   tiposConcretos: 
   fuerza: 0

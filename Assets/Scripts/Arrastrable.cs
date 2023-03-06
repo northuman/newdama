@@ -16,6 +16,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Vector3 escalaOriginal;
     public int fuerzaTemp;
     public int resistenciaTemp;
+    public bool tamanyoAumentado = false;
     public bool cartaGirada = false;
     public bool cartaMuerta = false;
     public bool cartaEnMano = true;
@@ -55,6 +56,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         efectos = ClonarEfectos(carta.efectos);
         ResetearEstadisticas();
         ObtenerTipoCarta();
+        //Comprobar si la escena es partida o no
         jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
         oponente = GameObject.Find("Oponente").GetComponent<IA>();
     }
@@ -348,6 +350,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             if(datosEvento.button == PointerEventData.InputButton.Left) {
 
+                List<Activado> activados = GetActivados();
+
                 if(propietario.descartando) {
 
                     cartaMuerta = true;
@@ -371,6 +375,20 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     }
                 }
 
+                //Si tiene un Efecto Activado
+                else if(!cartaEnMano && activados.Count == 1) {
+
+                    if(propietario.tierras.SuficienteMana(activados[0])) {
+
+                        resolviendo.Add(activados[0]);
+
+                        if(activados[0].habilidad == 2) {
+
+                            propietario.equipo = this;
+                        }
+                    }
+                }
+                
                 else {
 
                     if(tipoCarta == TipoCarta.TIERRA && gameObject.transform.parent == DropZone.tierrasJugador.transform) {
@@ -408,28 +426,15 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                     else {
 
-                        Debug.Log("NOTE CLICK PERO ME LA PELAS");
+                        //Debug.Log("NOTE CLICK PERO ME LA PELAS");
                     }
                 }
             }
 
-            if(Partida.turno == Partida.Turno.JUGADOR 
-                && datosEvento.button == PointerEventData.InputButton.Right) {
+            if(datosEvento.button == PointerEventData.InputButton.Right) {
 
-                //Si tiene un Efecto Activado
-                List<Activado> activados = GetActivados();
-                if(activados.Count == 1) {
-
-                    if(propietario.tierras.SuficienteMana(activados[0])) {
-
-                        resolviendo.Add(activados[0]);
-
-                        if(activados[0].habilidad == 2) {
-
-                            propietario.equipo = this;
-                        }
-                    }
-                }
+                if(tamanyoAumentado) { ReducirTamanyoCarta(); }
+                else { AumentarTamanyoCarta(); }
             }
         }
     }
@@ -492,13 +497,14 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     void AumentarTamanyoCarta() {
 
+        tamanyoAumentado = true;
         escalaOriginal = this.transform.localScale;
-
         this.transform.localScale = new Vector3(3f, 3f, 3f);
     }
 
     void ReducirTamanyoCarta() {
 
+        tamanyoAumentado = false;
         this.transform.localScale = escalaOriginal;
     }
 
