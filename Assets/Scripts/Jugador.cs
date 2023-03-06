@@ -37,6 +37,7 @@ public class Jugador : MonoBehaviour {
     public int[] bajadaEstadisticasPropias;
     public int[] mejoraEstadisticasOponente;
     public int[] bajadaEstadisticasOponente;
+    public int[] reduccionIncolora;
     public bool auraJugada = false;
     public Arrastrable criaturaJugada = null;
 
@@ -262,13 +263,22 @@ public class Jugador : MonoBehaviour {
             mejoraEstadisticasPropias[0] += aura.mejoraEstadisticasPropias[0];
             mejoraEstadisticasPropias[1] += aura.mejoraEstadisticasPropias[1];
         }
+
+        if(aura.reduccionIncolora.Length == 4) {
+
+            for(int i=0; i<4; i++) {
+
+                if(aura.reduccionIncolora[i]) {
+
+                    reduccionIncolora[i] += aura.cantidad;
+                }
+            }
+        }
     }
 
     public void ResetearEstadisticasPropias() {
 
         foreach(Transform child in goCriaturas.transform) {
-
-            Debug.Log("CHILD: " + child.name);
 
             Arrastrable a = child.GetComponent<Arrastrable>();
             a.ResetearEstadisticas();

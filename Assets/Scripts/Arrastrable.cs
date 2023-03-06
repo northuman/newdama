@@ -143,6 +143,15 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                                     efecto.resuelto = true;
                                 }
                             }
+
+                            if(tipoCarta == TipoCarta.CRIATURA && efecto is Aura) {
+
+                                if(!cartaEnMano && !efecto.resuelto) {
+
+                                    propietario.AnyadirAura((Aura)efecto);
+                                    efecto.resuelto = true;
+                                }
+                            }
                             break;
 
                         case 2: //Al atacar
@@ -175,7 +184,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             if(tipoCarta == TipoCarta.CONJURO && cantidadResueltos >= efectos.Count) {
 
-                Debug.Log("CANTIDAD RESUELTOS: " + cantidadResueltos);
                 cartaMuerta = true;
                 IrCementerio();
                 propietario.descartando = false;

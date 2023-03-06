@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 66456172fb4ebe348bdfec6d4b764f60, type: 3}
-  m_Name: Buff a tus criaturas no negras
+  m_Name: Reduccion Coste
   m_EditorClassIdentifier: 
   condicion: 1
   habilidad: -1
-  cantidad: 0
+  cantidad: 1
   palabrasClave: []
   otorgarPalabrasClave: []
-  mejoraEstadisticasPropias: 0100000001000000
+  mejoraEstadisticasPropias: 
   bajadaEstadisticasPropias: 
   mejoraEstadisticasOponente: 
   bajadaEstadisticasOponente: 
-  coloresNoAfectados: 0000000001
+  coloresNoAfectados: 0101000101
   resuelto: 0
   objetivo: {fileID: 0}
-  reduccionIncolora: 
+  reduccionIncolora: 00010001

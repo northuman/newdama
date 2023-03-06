@@ -7,6 +7,7 @@ public class Tierras : MonoBehaviour {
    
     public List<Arrastrable> tierras = new List<Arrastrable>();
     public GameObject contadorMana;
+    public Jugador propietario;
     
     //total de mana
     int[] mana;
@@ -71,11 +72,28 @@ public class Tierras : MonoBehaviour {
 
         bool manaSuficiente = true;
         int[] auxMana = (int[])mana.Clone();
+        int[] auxCoste = (int[])carta.costeMana.Clone();
+
+        switch(carta.tipoCarta) {
+
+            case "Criatura":
+                //
+                break;
+            case "Conjuro":
+                //
+                break;
+            case "Artefacto":
+                //
+                break;
+            case "Encantamiento":
+                auxCoste[0] -= propietario.reduccionIncolora[3];
+                break;
+        }
 
         //Restar todo el mana especifico
         for(int i=1; i<5; i++) {
 
-            if(auxMana[i] < carta.costeMana[i]) {
+            if(auxMana[i] < auxCoste[i]) {
 
                 manaSuficiente = false;
                 break;
@@ -83,14 +101,14 @@ public class Tierras : MonoBehaviour {
 
             else {
 
-                auxMana[i] -= carta.costeMana[i];
+                auxMana[i] -= auxCoste[i];
             }
         }
 
         //Comprobar si se puede pagar el mana generico
         if(manaSuficiente) {
 
-            int manaGenerico = carta.costeMana[0];
+            int manaGenerico = auxCoste[0];
             int mayorCantidad = 0;
             int mayorPosicion = -1;
 

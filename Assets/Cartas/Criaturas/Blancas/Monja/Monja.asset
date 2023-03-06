@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
+  m_Name: Monja
+  m_EditorClassIdentifier: 
+  nombreCarta: Monja
+  costeMana: 0100000000000000010000000000000000000000
+  palabrasClave: 
+  descripcion: Los conjuros y encantamientos blancos cuestan 1 menos.
+  flavour: "-Recuerdo cuando mis padres, los marqueses de Villafranca del Bierzo,
+    me informaron sobre su decisi\xF3n de encomendarme a la Orden de las Hermanas
+    Pobres de Santa Clara. En un principio fui reticente pero acab\xE9 aceptando,
+    siendo enviada al monasterio de las Descalzas Reales en Madrid. Son ya 10 a\xF1os
+    vividos junto a mis hermanas y debo decir que no me arrepiento. Adem\xE1s de
+    las labores religiosas, la biblioteca me proporciona conocimientos que jam\xE1s
+    hubiera podido imaginar."
+  tipoCarta: Criatura
+  tiposConcretos: 
+  fuerza: 1
+  resistencia: 2
+  cantidadMana: 
+  cantidadMana2: 
+  efectos:
+  - {fileID: 11400000, guid: d08fdd790928e774db6c4d1461721340, type: 2}
