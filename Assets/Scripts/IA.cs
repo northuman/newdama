@@ -99,6 +99,7 @@ public class IA : Jugador {
             criatura.transform.SetParent(goCriaturas.transform);
             criatura.mareo = true;
             criatura.cartaEnMano = false;
+            criaturaJugada = criatura;
             manaDisponible = ManaRestante();
             criatura = CriaturaJugable(manaDisponible);
             yield return new WaitForSeconds(1.0f);

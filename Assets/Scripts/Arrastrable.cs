@@ -220,42 +220,40 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         switch(efecto.habilidad) {
 
-            case 0:
+            case 0: //Robar X cartas
                 
                 StartCoroutine(propietario.RobarCartas(efecto.cantidad));
                 efecto.resuelto = true;
                 Debug.Log("Intento Robar Cartas");
                 break;
 
-            case 1:
+            case 1: //Descartar X cartas
                 Debug.Log("Descartar " + efecto.cantidad + " cartas");
                 StartCoroutine(propietario.DescartarCartas(efecto));
                 break;
 
-            case 2:
+            case 2: //Equipar
                 Debug.Log("Selecciona la criatura a la que equipar la carta");
                 StartCoroutine(propietario.EquiparCarta(efecto));
                 break;
 
-            case 3:
-                
+            case 3: //Hacer X danyos a cara
                 Debug.Log(propietario.name + " hace danyo a su oponente");
                 propietario.oponente.RecibirDanyo(efecto.cantidad);
                 break;
 
-            case 4:
-                
+            case 4: //Dar palabra clave
                 Debug.Log("Otorga palabra clave a " + efecto.cantidad + " criatura/as");
                 StartCoroutine(propietario.DarPalabrasClave(efecto));
                 break;
 
-            case 5:
+            case 5: //Prisa
                 Debug.Log(this.GetCarta().nombreCarta + " Tiene prisa");
                 mareo = false;
                 propietario.criaturasActivas++;
                 break;
 
-            case 6:
+            case 6: //Ganar Vidas
                 Debug.Log(propietario.name + " gana " + efecto.cantidad + " vida/as");
                 propietario.GanarVidas(efecto.cantidad);
                 resolviendo.Remove(efecto);
