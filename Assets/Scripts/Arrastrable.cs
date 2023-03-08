@@ -27,6 +27,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public static Arrastrable bloqueador = null;
     public static Arrastrable atacante = null;
     public List<Arrastrable> bloqueadaPor = null;
+    public Arrastrable bloqueandoA = null;
 
     //Esto se usara para saber si una carta al jugarse ira al cementerio o si permanecera en la mesa
     public enum TipoCarta {CRIATURA, CONJURO, INSTANTANEO, ARTEFACTO, ENCANTEMIENTO, TIERRA, NULO};
@@ -321,11 +322,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         Destroy(placeholder);
     }
 
-    public void OnPointerClick() {
-
-
-    }
-
     /*public void OnPointerEnter(PointerEventData eventData) {
         
         GameObject clon = Instantiate(this.gameObject, transform.position, transform.rotation);
@@ -410,7 +406,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     }
 
                     else if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
-                        && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
+                            && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
 
                         atacante.Combate(this);
                         this.transform.SetParent(this.padreOriginal);
@@ -419,6 +415,33 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                             Partida.cajaDialogo.SetActive(false);
                             Partida.momentoCombate = Partida.Combate.DANYO;
+                        }
+                    }
+
+                    else if(tipoCarta == TipoCarta.CRIATURA && Partida.momentoCombate == Partida.Combate.BLOQUEADORES
+                            && Partida.turno == Partida.Turno.OPONENTE) {
+
+                        if(propietario == jugador) {
+
+                            if(!atacante) {
+
+                                Debug.Log("PRIMERO DEBES SELECCIONAR LA CRIATURA A LA QUE DESEAS BLOQUEAR");
+                            }
+
+                            else if(bloqueandoA) {
+
+                                Debug.Log("ESTA CRIATURA YA ESTA BLOQUEANDO A " + this.bloqueandoA.GetCarta().nombreCarta);
+                            }
+
+                            else {
+
+                                atacante.AnyadirBloqueador(this);
+                            }
+                        }
+
+                        else if(propietario == oponente) {
+
+                            atacante = this;
                         }
                     }
 
@@ -447,6 +470,15 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         jugador.vida -= fuerzaTemp;
         jugador.ActualizarVida();
+    }
+
+    public void AnyadirBloqueador(Arrastrable b) {
+
+        if(!(this.bloqueadaPor.Contains(b))) {
+
+            this.bloqueadaPor.Add(b);
+            b.bloqueandoA = this;
+        }
     }
 
     public void Combate(Arrastrable otra) {
