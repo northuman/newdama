@@ -204,7 +204,8 @@ public class Partida : MonoBehaviour {
 
                     else if(arrastrable.bloqueadaPor.Count > 1) {
 
-                        //Bloqueos
+                        oponente.OrdenarBloqueadores(arrastrable);
+                        arrastrable.Combates();
                     }
 
                     else {

@@ -350,6 +350,11 @@ public class IA : Jugador {
         return (cartaIA.fuerza >= cartaJugador.resistencia && cartaIA.resistencia > cartaJugador.fuerza);
     }
 
+    public void OrdenarBloqueadores(Arrastrable a) {
+
+        a.bloqueadaPor.Sort((p1, p2) => p1.resistenciaTemp.CompareTo(p2.resistenciaTemp));
+    }
+
     //Combate ---------------------------------------------------------------------------------------------------
 
     //Bloqueo ---------------------------------------------------------------------------------------------------

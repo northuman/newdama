@@ -481,6 +481,14 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
     }
 
+    public void Combates() {
+
+        foreach(Arrastrable a in bloqueadaPor) {
+
+            this.Combate(a);
+        }
+    }
+
     public void Combate(Arrastrable otra) {
 
         //Ataque y vida de ambos
