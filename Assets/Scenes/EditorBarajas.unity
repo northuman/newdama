@@ -1882,15 +1882,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 0}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -1977,7 +1977,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   vistaPrevia: {fileID: 1704852004}
-  prefabCarta: {fileID: 2421649484907838289, guid: a9ebe942b12b5854b9b002930fa81eec, type: 3}
+  prefabCarta: {fileID: 2421649484907838289, guid: b68cc58c6d2b21d4a919d6e77c72a621, type: 3}
 --- !u!4 &1781921149
 Transform:
   m_ObjectHideFlags: 0

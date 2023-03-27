@@ -36,12 +36,14 @@ public class MostrarDatosCarta : MonoBehaviour {
         arrastrable.fuerzaTemp = carta.fuerza;
         arrastrable.resistenciaTemp = carta.resistencia;
 
-        goFuerza = gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
-        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        goFuerza = gameObject.transform.Find("Marco Carta")
+        .transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas")
         .transform.Find("Fuerza").GetComponent<TMPro.TextMeshProUGUI>();
 
-        goResistencia = gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
-        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        goResistencia = gameObject.transform.Find("Marco Carta")
+        .transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas")
         .transform.Find("Resistencia").GetComponent<TMPro.TextMeshProUGUI>();
 
         PintarCarta();
@@ -109,9 +111,9 @@ public class MostrarDatosCarta : MonoBehaviour {
         Image color2 = gameObject.transform.Find("Marco Carta").transform.Find("Color 2").GetComponent<Image>();
 
         Color32[] colores = new Color32[5];
-        colores[0] = new Color32(255, 0, 0, 255);       //Rojo
-        colores[1] = new Color32(255, 255, 255, 255);   //Blanco
-        colores[2] = new Color32(0, 255, 0, 255);       //Verde
+        colores[0] = new Color32(176, 0, 0, 255);       //Rojo
+        colores[1] = new Color32(225, 225, 225, 255);   //Blanco
+        colores[2] = new Color32(0, 176, 0, 255);       //Verde
         colores[3] = new Color32(30, 30, 30, 255);      //Negro
         colores[4] = new Color32(180, 170, 30, 255);    //Multicolor/Ocre
 
@@ -238,24 +240,30 @@ public class MostrarDatosCarta : MonoBehaviour {
 
     void DesactivarFuerzaResistencia() {
 
-        gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
-        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        gameObject.transform.Find("Marco Carta")
+        .transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas")
         .transform.Find("Fuerza").GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
 
-        gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
-        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        gameObject.transform.Find("Marco Carta")
+        .transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas")
         .transform.Find("Barra").GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
 
-        gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
-        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        gameObject.transform.Find("Marco Carta")
+        .transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas")
         .transform.Find("Resistencia").GetComponent<TMPro.TextMeshProUGUI>().enabled = false;
 
-        gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
-        .transform.Find("Marco Estadisticas").transform.Find("Caja Estadisticas")
+        gameObject.transform.Find("Marco Carta")
+        .transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas")
         .GetComponent<Image>().enabled = false;
 
-        gameObject.transform.Find("Marco Carta").transform.Find("Caracteristicas")
-        .transform.Find("Marco Estadisticas").GetComponent<Image>().enabled = false;
+        /*gameObject.transform.Find("Marco Carta")
+        .transform.Find("Caracteristicas")
+        .transform.Find("Marco Estadisticas")
+        .GetComponent<Image>().enabled = false;*/
     }
 
     public void ActualizarEstadisticas() {

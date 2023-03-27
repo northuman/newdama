@@ -17,6 +17,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public int fuerzaTemp;
     public int resistenciaTemp;
     public bool tamanyoAumentado = false;
+    public bool visible = true;
     public bool cartaGirada = false;
     public bool cartaMuerta = false;
     public bool cartaEnMano = true;
@@ -57,9 +58,14 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         efectos = ClonarEfectos(carta.efectos);
         ResetearEstadisticas();
         ObtenerTipoCarta();
-        //Comprobar si la escena es partida o no
-        jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
-        oponente = GameObject.Find("Oponente").GetComponent<IA>();
+        if(SceneManager.GetActiveScene().name == "Arena") {
+
+            jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
+            oponente = GameObject.Find("Oponente").GetComponent<IA>();
+        }
+
+        if(!(propietario is IA))
+        gameObject.transform.Find("Dorso").gameObject.SetActive(false);
     }
 
     private void Update() {
@@ -83,6 +89,12 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 ComprobarEfecto();
             }
         }
+    }
+
+    public void MostrarCarta() {
+
+        visible = true;
+        gameObject.transform.Find("Dorso").gameObject.SetActive(false);
     }
 
     public List<Efecto> ClonarEfectos(List<Efecto> es) {

@@ -43,6 +43,7 @@ public class IA : Jugador {
         if(tierra != null) {
 
             tierra.cartaEnMano = false;
+            tierra.MostrarCarta();
             tierra.padreOriginal = goTierras.transform;
             tierra.transform.SetParent(goTierras.transform);
         }
@@ -95,6 +96,7 @@ public class IA : Jugador {
         while(criatura != null) {
 
             PagarCoste(criatura.GetCarta().CosteTotal());
+            criatura.MostrarCarta();
             criatura.padreOriginal = goCriaturas.transform;
             criatura.transform.SetParent(goCriaturas.transform);
             criatura.mareo = true;
@@ -147,6 +149,7 @@ public class IA : Jugador {
             encantamiento.padreOriginal = goEncantamientos.transform;
             encantamiento.transform.SetParent(goEncantamientos.transform);
             encantamiento.cartaEnMano = false;
+            encantamiento.MostrarCarta();
         }
     }
 

@@ -42,7 +42,12 @@ public class Baraja : MonoBehaviour {
         //Colocar en la mano del jugador
         cartaRobada.transform.SetParent(propietario.goMano.transform);
 
-        cartaRobada.GetComponent<Arrastrable>().propietario = propietario;
+        Arrastrable arrastrable = cartaRobada.GetComponent<Arrastrable>();
+        arrastrable.propietario = propietario;
+        if(propietario is IA) {
+
+            arrastrable.visible = false;
+        }
     }
 
     public void AnyadirCarta(Carta carta) {
