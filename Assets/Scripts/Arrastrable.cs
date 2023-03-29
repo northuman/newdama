@@ -297,6 +297,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         EnderezarCarta();
 
+        DropZone.carta = this;
+
         //Guardamos donde estaba la carta originalmente y lo copiamos al placeholder
         padreOriginal = this.transform.parent;
         padrePlaceholder = padreOriginal;
@@ -319,6 +321,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnEndDrag(PointerEventData datosEvento) {
 
         ReducirTamanyoCarta();
+
+        DropZone.carta = null;
 
         if(cartaGirada) { GirarCarta(); }
 
@@ -548,8 +552,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     void AumentarTamanyoCarta() {
 
         tamanyoAumentado = true;
-        escalaOriginal = this.transform.localScale;
-        this.transform.localScale = new Vector3(3f, 3f, 3f);
+        this.transform.localScale = new Vector3(3.0f, 3.0f, 3.0f);
     }
 
     void ReducirTamanyoCarta() {
@@ -560,8 +563,10 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void CambiarEscala(float e) {
 
-        this.escalaOriginal *= e;
-        this.transform.localScale = escalaOriginal;
+        /*this.escalaOriginal *= e;
+        this.transform.localScale = escalaOriginal;*/
+        this.transform.localScale = escalaOriginal * e;
+        escalaOriginal = this.transform.localScale;
     }
 
     void ObtenerTipoCarta() {
@@ -646,6 +651,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             cartaEnMano = false;
             padreOriginal = propietario.goCementerio.transform;
             CambiarEscala(0.6f);
+
             if(cartaGirada) { EnderezarCarta(); }
             this.transform.SetParent(padreOriginal);
         }

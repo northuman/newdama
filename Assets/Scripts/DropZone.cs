@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -11,10 +12,13 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     public static GameObject tierrasJugador;
     public static GameObject criaturasJugador;
     public static GameObject encantamientosJugador;
+    public static Arrastrable carta = null;
 
     public Jugador jugador;
+    private float updateTime = 0.0f;
+    
 
-    void Start() {
+    private void Start() {
         
         pila = GameObject.Find("Pila");
         manoJugador = GameObject.Find("Mano Jugador");
@@ -22,6 +26,20 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         criaturasJugador = GameObject.Find("Criaturas Jugador");
         encantamientosJugador = GameObject.Find("Encantamientos Jugador");
         jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
+    }
+
+    private void Update() {
+        
+        updateTime += Time.deltaTime;
+
+        if(carta && updateTime > 1.0f) {
+
+            AumentarColor(carta);
+            updateTime = 0.0f;
+        }
+
+        if(!carta)
+            ApagarColor();
     }
     
     public void OnPointerEnter(PointerEventData datosEvento) {
@@ -67,7 +85,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                                 if(carta.propietario.tierraDelTurnoJugada == false && this.transform.parent != manoJugador.transform) {
 
                                     carta.NuevoPadre(tierrasJugador.transform);
-                                    carta.CambiarEscala(0.75f);
+                                    //carta.CambiarEscala(0.75f);
                                     carta.cartaEnMano = false;
                                     carta.propietario.tierraDelTurnoJugada = true;
                                     tierrasJugador.GetComponent<DropZone>().Ordenar();
@@ -110,7 +128,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                                 if(jugarCarta) {
 
                                     carta.NuevoPadre(encantamientosJugador.transform);
-                                    carta.CambiarEscala(0.75f);
+                                    //carta.CambiarEscala(0.75f);
                                     carta.cartaEnMano = false;
                                 }
                             }
@@ -130,6 +148,74 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                 editorBarajas.AnyadirCartaBaraja(carta);
             }
         }
+    }
+
+    public void AumentarColor(Arrastrable carta) {
+
+        /*
+        pila = GameObject.Find("Pila");
+        manoJugador = GameObject.Find("Mano Jugador");
+        tierrasJugador = GameObject.Find("Tierras Jugador");
+        criaturasJugador = GameObject.Find("Criaturas Jugador");
+        encantamientosJugador = GameObject.Find("Encantamientos Jugador");
+        */
+
+        if(carta.propietario == jugador && carta.cartaEnMano) {
+
+            if(carta.tipoCarta == Arrastrable.TipoCarta.CRIATURA) {
+
+                Image imagen = criaturasJugador.GetComponent<Image>();
+                imagen.color = new Color(imagen.color.r, imagen.color.b, imagen.color.g, 0.7f);
+            }
+
+            if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA) {
+
+                Image imagen = tierrasJugador.GetComponent<Image>();
+                imagen.color = new Color(imagen.color.r, imagen.color.b, imagen.color.g, 0.7f);
+            }
+
+            if(carta.tipoCarta == Arrastrable.TipoCarta.ENCANTEMIENTO
+            || carta.tipoCarta == Arrastrable.TipoCarta.ARTEFACTO) {
+
+                Image imagen = encantamientosJugador.GetComponent<Image>();
+                imagen.color = new Color(imagen.color.r, imagen.color.b, imagen.color.g, 0.7f);
+            }
+
+            if(carta.tipoCarta == Arrastrable.TipoCarta.CONJURO
+            || carta.tipoCarta == Arrastrable.TipoCarta.INSTANTANEO) {
+
+                Image imagen = pila.GetComponent<Image>();
+                imagen.color = new Color(imagen.color.r, imagen.color.b, imagen.color.g, 0.7f);
+            }
+        }
+    }
+
+    public float DistanciaZonas(GameObject zona) {
+
+        GameObject goCarta = carta.gameObject;
+        float xCarta = goCarta.transform.position.x;
+        float yCarta = goCarta.transform.position.y;
+        float xZona = zona.transform.position.x;
+        float yZona = zona.transform.position.y;
+
+        float distancia = Mathf.Sqrt(Mathf.Pow(xCarta-xZona, 2) + Mathf.Pow(yCarta-yCarta, 2));
+        float diagonal = Mathf.Sqrt(Mathf.Pow(xCarta-xZona, 2) + Mathf.Pow(yCarta-yCarta, 2)) * Mathf.Sqrt(2);
+
+        Debug.Log("RESULTADO: " + (distancia / diagonal));
+
+        return distancia / diagonal;
+    }
+
+    public void ApagarColor() {
+
+        Image imagen = criaturasJugador.GetComponent<Image>();
+        imagen.color = new Color(imagen.color.r, imagen.color.b, imagen.color.g, 0.0f);
+        imagen = tierrasJugador.GetComponent<Image>();
+        imagen.color = new Color(imagen.color.r, imagen.color.b, imagen.color.g, 0.0f);
+        imagen = encantamientosJugador.GetComponent<Image>();
+        imagen.color = new Color(imagen.color.r, imagen.color.b, imagen.color.g, 0.0f);
+        imagen = pila.GetComponent<Image>();
+        imagen.color = new Color(imagen.color.r, imagen.color.b, imagen.color.g, 0.0f);
     }
 
     public void Ordenar() {

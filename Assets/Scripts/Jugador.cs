@@ -15,6 +15,7 @@ public class Jugador : MonoBehaviour {
     public GameObject goCriaturas;
     public GameObject goCementerio;
     public GameObject goEncantamientos;
+    public GameObject goBaraja;
 
     public Partida partida;
     public Baraja baraja;
@@ -56,10 +57,16 @@ public class Jugador : MonoBehaviour {
         
         updateTime += Time.deltaTime;
 
-        if (updateTime > 1.0f && auraJugada) {
+        if(updateTime > 1.0f && auraJugada) {
 
             updateTime = 0.0f;
             AplicarBuffosPropios();
+        }
+
+        if(updateTime > 1.0f && baraja.cartas.Count == 0) {
+
+            updateTime = 0.0f;
+            goBaraja.transform.GetChild(0).gameObject.SetActive(false);
         }
     }
 
