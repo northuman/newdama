@@ -44,6 +44,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public int cantidadResueltos = 0;
 
     public GameObject clon;
+    public GameObject sombreado;
 
     public List<Efecto> resolviendo = new List<Efecto>();
 
@@ -66,6 +67,9 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         if(!(propietario is IA))
         gameObject.transform.Find("Dorso").gameObject.SetActive(false);
+        sombreado = gameObject.transform.Find("Sombreado").gameObject;
+        sombreado.SetActive(false);
+        sombreado.GetComponent<Image>().color = Color.black;
     }
 
     private void Update() {
@@ -101,9 +105,12 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         List<Efecto> listaClonada = new List<Efecto>();
 
-        foreach(Efecto e in es) {
+        if(es != null) {
 
-            if(e) { listaClonada.Add(Instantiate(e)); }
+            foreach(Efecto e in es) {
+
+                if(e) { listaClonada.Add(Instantiate(e)); }
+            }
         }
 
         return listaClonada;
@@ -184,7 +191,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         case 2: //Al atacar
                             
                             if (tipoCarta == TipoCarta.CRIATURA
-                                && atacando) {
+                                && atacando 
+                                && Partida.momentoCombate == Partida.Combate.DANYO) {
 
                                 if(!efecto.resuelto) {
 
@@ -272,6 +280,10 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 resolviendo.Remove(efecto);
                 propietario.criaturaJugada = null;
                 break;
+            case 7: //Danyo a objetivo
+                Debug.Log("Selecciona a qué objetivo deseas realizar el daño");
+                StartCoroutine(propietario.HacerDanyo(efecto));
+                break;
         }
         resolviendo.Remove(efecto);
     }
@@ -295,7 +307,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         CrearPlaceholder();
 
-        EnderezarCarta();
+        VoltearCarta();
 
         DropZone.carta = this;
 
@@ -338,22 +350,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         Destroy(placeholder);
     }
 
-    /*public void OnPointerEnter(PointerEventData eventData) {
-        
-        GameObject clon = Instantiate(this.gameObject, transform.position, transform.rotation);
-        clon.transform.SetParent(transform.parent);
-        Destroy(clon.GetComponent<Arrastrable>());
-        clon.GetComponent<LayoutElement>().ignoreLayout = true;
-        clon.transform.localScale = transform.localScale * 3.0f;
-        clon.transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y + 400, transform.localPosition.z);
-    }
-
-    public void OnPointerExit(PointerEventData eventData) {
-        
-        Debug.Log("SALE");
-        Destroy(clon);
-    }*/
-
     public void OnPointerClick(PointerEventData datosEvento) {
 
         if(SceneManager.GetActiveScene().name == "Arena") {
@@ -383,6 +379,12 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         propietario.cartaEquipada = this;
                         propietario.equipando = false;
                     }
+                }
+
+                else if(propietario.oponente.equipando) {
+
+                    propietario.oponente.cartaEquipada = this;
+                    propietario.oponente.equipando = false;
                 }
 
                 //Si tiene un Efecto Activado
@@ -452,6 +454,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                             else {
 
                                 atacante.AnyadirBloqueador(this);
+                                Debug.Log("BLOQUEO ACEPTADO");
                             }
                         }
 
@@ -460,18 +463,26 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                             atacante = this;
                         }
                     }
-
-                    else {
-
-                        //Debug.Log("NOTE CLICK PERO ME LA PELAS");
-                    }
                 }
             }
 
             if(datosEvento.button == PointerEventData.InputButton.Right) {
 
-                if(tamanyoAumentado) { ReducirTamanyoCarta(); }
-                else { AumentarTamanyoCarta(); }
+                if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
+                    && Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR
+                    && propietario == jugador && atacando == true) {
+
+                    CancelarAtaque();
+                }
+
+                else if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE
+                        && Partida.momentoCombate == Partida.Combate.BLOQUEADORES
+                        && Partida.turno == Partida.Turno.OPONENTE
+                        && propietario == jugador) {
+
+                    this.EliminarBloqueo();
+                    Debug.Log("BLOQUEO ELIMINADO");
+                }
             }
         }
     }
@@ -480,6 +491,12 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         GirarCarta();
         atacando = true;
+    }
+
+    public void CancelarAtaque() {
+
+        EnderezarCarta();
+        atacando = false;
     }
 
     public void InflingirDanyo(Jugador jugador) {
@@ -494,7 +511,41 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             this.bloqueadaPor.Add(b);
             b.bloqueandoA = this;
+
+            Color aleatorio;
+
+            if(this.sombreado.GetComponent<Image>().color == Color.black) {
+
+                do {
+                    aleatorio = new Color(UnityEngine.Random.value, UnityEngine.Random.value, UnityEngine.Random.value, 0.5f);
+                } while (aleatorio == Color.black);
+                
+                this.sombreado.GetComponent<Image>().color = aleatorio;
+            }
+
+            else {
+
+                aleatorio = this.sombreado.GetComponent<Image>().color;
+            }
+
+            b.sombreado.GetComponent<Image>().color = aleatorio;
+            this.sombreado.SetActive(true);
+            b.sombreado.SetActive(true);
         }
+    }
+
+    public void EliminarBloqueo() {
+
+        bloqueandoA.bloqueadaPor.Remove(this);
+        if(bloqueandoA.bloqueadaPor.Count == 0) {
+
+            bloqueandoA.sombreado.SetActive(false);
+            bloqueandoA.sombreado.GetComponent<Image>().color = Color.black;
+        }
+
+        this.sombreado.SetActive(false);
+        this.sombreado.GetComponent<Image>().color = Color.black;
+        bloqueandoA = null;
     }
 
     public void Combates() {
@@ -541,12 +592,21 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, -90f);
         cartaGirada = true;
+        Debug.Log("SALGO");
     }
 
     public void EnderezarCarta() {
 
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, 0f);
+        cartaGirada = false;
+    }
+
+    public void VoltearCarta() { //Solo a la hora de arrastrar la carta
+
+        Vector3 eulerAngles = transform.eulerAngles;
+        transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, 0f);
+        Debug.Log("ENTRO");
     }
 
     void AumentarTamanyoCarta() {
@@ -573,12 +633,15 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         string cadenaTipo = this.GetComponent<MostrarDatosCarta>().carta.tipoCarta;
 
-        if(cadenaTipo.Contains("Criatura")) { tipoCarta = TipoCarta.CRIATURA; }
-        else if(cadenaTipo.Contains("Conjuro")) { tipoCarta = TipoCarta.CONJURO; }
-        else if(cadenaTipo.Contains("Instantáneo")) { tipoCarta = TipoCarta.INSTANTANEO; }
-        else if(cadenaTipo.Contains("Artefacto")) { tipoCarta = TipoCarta.ARTEFACTO; }
-        else if(cadenaTipo.Contains("Encantamiento")) { tipoCarta = TipoCarta.ENCANTEMIENTO; }
-        else if(cadenaTipo.Contains("Tierra")) { tipoCarta = TipoCarta.TIERRA; }
+        if(cadenaTipo != null) {
+
+            if(cadenaTipo.Contains("Criatura")) { tipoCarta = TipoCarta.CRIATURA; }
+            else if(cadenaTipo.Contains("Conjuro")) { tipoCarta = TipoCarta.CONJURO; }
+            else if(cadenaTipo.Contains("Instantáneo")) { tipoCarta = TipoCarta.INSTANTANEO; }
+            else if(cadenaTipo.Contains("Artefacto")) { tipoCarta = TipoCarta.ARTEFACTO; }
+            else if(cadenaTipo.Contains("Encantamiento")) { tipoCarta = TipoCarta.ENCANTEMIENTO; }
+            else if(cadenaTipo.Contains("Tierra")) { tipoCarta = TipoCarta.TIERRA; }
+        }
     }
 
     void CrearPlaceholder() {
@@ -748,11 +811,26 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
     }
 
+    public void HacerDanyo(Efecto efecto) {
+
+        if(efecto.objetivo) {
+
+            this.resistenciaTemp -= efecto.cantidad;
+            this.ActualizarEstadisticas();
+            
+            if(resistenciaTemp <= 0) {
+
+                this.cartaMuerta = true;
+                this.IrCementerio(); 
+            }
+        }
+    }
+
     public void DarPalabrasClave(Efecto efecto) {
 
         if(efecto.objetivo) {
 
-            string buscar = "Marco Carta/Caracteristicas/Marco Descripcion/Caja Descripcion/Palabras Clave";
+            string buscar = "Marco Carta/Caracteristicas/Marco Descripcion/Palabras Clave";
             string texto = "";
             
             foreach(string palabraClave in efecto.otorgarPalabrasClave) {
@@ -772,7 +850,10 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         break;
                 }
             }
+            if(gameObject.transform.Find(buscar).GetComponentInChildren<TMPro.TextMeshProUGUI>())
             gameObject.transform.Find(buscar).GetComponentInChildren<TMPro.TextMeshProUGUI>().text = texto;
+            else
+            Debug.Log("Algo ha fallado");
         }
     }
 }

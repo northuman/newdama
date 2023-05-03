@@ -72,8 +72,6 @@ public class Partida : MonoBehaviour {
             yield return new WaitUntil(GetPasarFase);
             EndTurn();
             yield return new WaitForSeconds(2f);
-            
-            //break;
         }
     }
 
@@ -101,6 +99,9 @@ public class Partida : MonoBehaviour {
 
         jugador.permitidoJugarCartas = false;
         oponente.permitidoJugarCartas = false;
+
+        jugador.BorrarSombreados();
+        oponente.BorrarSombreados();
 
         if(turno == Turno.JUGADOR) { 
             
@@ -134,6 +135,7 @@ public class Partida : MonoBehaviour {
     void Enfrentamientos() {
 
         continuarFase = false;
+        momentoCombate = Combate.DANYO;
 
         Debug.Log("Enfrentamientos");
 

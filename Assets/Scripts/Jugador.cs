@@ -233,7 +233,19 @@ public class Jugador : MonoBehaviour {
         return !descartando;
     }
 
-    public IEnumerator DarPalabrasClave(Efecto efecto) {
+    public IEnumerator HacerDanyo(Efecto efecto) {
+
+        if(!efecto.objetivo) {
+
+            equipando = true;
+            yield return new WaitUntil(EquipandoCarta);
+            efecto.objetivo = cartaEquipada;
+            cartaEquipada.HacerDanyo(efecto);
+            cartaEquipada = null;
+        }
+    }
+
+    public IEnumerator DarPalabrasClave(Efecto efecto) { 
 
         if(!efecto.objetivo) {
 
@@ -469,5 +481,20 @@ public class Jugador : MonoBehaviour {
         }
 
         return estadisticas;
+    }
+
+    public void BorrarSombreados() {
+
+        foreach(Transform child in goCriaturas.transform) {
+
+            child.GetComponent<Arrastrable>().sombreado.GetComponent<Image>().color = Color.black;
+            child.GetComponent<Arrastrable>().sombreado.SetActive(false);
+        }
+
+        foreach(Transform child in goCementerio.transform) {
+
+            child.GetComponent<Arrastrable>().sombreado.GetComponent<Image>().color = Color.black;
+            child.GetComponent<Arrastrable>().sombreado.SetActive(false);
+        }
     }
 }

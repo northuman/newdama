@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
+  m_Name: Baron
+  m_EditorClassIdentifier: 
+  nombreCarta: "Bar\xF3n"
+  costeMana: 0100000000000000000000000000000000000000
+  palabrasClave: 
+  descripcion: "Cuando el Bar\xF3n entra al campo de batalla, hace 2 de da\xF1o a
+    cualquier objetivo."
+  flavour: "-Deben ser ya unos 50 los hombres de armas que he logrado reunir de los
+    diversos territorios que alcanzan mis dominios. Espero que sean suficientes para
+    reforzar las guarniciones de los asentamientos fronterizos situados al sur. Sin
+    embargo, no puedo evitar pensar que sin entrenamiento ni experiencia militar
+    alguna, estos \u201Csoldados\u201D sirvan de poco si los moriscos deciden provocar
+    tumultos o des\xF3rdenes. \xA1Maldita sea, yo mismo podr\xEDa hacer m\xE1s que
+    todos estos rufianes juntos!"
+  tipoCarta: Criatura
+  tiposConcretos: "Com\xFAn"
+  fuerza: 2
+  resistencia: 2
+  cantidadMana: 
+  cantidadMana2: 
+  efectos:
+  - {fileID: 11400000, guid: df882a5163a4a924da1c3a9762e75fab, type: 2}

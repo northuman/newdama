@@ -25,21 +25,25 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         tierrasJugador = GameObject.Find("Tierras Jugador");
         criaturasJugador = GameObject.Find("Criaturas Jugador");
         encantamientosJugador = GameObject.Find("Encantamientos Jugador");
-        jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
+        if(SceneManager.GetActiveScene().name == "Arena")
+            jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
     }
 
     private void Update() {
-        
-        updateTime += Time.deltaTime;
 
-        if(carta && updateTime > 1.0f) {
+        if(SceneManager.GetActiveScene().name == "Arena") {
 
-            AumentarColor(carta);
-            updateTime = 0.0f;
-        }
+            updateTime += Time.deltaTime;
 
-        if(!carta)
-            ApagarColor();
+            if(carta && updateTime > 1.0f) {
+
+                AumentarColor(carta);
+                updateTime = 0.0f;
+            }
+
+            if(!carta)
+                ApagarColor();
+        } 
     }
     
     public void OnPointerEnter(PointerEventData datosEvento) {

@@ -246,12 +246,17 @@ public class IA : Jugador {
                         atacantes.Add(criaturaIA);
                     }
 
-                    else if(CantidadCriaturasActivas() > jugador.CantidadCriaturasEnMesa()) {
+                    else if(CantidadCriaturasActivas() >= jugador.CantidadCriaturasEnderezadas()) {
 
                         if (criaturaIA.fuerzaTemp >= criaturaJug.resistenciaTemp &&
                             criaturaIA.resistenciaTemp >= criaturaJug.fuerzaTemp) {
 
                             atacantes.Add(criaturaIA);
+                        }
+
+                        else {
+
+                            Debug.Log("PASO POR AQUI");
                         }
                     }
 
@@ -435,13 +440,15 @@ public class IA : Jugador {
 
             Arrastrable arrastrable = child.GetComponent<Arrastrable>();
             
-            if(!arrastrable.bloqueando && arrastrable.fuerzaTemp >= arrastrableOponente.resistenciaTemp 
+            if(!arrastrable.cartaGirada && !arrastrable.bloqueando
+            && arrastrable.fuerzaTemp >= arrastrableOponente.resistenciaTemp 
             && arrastrable.resistenciaTemp > arrastrableOponente.fuerzaTemp) {
 
                 Debug.Log(arrastrable.GetCarta().nombreCarta + " BLOQUEA A " + arrastrableOponente.GetCarta().nombreCarta);
 
                 arrastrable.bloqueando = true;
-                arrastrableOponente.bloqueadaPor.Add(arrastrable);
+                //arrastrableOponente.bloqueadaPor.Add(arrastrable);
+                arrastrableOponente.AnyadirBloqueador(arrastrable);
                 return true;
             }
         }

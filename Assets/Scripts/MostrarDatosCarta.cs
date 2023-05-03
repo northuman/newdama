@@ -56,7 +56,7 @@ public class MostrarDatosCarta : MonoBehaviour {
         //   in ro bl ve ne
         //int[0][0][0][0][0]
 
-        if(carta.costeMana.Length < 5) {return null;}
+        if(carta.costeMana == null || carta.costeMana.Length < 5) {return null;}
 
         string resultado = "";
 
@@ -119,99 +119,102 @@ public class MostrarDatosCarta : MonoBehaviour {
 
         bool primerColor = false, segundoColor = false, tercerColor = false; 
 
-        if(carta.tipoCarta.Contains("Tierra")) {
+        if(carta.tipoCarta != null) {
 
-            if(carta.tiposConcretos.Contains("Señorío")) {
+            if(carta.tipoCarta.Contains("Tierra")) {
 
-                color1.color = colores[0];
-                color2.color = colores[0];
-                primerColor = true;
-            }
+                if(carta.tiposConcretos.Contains("Señorío")) {
 
-            if(carta.tiposConcretos.Contains("Parroquia")) {
-                
-                if(!primerColor) {
-
-                    color1.color = colores[1];
-                    color2.color = colores[1];
+                    color1.color = colores[0];
+                    color2.color = colores[0];
+                    primerColor = true;
                 }
 
-                else {
+                if(carta.tiposConcretos.Contains("Parroquia")) {
+                    
+                    if(!primerColor) {
 
-                    color2.color = colores[1];
-                    segundoColor = true;
-                }
-            }
+                        color1.color = colores[1];
+                        color2.color = colores[1];
+                    }
 
-            if(carta.tiposConcretos.Contains("Bosque")) {
+                    else {
 
-                if(!primerColor) {
-
-                    color1.color = colores[2];
-                    color2.color = colores[2];
-                }
-
-                else if(!segundoColor) {
-
-                    color2.color = colores[2];
-                    segundoColor = true;
+                        color2.color = colores[1];
+                        segundoColor = true;
+                    }
                 }
 
-                else { tercerColor = true; }
-            }
-
-            if(carta.tiposConcretos.Contains("Pantano")) {
-
-                if(!primerColor) {
-
-                    color1.color = colores[3];
-                    color2.color = colores[3];
-                }
-
-                else if(!segundoColor) {
-
-                    color2.color = colores[3];
-                    segundoColor = true;
-                }
-
-                else { tercerColor = true; }
-            }
-        }
-
-        else {
-
-            //Para saber cuantos colores tiene la carta
-
-            for(int i=1; i<carta.costeMana.Length; i++) {
-
-                if(carta.costeMana[i] > 0) {
+                if(carta.tiposConcretos.Contains("Bosque")) {
 
                     if(!primerColor) {
 
-                        color1.color = colores[i-1];
-                        color2.color = colores[i-1];
-                        primerColor = true;
+                        color1.color = colores[2];
+                        color2.color = colores[2];
                     }
 
                     else if(!segundoColor) {
 
-                        color2.color = colores[i-1];
+                        color2.color = colores[2];
                         segundoColor = true;
                     }
 
-                    else if(!tercerColor) {
+                    else { tercerColor = true; }
+                }
 
-                        tercerColor = true;
-                        break;
+                if(carta.tiposConcretos.Contains("Pantano")) {
+
+                    if(!primerColor) {
+
+                        color1.color = colores[3];
+                        color2.color = colores[3];
+                    }
+
+                    else if(!segundoColor) {
+
+                        color2.color = colores[3];
+                        segundoColor = true;
+                    }
+
+                    else { tercerColor = true; }
+                }
+            }
+
+            else {
+
+                //Para saber cuantos colores tiene la carta
+
+                for(int i=1; i<carta.costeMana.Length; i++) {
+
+                    if(carta.costeMana[i] > 0) {
+
+                        if(!primerColor) {
+
+                            color1.color = colores[i-1];
+                            color2.color = colores[i-1];
+                            primerColor = true;
+                        }
+
+                        else if(!segundoColor) {
+
+                            color2.color = colores[i-1];
+                            segundoColor = true;
+                        }
+
+                        else if(!tercerColor) {
+
+                            tercerColor = true;
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        if(tercerColor) {
+            if(tercerColor) {
 
-            color1.color = colores[4];
-            color2.color = colores[4];
+                color1.color = colores[4];
+                color2.color = colores[4];
+            }
         }
     }
 
