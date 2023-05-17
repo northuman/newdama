@@ -151,7 +151,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                                 if(!efecto.resuelto && this.transform.parent == GameObject.Find("Pila").transform) {
 
                                     resolviendo.Add(efecto);
-                                    efecto.resuelto = true;
+                                    //efecto.resuelto = true;
                                 }
                             }
 
@@ -226,7 +226,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 }
             }
 
-            if(tipoCarta == TipoCarta.CONJURO && EfectosResueltos()) {
+            if((tipoCarta == TipoCarta.CONJURO || tipoCarta == TipoCarta.INSTANTANEO) 
+                && EfectosResueltos()) {
 
                 cartaMuerta = true;
                 propietario.noPermanenteJugado = null;
@@ -291,6 +292,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             case 6: //Ganar Vidas
                 Debug.Log(propietario.name + " gana " + efecto.cantidad + " vida/as");
+                efecto.resuelto = true;
                 propietario.GanarVidas(efecto.cantidad);
                 resolviendo.Remove(efecto);
                 propietario.criaturaJugada = null;

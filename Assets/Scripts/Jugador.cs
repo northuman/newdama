@@ -247,6 +247,7 @@ public class Jugador : MonoBehaviour {
             efecto.objetivo = cartaEquipada;
             cartaEquipada.HacerDanyo(efecto);
             cartaEquipada = null;
+            efecto.resuelto = true;
         }
     }
 
