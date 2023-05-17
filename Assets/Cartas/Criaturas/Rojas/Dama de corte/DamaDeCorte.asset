@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DamaDeCorte
   m_EditorClassIdentifier: 
   nombreCarta: Dama de corte
-  costeMana: 0200000001000000000000000000000000000000
+  costeMana: 0000000001000000000000000000000000000000
   palabrasClave: 
   descripcion: "Cada vez que juegues un instant\xE1neo o un conjuro puedes pagar
     R. Pon un contador +1/+1 a la criatura objetivo."

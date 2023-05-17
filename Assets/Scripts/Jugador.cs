@@ -31,6 +31,8 @@ public class Jugador : MonoBehaviour {
     public bool descartando = false;
     public bool equipando = false;
     public bool pagandoCoste = false;
+    public bool costePagado = false;
+    public int[] coste = null;
     public bool poniendoContadores = false;
     public Arrastrable cartaEquipada = null;
     public Arrastrable equipo = null;
@@ -250,9 +252,12 @@ public class Jugador : MonoBehaviour {
 
     public IEnumerator PonerContadores(Efecto efecto) {
 
+        Debug.Log("ENTRAMOS A CONTADORES");
+
         if(!efecto.costePagado) {
 
             pagandoCoste = true;
+            coste = efecto.coste;
             yield return new WaitUntil(PagandoCoste);
             poniendoContadores = true;
             Debug.Log("Elige a qué criatura ponerle contadores");
@@ -308,6 +313,21 @@ public class Jugador : MonoBehaviour {
         return !poniendoContadores;
     }
 
+    public void ComprobarCoste() {
+
+        if(tierras.SuficienteMana(coste)) {
+
+            pagandoCoste = false;
+            costePagado = true;
+            Debug.Log("SUFICIENTE MANA");
+        }
+
+        else {
+
+            Debug.Log("FALTA MANA");
+        }
+    }
+
     public void AnyadirAura(Aura aura) {
         
         auraJugada = true;
@@ -361,6 +381,8 @@ public class Jugador : MonoBehaviour {
                     a.AplicarBuffo(mejoraEstadisticasPropias);
                 if(bajadaEstadisticasPropias.Length == 2)
                     a.AplicarBuffo(bajadaEstadisticasPropias);
+                if(a.contadores > 0)
+                    a.AplicarBuffoContadores();
                 a.ActualizarEstadisticas();
                 a.buffoJugadorAplicado = true;
             }

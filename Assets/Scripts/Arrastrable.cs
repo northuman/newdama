@@ -320,6 +320,12 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         this.resistenciaTemp += estadisticas[1];
     }
 
+    public void AplicarBuffoContadores() {
+
+        this.fuerzaTemp += contadores;
+        this.resistenciaTemp += contadores;
+    }
+
     public void OnBeginDrag(PointerEventData datosEvento) {
 
         AumentarTamanyoCarta();
@@ -393,7 +399,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         propietario.AnyadirMana(carta);
                         GirarCarta();
                         this.transform.SetAsLastSibling();
-                        propietario.pagandoCoste = false;
+                        propietario.ComprobarCoste();
                     }
                 }
 
@@ -837,7 +843,9 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         if(efecto.objetivo) {
 
-            Debug.Log("DEMASIADO LEJOS HABRIAMOS LLEGADO");
+            efecto.objetivo.contadores += efecto.cantidad;
+            propietario.ResetearEstadisticasPropias();
+            propietario.AplicarBuffosPropios();
         }
     }
 
