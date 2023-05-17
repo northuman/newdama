@@ -24,6 +24,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public bool atacando = false;
     public bool bloqueando = false;
     public bool mareo = false;
+    public int contadores = 0;
     public bool buffoJugadorAplicado = false;
     public static Arrastrable bloqueador = null;
     public static Arrastrable atacante = null;
@@ -84,7 +85,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                     updateTime = 0.0f;
                     ResolverEfecto(resolviendo[0]);
-                    resolviendo.Remove(resolviendo[0]);
                 }
             }
 
@@ -253,7 +253,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
             case -1: //Pruebas de efectos nuevos
 
-                Debug.Log("HEMOS LLEGADO");
+                Debug.Log("HEMOS LLEGADO A -1");
                 break;
 
             case 0: //Robar X cartas
@@ -299,8 +299,12 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 Debug.Log("Selecciona a qué objetivo deseas realizar el daño");
                 StartCoroutine(propietario.HacerDanyo(efecto));
                 break;
+            case 8: //Contadores pagando un mana rojo
+                Debug.Log("¿Pagar maná para poner contadores?");
+                StartCoroutine(propietario.PonerContadores(efecto));
+                break;
         }
-        //propietario.resolviendo.Remove(efecto);
+        resolviendo.Remove(efecto);
     }
 
     public void ResetearEstadisticas() {
@@ -379,6 +383,27 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     cartaEnMano = false;
                     IrCementerio();
                     propietario.DescartarCarta();
+                }
+
+                else if(propietario.pagandoCoste
+                        && tipoCarta == TipoCarta.TIERRA) {
+
+                    if(!cartaGirada) {
+
+                        propietario.AnyadirMana(carta);
+                        GirarCarta();
+                        this.transform.SetAsLastSibling();
+                        propietario.pagandoCoste = false;
+                    }
+                }
+
+                else if(propietario.poniendoContadores) {
+
+                    if(tipoCarta == TipoCarta.CRIATURA) {
+
+                        propietario.cartaEquipada = this;
+                        propietario.poniendoContadores = false;
+                    }
                 }
 
                 else if(propietario.equipando && resolviendo.Count == 0) {
@@ -806,6 +831,14 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
 
         return afectada;
+    }
+
+    public void PonerContadores(Efecto efecto) {
+
+        if(efecto.objetivo) {
+
+            Debug.Log("DEMASIADO LEJOS HABRIAMOS LLEGADO");
+        }
     }
 
     public void EscribirNombreEquipada(Efecto efecto) {

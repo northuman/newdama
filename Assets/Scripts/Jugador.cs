@@ -30,6 +30,8 @@ public class Jugador : MonoBehaviour {
 
     public bool descartando = false;
     public bool equipando = false;
+    public bool pagandoCoste = false;
+    public bool poniendoContadores = false;
     public Arrastrable cartaEquipada = null;
     public Arrastrable equipo = null;
     public int cartasPorDescartar = 0;
@@ -246,6 +248,20 @@ public class Jugador : MonoBehaviour {
         }
     }
 
+    public IEnumerator PonerContadores(Efecto efecto) {
+
+        if(!efecto.costePagado) {
+
+            pagandoCoste = true;
+            yield return new WaitUntil(PagandoCoste);
+            poniendoContadores = true;
+            Debug.Log("Elige a qué criatura ponerle contadores");
+            yield return new WaitUntil(PoniendoContadores);
+            efecto.objetivo = cartaEquipada;
+            cartaEquipada.PonerContadores(efecto);
+        }
+    }
+
     public IEnumerator DarPalabrasClave(Efecto efecto) { 
 
         if(!efecto.objetivo) {
@@ -257,6 +273,7 @@ public class Jugador : MonoBehaviour {
             cartaEquipada = null;
         }
     }
+
 
     public IEnumerator EquiparCarta(Efecto efecto) {
 
@@ -279,6 +296,16 @@ public class Jugador : MonoBehaviour {
     public bool EquipandoCarta() {
 
         return !equipando;
+    }
+
+    public bool PagandoCoste() {
+
+        return !pagandoCoste;
+    }
+
+    public bool PoniendoContadores() {
+
+        return !poniendoContadores;
     }
 
     public void AnyadirAura(Aura aura) {

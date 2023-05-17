@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Poner Contadores
   m_EditorClassIdentifier: 
   condicion: 4
-  habilidad: -1
+  habilidad: 8
   cantidad: 1
+  costePagado: 0
+  coste: 0000000001000000000000000000000000000000
   palabrasClave: []
   otorgarPalabrasClave: []
   mejoraEstadisticasPropias: 

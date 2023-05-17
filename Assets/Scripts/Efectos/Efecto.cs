@@ -9,6 +9,8 @@ public class Efecto : ScriptableObject {
     public int condicion;
     public int habilidad;
     public int cantidad;
+    public bool costePagado;
+    public int[] coste;
     public string[] palabrasClave;
     public string[] otorgarPalabrasClave;
     public int[] mejoraEstadisticasPropias;
