@@ -49,25 +49,13 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     public void OnPointerEnter(PointerEventData datosEvento) {
 
         if(datosEvento.pointerDrag == null) { return; }
-
         Arrastrable carta = datosEvento.pointerDrag.GetComponent<Arrastrable>();
-
-        /*if(carta != null) {
-
-
-        }*/
     }
 
     public void OnPointerExit(PointerEventData datosEvento) {
 
         if(datosEvento.pointerDrag == null) { return; }
-
         Arrastrable carta = datosEvento.pointerDrag.GetComponent<Arrastrable>();
-
-        /*if(carta != null && carta.padrePlaceholder == this.transform) {
-
-
-        }*/
     }
 
     public void OnDrop(PointerEventData datosEvento) {
@@ -89,7 +77,6 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                                 if(carta.propietario.tierraDelTurnoJugada == false && this.transform.parent != manoJugador.transform) {
 
                                     carta.NuevoPadre(tierrasJugador.transform);
-                                    //carta.CambiarEscala(0.75f);
                                     carta.cartaEnMano = false;
                                     carta.propietario.tierraDelTurnoJugada = true;
                                     tierrasJugador.GetComponent<DropZone>().Ordenar();
@@ -109,8 +96,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                                     carta.ColocarCarta();
                                     carta.propietario.criaturaJugada = carta;
-                                    /*carta.NuevoPadre(criaturasJugador.transform);
-                                    carta.cartaEnMano = false;*/
+                                    Debug.Log("HE JUGADO UNA CRIATURA");
                                 }
                             }
 
@@ -121,7 +107,9 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                                 if(jugarCarta) {
 
                                     carta.NuevoPadre(pila.transform);
+                                    carta.propietario.noPermanenteJugado = carta;
                                     carta.cartaEnMano = false;
+                                    Debug.Log("HE JUGADO UN CONJURO");
                                 }
                             }
 
@@ -132,7 +120,6 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                                 if(jugarCarta) {
 
                                     carta.NuevoPadre(encantamientosJugador.transform);
-                                    //carta.CambiarEscala(0.75f);
                                     carta.cartaEnMano = false;
                                 }
                             }
@@ -155,14 +142,6 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     }
 
     public void AumentarColor(Arrastrable carta) {
-
-        /*
-        pila = GameObject.Find("Pila");
-        manoJugador = GameObject.Find("Mano Jugador");
-        tierrasJugador = GameObject.Find("Tierras Jugador");
-        criaturasJugador = GameObject.Find("Criaturas Jugador");
-        encantamientosJugador = GameObject.Find("Encantamientos Jugador");
-        */
 
         if(carta.propietario == jugador && carta.cartaEnMano) {
 

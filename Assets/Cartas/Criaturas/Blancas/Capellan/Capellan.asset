@@ -24,7 +24,7 @@ MonoBehaviour:
     temprano para la misa antes del combate. Dios m\xEDo, ay\xFAdame a persistir
     en mi dif\xEDcil labor."
   tipoCarta: Criatura
-  tiposConcretos: 
+  tiposConcretos: "Com\xFAn"
   fuerza: 1
   resistencia: 1
   cantidadMana: 

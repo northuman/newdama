@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
+  m_Name: DamaDeCorte
+  m_EditorClassIdentifier: 
+  nombreCarta: Dama de corte
+  costeMana: 0200000001000000000000000000000000000000
+  palabrasClave: 
+  descripcion: "Cada vez que juegues un instant\xE1neo o un conjuro puedes pagar
+    R. Pon un contador +1/+1 a la criatura objetivo."
+  flavour: "-No puedo creer que la reina me haya elegido a m\xED para pasar a formar
+    parte de su s\xE9quito. Conozco a m\xE1s de una marquesa o condesa que matar\xEDa
+    por obtener este honor. Ser\xE9 la primera en enterarme de las tendencias dentro
+    de la Corte e incluso ver\xE9 las novedades de la moda tra\xEDda desde Francia.
+    Tal vez pueda incluso conseguir la amistad de la reina si me esmero por agradarle."
+  tipoCarta: Criatura
+  tiposConcretos: "Com\xFAn"
+  fuerza: 1
+  resistencia: 1
+  cantidadMana: 
+  cantidadMana2: 
+  efectos:
+  - {fileID: 11400000, guid: a5c6178fcc481c145b23768e97d29cbf, type: 2}

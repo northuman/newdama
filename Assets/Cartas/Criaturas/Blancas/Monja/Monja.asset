@@ -24,7 +24,7 @@ MonoBehaviour:
     las labores religiosas, la biblioteca me proporciona conocimientos que jam\xE1s
     hubiera podido imaginar."
   tipoCarta: Criatura
-  tiposConcretos: 
+  tiposConcretos: "Com\xFAn"
   fuerza: 1
   resistencia: 2
   cantidadMana: 

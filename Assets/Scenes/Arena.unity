@@ -181,6 +181,7 @@ MonoBehaviour:
   reduccionIncolora: 00000000000000000000000000000000
   auraJugada: 0
   criaturaJugada: {fileID: 0}
+  noPermanenteJugado: {fileID: 0}
   clickable: {fileID: 0}
 --- !u!4 &89439332
 Transform:
@@ -851,6 +852,7 @@ MonoBehaviour:
   reduccionIncolora: 00000000000000000000000000000000
   auraJugada: 0
   criaturaJugada: {fileID: 0}
+  noPermanenteJugado: {fileID: 0}
   clickable: {fileID: 0}
   jugador: {fileID: 89439331}
   finJugarCriaturas: 0
@@ -1894,13 +1896,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propietario: {fileID: 0}
   cartas:
-  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
-  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
-  - {fileID: 11400000, guid: 555df3b312783064889ff91c1aedce2c, type: 2}
-  - {fileID: 11400000, guid: 555df3b312783064889ff91c1aedce2c, type: 2}
-  - {fileID: 11400000, guid: 555df3b312783064889ff91c1aedce2c, type: 2}
-  - {fileID: 11400000, guid: 555df3b312783064889ff91c1aedce2c, type: 2}
-  - {fileID: 11400000, guid: 555df3b312783064889ff91c1aedce2c, type: 2}
+  - {fileID: 11400000, guid: c64269bbe2602cb4c8b696100ff73727, type: 2}
+  - {fileID: 11400000, guid: c64269bbe2602cb4c8b696100ff73727, type: 2}
+  - {fileID: 11400000, guid: c64269bbe2602cb4c8b696100ff73727, type: 2}
+  - {fileID: 11400000, guid: c64269bbe2602cb4c8b696100ff73727, type: 2}
+  - {fileID: 11400000, guid: c64269bbe2602cb4c8b696100ff73727, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
   - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
   - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
   - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
@@ -3416,7 +3418,6 @@ GameObject:
   - component: {fileID: 1667085386}
   - component: {fileID: 1667085385}
   - component: {fileID: 1667085384}
-  - component: {fileID: 1667085387}
   m_Layer: 5
   m_Name: Vidas Oponente
   m_TagString: Untagged
@@ -3496,43 +3497,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1667085382}
   m_CullTransparentMesh: 1
---- !u!114 &1667085387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1667085382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9474941f1414c094a8a56faca29887ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  padreOriginal: {fileID: 0}
-  padrePlaceholder: {fileID: 0}
-  escalaOriginal: {x: 0, y: 0, z: 0}
-  fuerzaTemp: 0
-  resistenciaTemp: 0
-  tamanyoAumentado: 0
-  visible: 1
-  cartaGirada: 0
-  cartaMuerta: 0
-  cartaEnMano: 1
-  atacando: 0
-  bloqueando: 0
-  mareo: 0
-  buffoJugadorAplicado: 0
-  bloqueadaPor: []
-  bloqueandoA: {fileID: 0}
-  tipoCarta: 6
-  propietario: {fileID: 250509431}
-  carta: {fileID: 0}
-  datosCarta: {fileID: 0}
-  efectos: []
-  cantidadResueltos: 0
-  clon: {fileID: 0}
-  sombreado: {fileID: 0}
-  resolviendo: []
 --- !u!1 &1699854135
 GameObject:
   m_ObjectHideFlags: 0
@@ -4593,16 +4557,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   propietario: {fileID: 0}
   cartas:
-  - {fileID: 11400000, guid: 0a5f3b3697951fa4a912d68fb5534272, type: 2}
-  - {fileID: 11400000, guid: 0a5f3b3697951fa4a912d68fb5534272, type: 2}
-  - {fileID: 11400000, guid: 0a5f3b3697951fa4a912d68fb5534272, type: 2}
-  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
-  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
-  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
-  - {fileID: 11400000, guid: 0bb18b5d3a2973c4ea0fa28bcf313d8d, type: 2}
-  - {fileID: 11400000, guid: 0bb18b5d3a2973c4ea0fa28bcf313d8d, type: 2}
-  - {fileID: 11400000, guid: 0bb18b5d3a2973c4ea0fa28bcf313d8d, type: 2}
-  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
   - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
   - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
   - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}

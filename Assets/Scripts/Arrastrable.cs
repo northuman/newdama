@@ -40,7 +40,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public Carta carta;
     public MostrarDatosCarta datosCarta;
     public List<Efecto> efectos;
-    //public bool efectosResueltos = false;
     public int cantidadResueltos = 0;
 
     public GameObject clon;
@@ -59,6 +58,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         efectos = ClonarEfectos(carta.efectos);
         ResetearEstadisticas();
         ObtenerTipoCarta();
+        
         if(SceneManager.GetActiveScene().name == "Arena") {
 
             jugador = GameObject.Find("Jugador").GetComponent<Jugador>();
@@ -84,6 +84,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                     updateTime = 0.0f;
                     ResolverEfecto(resolviendo[0]);
+                    resolviendo.Remove(resolviendo[0]);
                 }
             }
 
@@ -129,8 +130,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             foreach(Efecto efecto in efectos) {
 
                 if(efecto) {
-
-                    //if(efecto.resuelto || efecto is Activado) { cantidadResueltos++; } //|| efecto is Aura
 
                     switch(efecto.condicion) {
 
@@ -213,6 +212,16 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                             }
 
                             break;
+
+                        case 4: //Cuando un conjuro o un instantaneo entra al campo de batalla
+
+                            if(propietario.noPermanenteJugado) {
+
+                                resolviendo.Add(efecto);
+                                propietario.noPermanenteJugado = null;
+                            }
+        
+                            break;
                     }
                 }
             }
@@ -220,6 +229,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             if(tipoCarta == TipoCarta.CONJURO && EfectosResueltos()) {
 
                 cartaMuerta = true;
+                propietario.noPermanenteJugado = null;
                 IrCementerio();
             }
         }
@@ -240,6 +250,11 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void ResolverEfecto(Efecto efecto) {
 
         switch(efecto.habilidad) {
+
+            case -1: //Pruebas de efectos nuevos
+
+                Debug.Log("HEMOS LLEGADO");
+                break;
 
             case 0: //Robar X cartas
                 
@@ -285,7 +300,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 StartCoroutine(propietario.HacerDanyo(efecto));
                 break;
         }
-        resolviendo.Remove(efecto);
+        //propietario.resolviendo.Remove(efecto);
     }
 
     public void ResetearEstadisticas() {
@@ -592,7 +607,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, -90f);
         cartaGirada = true;
-        Debug.Log("SALGO");
     }
 
     public void EnderezarCarta() {
@@ -606,7 +620,6 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         Vector3 eulerAngles = transform.eulerAngles;
         transform.rotation = Quaternion.Euler(eulerAngles.x, eulerAngles.y, 0f);
-        Debug.Log("ENTRO");
     }
 
     void AumentarTamanyoCarta() {

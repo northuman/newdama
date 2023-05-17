@@ -24,7 +24,7 @@ MonoBehaviour:
     a afirmar que hemos requisado numerosas piezas de artiller\xEDa enemigas que
     podr\xEDamos usar en nuestro favor!"
   tipoCarta: Criatura
-  tiposConcretos: 
+  tiposConcretos: "Com\xFAn"
   fuerza: 1
   resistencia: 1
   cantidadMana: 

@@ -41,6 +41,7 @@ public class Jugador : MonoBehaviour {
     public int[] reduccionIncolora;
     public bool auraJugada = false;
     public Arrastrable criaturaJugada = null;
+    public Arrastrable noPermanenteJugado = null;
     
     public Efecto clickable = null;
 

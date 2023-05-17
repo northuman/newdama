@@ -379,7 +379,7 @@ public class IA : Jugador {
             List<Arrastrable> sinBloquear = jugador.CriaturasAtacando();
             List<Arrastrable> setForDestruction = new List<Arrastrable>();
 
-            if(danyoTotal < vida) {
+            //if(danyoTotal < vida) {
 
                 foreach(Transform child in jugador.goCriaturas.transform) {
 
@@ -410,13 +410,12 @@ public class IA : Jugador {
                                     criatura.bloqueadaPor.Add(a1);
                                     criatura.bloqueadaPor.Add(a2);
                                     Partida.momentoCombate = Partida.Combate.ORDEN_BLOQUEADORES;
-                                    //Partida.ModificarBoton();
                                 }
                             }
                         }
                     }
                 }
-            }
+            //}
 
             //Sumar fuerza total de los atacantes
             
