@@ -113,6 +113,19 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                                 }
                             }
 
+                            if(carta.tipoCarta == Arrastrable.TipoCarta.INSTANTANEO) {
+
+                                bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
+
+                                if(jugarCarta) {
+
+                                    carta.NuevoPadre(pila.transform);
+                                    carta.propietario.noPermanenteJugado = carta;
+                                    carta.cartaEnMano = false;
+                                    Debug.Log("HE JUGADO UN INSTANTANEO");
+                                }
+                            }
+
                             if(carta.tipoCarta == Arrastrable.TipoCarta.ARTEFACTO || carta.tipoCarta == Arrastrable.TipoCarta.ENCANTEMIENTO) {
 
                                 bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
