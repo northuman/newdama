@@ -8,13 +8,16 @@ public class IA : Jugador {
     const float TIEMPO_ESPERA = 2f;
 
     public Jugador jugador;
+    public GameObject goPila;
     public bool finJugarCriaturas = false;
 
     public IEnumerator JugarPrincipal() {
 
         JugarTierra();
         yield return new WaitForSeconds(TIEMPO_ESPERA);
-        JugarEncantamiento();
+        //JugarEncantamiento();
+        //yield return new WaitForSeconds(TIEMPO_ESPERA);
+        JugarInstantaneo();
         yield return new WaitForSeconds(TIEMPO_ESPERA);
         StartCoroutine(JugarCriaturas());
         yield return new WaitUntil(GetFinJugarCriaturas);
@@ -172,6 +175,46 @@ public class IA : Jugador {
     }
 
     //Encantamientos --------------------------------------------------------------------------------------------
+
+    //Instantaneos ----------------------------------------------------------------------------------------------
+
+    public void JugarInstantaneo() {
+
+        int manaDisponible = ManaRestante();
+
+        Arrastrable encantamiento = InstantaneoJugable(manaDisponible);
+
+        if(encantamiento) {
+
+            PagarCoste(encantamiento.GetCarta().CosteTotal());
+            encantamiento.padreOriginal = goPila.transform;
+            encantamiento.transform.SetParent(goPila.transform);
+            encantamiento.cartaEnMano = false;
+            encantamiento.MostrarCarta();
+        }
+
+        //for para comprobar efectos y mandar al cementerio
+    }
+
+    public Arrastrable InstantaneoJugable(int mana) {
+
+        foreach(Transform child in goMano.transform) {
+
+            Arrastrable a = child.GetComponent<Arrastrable>();
+
+            if(a.tipoCarta == Arrastrable.TipoCarta.INSTANTANEO) {
+
+                if(a.GetCarta().CosteTotal() <= mana) {
+
+                    return a;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    //Instantaneos ----------------------------------------------------------------------------------------------
 
     //Combate ---------------------------------------------------------------------------------------------------
 

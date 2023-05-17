@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
+  m_Name: Bendicion episcopal
+  m_EditorClassIdentifier: 
+  nombreCarta: "Bendici\xF3n episcopal"
+  costeMana: 0100000000000000010000000000000000000000
+  palabrasClave: 
+  descripcion: Ganas 3 vidas. Roba una carta.
+  flavour: "\u201CEn la doctrina cristiana, los deseos benignos son algo de lo m\xE1s
+    com\xFAn. Sin embargo, algunas de estas consagraciones solo est\xE1n permitidas
+    a los cargos m\xE1s importantes de la Iglesia. De entre estos, destacan los obispos,
+    ministros sagrados cuya misi\xF3n es vigilar la cristiandad y guiarla por el
+    buen camino\u201D."
+  tipoCarta: "Instant\xE1neo"
+  tiposConcretos: "Com\xFAn"
+  fuerza: 0
+  resistencia: 0
+  cantidadMana: 
+  cantidadMana2: 
+  efectos:
+  - {fileID: 11400000, guid: 5aca941078e57e9449232ca6c43e72ec, type: 2}
+  - {fileID: 11400000, guid: 954706e27e608f04086d3ecf39ba40a5, type: 2}

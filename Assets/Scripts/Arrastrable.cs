@@ -146,7 +146,7 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                             updateTime = 2f;
 
-                            if(tipoCarta == TipoCarta.CONJURO) {
+                            if(tipoCarta == TipoCarta.CONJURO || tipoCarta == TipoCarta.INSTANTANEO) {
 
                                 if(!efecto.resuelto && this.transform.parent == GameObject.Find("Pila").transform) {
 
