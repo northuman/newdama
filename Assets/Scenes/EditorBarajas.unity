@@ -1961,21 +1961,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   todas:
+  - {fileID: 11400000, guid: 36a54c43785f9ca418d4ec7d03ac45d6, type: 2}
   - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 63f6276c0576b0a4a9d7eda795e7cbee, type: 2}
+  - {fileID: 11400000, guid: 555df3b312783064889ff91c1aedce2c, type: 2}
+  - {fileID: 11400000, guid: c64269bbe2602cb4c8b696100ff73727, type: 2}
   - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
   - {fileID: 11400000, guid: efab2ac3a96f71048b1880b2847accdc, type: 2}
   - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
-  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
-  - {fileID: 11400000, guid: 0a5f3b3697951fa4a912d68fb5534272, type: 2}
+  - {fileID: 11400000, guid: cacaabf156bab824bb5bc58c3385237d, type: 2}
   - {fileID: 11400000, guid: 0bb18b5d3a2973c4ea0fa28bcf313d8d, type: 2}
+  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 0a5f3b3697951fa4a912d68fb5534272, type: 2}
   - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
-  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
-  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
-  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
-  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
-  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
-  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
-  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
   vistaPrevia: {fileID: 1704852004}
   prefabCarta: {fileID: 2421649484907838289, guid: b68cc58c6d2b21d4a919d6e77c72a621, type: 3}
 --- !u!4 &1781921149

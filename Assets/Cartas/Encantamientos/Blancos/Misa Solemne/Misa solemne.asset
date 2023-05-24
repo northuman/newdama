@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Misa solemne
   m_EditorClassIdentifier: 
   nombreCarta: Misa solemne
-  costeMana: 0000000000000000030000000000000000000000
+  costeMana: 0100000000000000020000000000000000000000
   palabrasClave: 
   descripcion: Todas tus criaturas que no sean negras obtienen +1/+1.
   flavour: "\u201CLos ministros sagrados se encargar\xE1n de guiarnos en el m\xE1s

@@ -451,7 +451,8 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 
                 else {
 
-                    if(tipoCarta == TipoCarta.TIERRA && gameObject.transform.parent == DropZone.tierrasJugador.transform) {
+                    if(tipoCarta == TipoCarta.TIERRA 
+                    && gameObject.transform.parent == DropZone.tierrasJugador.transform) {
 
                         if(!cartaGirada) {
 
@@ -461,8 +462,10 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         }
                     }
 
-                    else if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE && 
-                        Partida.momentoCombate == Partida.Combate.ATACANTES && Partida.turno == Partida.Turno.JUGADOR
+                    else if(tipoCarta == TipoCarta.CRIATURA 
+                        && Partida.faseActual == Partida.Fase.COMBATE 
+                        && Partida.momentoCombate == Partida.Combate.ATACANTES 
+                        && Partida.turno == Partida.Turno.JUGADOR
                         && propietario == jugador && mareo == false) {
 
                         if(!cartaGirada) {
@@ -471,8 +474,9 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         }
                     }
 
-                    else if(tipoCarta == TipoCarta.CRIATURA && Partida.faseActual == Partida.Fase.COMBATE 
-                            && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
+                    else if(tipoCarta == TipoCarta.CRIATURA 
+                        && Partida.faseActual == Partida.Fase.COMBATE 
+                        && Partida.momentoCombate == Partida.Combate.ORDEN_BLOQUEADORES) {
 
                         atacante.Combate(this);
                         this.transform.SetParent(this.padreOriginal);
@@ -484,30 +488,26 @@ public class Arrastrable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                         }
                     }
 
-                    else if(tipoCarta == TipoCarta.CRIATURA && Partida.momentoCombate == Partida.Combate.BLOQUEADORES
-                            && Partida.turno == Partida.Turno.OPONENTE) {
+                    else if(tipoCarta == TipoCarta.CRIATURA 
+                        && Partida.momentoCombate == Partida.Combate.BLOQUEADORES
+                        && Partida.turno == Partida.Turno.OPONENTE) {
 
                         if(propietario == jugador) {
-
                             if(!atacante) {
-
                                 Debug.Log("PRIMERO DEBES SELECCIONAR LA CRIATURA A LA QUE DESEAS BLOQUEAR");
                             }
 
                             else if(bloqueandoA) {
-
                                 Debug.Log("ESTA CRIATURA YA ESTA BLOQUEANDO A " + this.bloqueandoA.GetCarta().nombreCarta);
                             }
 
                             else {
-
                                 atacante.AnyadirBloqueador(this);
                                 Debug.Log("BLOQUEO ACEPTADO");
                             }
                         }
 
                         else if(propietario == oponente) {
-
                             atacante = this;
                         }
                     }

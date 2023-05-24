@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Baron
   m_EditorClassIdentifier: 
   nombreCarta: "Bar\xF3n"
-  costeMana: 0100000000000000000000000000000000000000
+  costeMana: 0100000003000000000000000000000000000000
   palabrasClave: 
   descripcion: "Cuando el Bar\xF3n entra al campo de batalla, hace 2 de da\xF1o a
     cualquier objetivo."

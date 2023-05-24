@@ -74,7 +74,8 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
                             if(carta.tipoCarta == Arrastrable.TipoCarta.TIERRA) {
 
-                                if(carta.propietario.tierraDelTurnoJugada == false && this.transform.parent != manoJugador.transform) {
+                                if(carta.propietario.tierraDelTurnoJugada == false 
+                                && this.transform.parent != manoJugador.transform) {
 
                                     carta.NuevoPadre(tierrasJugador.transform);
                                     carta.cartaEnMano = false;
@@ -126,7 +127,8 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                                 }
                             }
 
-                            if(carta.tipoCarta == Arrastrable.TipoCarta.ARTEFACTO || carta.tipoCarta == Arrastrable.TipoCarta.ENCANTEMIENTO) {
+                            if(carta.tipoCarta == Arrastrable.TipoCarta.ARTEFACTO 
+                            || carta.tipoCarta == Arrastrable.TipoCarta.ENCANTEMIENTO) {
 
                                 bool jugarCarta = jugador.tierras.SuficienteMana(carta.GetCarta());
 

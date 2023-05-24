@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Fraile
   m_EditorClassIdentifier: 
   nombreCarta: Fraile
-  costeMana: 0000000000000000010000000000000000000000
+  costeMana: 0100000000000000010000000000000000000000
   palabrasClave: 
   descripcion: Cuando el Fraile entre al campo de batalla, ganas 3 vidas.
   flavour: "-Me he decidido por fin he decidido comunicarle al prior mi deseo de

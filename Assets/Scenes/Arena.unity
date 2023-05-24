@@ -161,7 +161,7 @@ MonoBehaviour:
   goEncantamientos: {fileID: 1434648098}
   goBaraja: {fileID: 687730720}
   partida: {fileID: 0}
-  baraja: {fileID: 608032451}
+  baraja: {fileID: 284103964}
   tierras: {fileID: 198378010}
   cementerio: {fileID: 1015532955}
   oponente: {fileID: 250509431}
@@ -420,8 +420,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 110}
-  m_SizeDelta: {x: 830, y: 200}
+  m_AnchoredPosition: {x: 50, y: 110}
+  m_SizeDelta: {x: 750, y: 200}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &198378006
 MonoBehaviour:
@@ -836,7 +836,7 @@ MonoBehaviour:
   goEncantamientos: {fileID: 501937257}
   goBaraja: {fileID: 194775579}
   partida: {fileID: 0}
-  baraja: {fileID: 1966286123}
+  baraja: {fileID: 1033549695}
   tierras: {fileID: 1804677718}
   cementerio: {fileID: 1703540033}
   oponente: {fileID: 89439331}
@@ -956,6 +956,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 263357434}
   m_CullTransparentMesh: 1
+--- !u!1 &284103963
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 284103965}
+  - component: {fileID: 284103964}
+  m_Layer: 0
+  m_Name: Baraja (6)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &284103964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284103963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3413cafaa039e364d8bb08d9247c5bc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  propietario: {fileID: 0}
+  cartas:
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: c64269bbe2602cb4c8b696100ff73727, type: 2}
+  - {fileID: 11400000, guid: c64269bbe2602cb4c8b696100ff73727, type: 2}
+  - {fileID: 11400000, guid: c64269bbe2602cb4c8b696100ff73727, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: 69fb6de0df9a7e444a5ca47888f952aa, type: 2}
+  - {fileID: 11400000, guid: efab2ac3a96f71048b1880b2847accdc, type: 2}
+  - {fileID: 11400000, guid: efab2ac3a96f71048b1880b2847accdc, type: 2}
+  - {fileID: 11400000, guid: efab2ac3a96f71048b1880b2847accdc, type: 2}
+  - {fileID: 11400000, guid: 63f6276c0576b0a4a9d7eda795e7cbee, type: 2}
+  - {fileID: 11400000, guid: 63f6276c0576b0a4a9d7eda795e7cbee, type: 2}
+  - {fileID: 11400000, guid: 63f6276c0576b0a4a9d7eda795e7cbee, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: 838876cf687a17940a9838ce28b47140, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  - {fileID: 11400000, guid: f8380c12def02624399faf049b09d554, type: 2}
+  prefabCarta: {fileID: 2421649484907838289, guid: b68cc58c6d2b21d4a919d6e77c72a621, type: 3}
+--- !u!4 &284103965
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284103963}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1039.1772, y: 258.77322, z: -8.05165}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &331038491
 GameObject:
   m_ObjectHideFlags: 0
@@ -2718,6 +2793,81 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: -200}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &1033549694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1033549696}
+  - component: {fileID: 1033549695}
+  m_Layer: 0
+  m_Name: Baraja (5)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1033549695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033549694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3413cafaa039e364d8bb08d9247c5bc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  propietario: {fileID: 0}
+  cartas:
+  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
+  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
+  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
+  - {fileID: 11400000, guid: 268ef9086f73bbb4cab5b4c83adaf112, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 55131d50860e7004b97dc5500a241e83, type: 2}
+  - {fileID: 11400000, guid: 0a5f3b3697951fa4a912d68fb5534272, type: 2}
+  - {fileID: 11400000, guid: 0a5f3b3697951fa4a912d68fb5534272, type: 2}
+  - {fileID: 11400000, guid: 0a5f3b3697951fa4a912d68fb5534272, type: 2}
+  - {fileID: 11400000, guid: 0a5f3b3697951fa4a912d68fb5534272, type: 2}
+  - {fileID: 11400000, guid: 0bb18b5d3a2973c4ea0fa28bcf313d8d, type: 2}
+  - {fileID: 11400000, guid: 0bb18b5d3a2973c4ea0fa28bcf313d8d, type: 2}
+  - {fileID: 11400000, guid: 0bb18b5d3a2973c4ea0fa28bcf313d8d, type: 2}
+  - {fileID: 11400000, guid: cacaabf156bab824bb5bc58c3385237d, type: 2}
+  - {fileID: 11400000, guid: cacaabf156bab824bb5bc58c3385237d, type: 2}
+  - {fileID: 11400000, guid: cacaabf156bab824bb5bc58c3385237d, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  - {fileID: 11400000, guid: d65fe5da083d22c449802bd40ad3ebee, type: 2}
+  prefabCarta: {fileID: 2421649484907838289, guid: b68cc58c6d2b21d4a919d6e77c72a621, type: 3}
+--- !u!4 &1033549696
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1033549694}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1039.1772, y: 258.77322, z: -8.05165}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1379835443
 GameObject:
   m_ObjectHideFlags: 0
@@ -3939,8 +4089,8 @@ GameObject:
   - component: {fileID: 1804677713}
   - component: {fileID: 1804677717}
   - component: {fileID: 1804677716}
-  - component: {fileID: 1804677715}
   - component: {fileID: 1804677718}
+  - component: {fileID: 1804677719}
   m_Layer: 5
   m_Name: Tierras Oponente
   m_TagString: Untagged
@@ -3963,37 +4113,11 @@ RectTransform:
   m_Father: {fileID: 1893328430}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1570, y: 860}
-  m_SizeDelta: {x: 350, y: 220}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -800, y: -330}
+  m_SizeDelta: {x: 750, y: 200}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1804677715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1804677712}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 5
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
-  m_ChildControlWidth: 1
-  m_ChildControlHeight: 1
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!114 &1804677716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4047,6 +4171,30 @@ MonoBehaviour:
   tierras: []
   contadorMana: {fileID: 0}
   propietario: {fileID: 250509431}
+--- !u!114 &1804677719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804677712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 25
+    m_Top: 20
+    m_Bottom: 0
+  m_ChildAlignment: 2
+  m_StartCorner: 1
+  m_StartAxis: 0
+  m_CellSize: {x: 60, y: 50}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &1855495573
 GameObject:
   m_ObjectHideFlags: 0
