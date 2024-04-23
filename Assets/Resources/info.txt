@@ -1,0 +1,3 @@
+Colocar aquí los archivos para las descripciones y flavour text
+    "Ds_Nombrecarta" -> descripciones
+    "Fl_Nombrecarta" -> flavour text

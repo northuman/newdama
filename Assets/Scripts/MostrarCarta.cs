@@ -1,0 +1,105 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using TMPro;
+
+public class MostrarCarta : MonoBehaviour
+{
+    public List<Carta> mostrarCarta = new List<Carta>();
+    public int mostrarId;
+
+    //Parametros de la carta
+    public int id;
+    public string nombreCarta;
+    public string tipo;
+    public string rareza;
+    public string costeMana;
+    public int fuerza;
+    public int resistencia;
+    public TextAsset descripcion;
+    public TextAsset flavour;
+    //public Sprite spriteImagen;
+
+
+    //Parametros en la interfaz
+    public TMP_Text nombreText;
+    public TMP_Text tipoText;
+    public TMP_Text manaText;
+    public TMP_Text statsText;
+    public TMP_Text descText;
+    public TMP_Text flavourText;
+    //public Image fotoImagen;
+    public bool reverso;
+    public static bool staticReverso;
+    public string color;
+    public GameObject Mano;
+    public int numCartasEnBaraja;
+
+
+    void Start()
+    {
+        numCartasEnBaraja = Jugador.tamanyoBaraja;
+
+        mostrarCarta[0] = CartaDatabase.listaCartas[mostrarId];
+        
+        //Determina el color de las cartas
+        
+    }
+
+    
+    void Update()
+    {
+        
+        color = mostrarCarta[0].color;
+        UtilCartas.colorearCarta(this.gameObject);
+        
+        //Se asignan los valores a la carta desde cartaDatabase
+        id = mostrarCarta[0].id; 
+        nombreCarta = mostrarCarta[0].nombreCarta;
+        tipo = mostrarCarta[0].tipoToString(mostrarCarta[0].tipo);
+        rareza = mostrarCarta[0].rareza;
+        costeMana = mostrarCarta[0].manaToString(mostrarCarta[0].costeMana);
+        fuerza = mostrarCarta[0].fuerza;
+        resistencia = mostrarCarta[0].resistencia;
+        descripcion = mostrarCarta[0].descripcion;
+        flavour = mostrarCarta[0].flavour;
+
+        //spriteImagen = mostrarCarta[0].spriteImagen;
+
+
+        //Se asignan los valores de la carta a los de la interfaz
+        nombreText.text = "" + nombreCarta;
+        tipoText.text = "" + tipo + " - " + rareza;
+        manaText.text = "" + costeMana;
+        statsText.text = "" + fuerza + " / " + resistencia;
+        descText.text = "" + descripcion;
+        flavourText.text = "" + flavour;
+        //fotoImagen.sprite = spriteImagen;
+
+
+        //Busca el panel con nombre Mano y lo guarda como GameObject
+        Mano = GameObject.Find("Mano");
+        if(this.transform.parent == Mano.transform.parent)
+        {
+            //Si la carta está en la mano se le da la vuelta
+            reverso = false;
+        }
+
+        staticReverso = reverso;
+
+        //Cuando la carta salga del mazo se le pone el tag "clone"
+        
+        if(this.tag == "Clone")
+        {   
+            //si es un clon se saca de la baraja y se quita el tag
+            mostrarCarta[0] = Jugador.staticbarajaPartida[numCartasEnBaraja - 1];
+            numCartasEnBaraja -= 1;
+            Jugador.tamanyoBaraja -= 1;
+            reverso = false;
+            this.tag = "Untagged";
+        }
+        
+    }
+}

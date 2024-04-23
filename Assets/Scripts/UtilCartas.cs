@@ -1,0 +1,121 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
+
+
+static class UtilCartas{
+
+    
+    private static System.Random rng = new System.Random();
+    //Shuffle, randomizar orden en lista
+    public static void Randomizar<T>(this IList<T> list){  
+        int n = list.Count;  
+        while (n > 1) {  
+            n--;  
+            int k = rng.Next(n + 1);  
+            T value = list[k];  
+            list[k] = list[n];  
+            list[n] = value;  
+        }  
+    }
+
+    //Swap, intercambio de dos elementos en lista
+    public static void Intercambio<T>(this IList<T> list, int indexA, int indexB){
+        T tmp = list[indexA];
+        list[indexA] = list[indexB];
+        list[indexB] = tmp;
+    }
+
+    //Int aleatorio de num1 a num2, ellos incluidos
+    public static int numAleatorio(int num1, int num2){
+        int res = rng.Next(num1,num2+1);
+        return res;
+    }
+
+    //Copiar valores de lista A a B: B = A.ToList()
+    public static List<TSource> ToList<TSource>(this IEnumerable<TSource> source)
+    {
+        return new List<TSource>(source);
+    }
+
+    public static void colorearCarta(GameObject carta)  //funcion para cambiar el color de las cartas
+    {      
+        //guardo el nombre del color de la carta
+        string colorCarta = carta.GetComponent<MostrarCarta>().color;
+        Debug.Log("La carta es "+colorCarta);
+
+        Color blanco = new Color32(186,178,162,255);
+        Color negro = new Color32(41,41,41,255);
+        Color rojo = new Color32(128,71,76,255);
+        Color verde = new Color32(81,116,78,255);
+        Color gris = new Color32(147,147,147,255);
+
+        Sprite nobleza = Resources.Load<Sprite>("nobleza");
+        //carta.transform.Find("Borde/Simbolo").AddComponent<Image>().sprite=nobleza; -> colocar el simbolo de cada baraja
+        
+        
+        /*
+        var RB = new Gradient();
+        // Blend color from red at 0% to blue at 100%
+        var colors = new GradientColorKey[2];
+        colors[0] = new GradientColorKey(rojo, 0.0f);
+        colors[1] = new GradientColorKey(blanco, 1.0f);
+        // Blend alpha from opaque at 0% to transparent at 100%
+        var alphas = new GradientAlphaKey[2];
+        alphas[0] = new GradientAlphaKey(1.0f, 0.0f);
+        alphas[1] = new GradientAlphaKey(0.0f, 1.0f);
+
+        RB.SetKeys(colors, alphas);
+        */
+        
+        //carta.transform.Find("Borde/Color").GetComponent<Image>().color = verde;
+        
+        if(colorCarta.Length==1){
+            Debug.Log("Entro al if");
+            switch(colorCarta)
+            {
+                case "B":
+                    carta.transform.Find("Borde/Color").GetComponent<Image>().color = blanco;
+                    break;
+                case "N":
+                    carta.transform.Find("Borde/Color").GetComponent<Image>().color = negro;
+                    carta.transform.Find("Borde/Color/Lineas/NombreText").GetComponent<TextMeshProUGUI>().color = gris;
+                    carta.transform.Find("Borde/Color/Lineas/Coste").GetComponent<TextMeshProUGUI>().color = gris;
+                    carta.transform.Find("Borde/Color/Lineas/Flavor").GetComponent<TextMeshProUGUI>().color = gris;
+                    carta.transform.Find("Borde/Color/Lineas/Tipo").GetComponent<TextMeshProUGUI>().color = gris;
+                    carta.transform.Find("Borde/Color/Lineas/DescripcionText").GetComponent<TextMeshProUGUI>().color=gris;
+
+                    break;
+                case "R":
+                    carta.transform.Find("Borde/Color").GetComponent<Image>().color = rojo;
+                    break;
+                case "V":
+                    carta.transform.Find("Borde/Color").GetComponent<Image>().color = verde;
+                    break;
+            }
+        }
+        /*
+        else if(colorCarta.Length==2){
+            switch(colorCarta)
+            {
+                case "BN":
+                        carta.transform.Find("Borde/Color").GetComponent<Image>().color = blanco;
+                    break;
+                case "BR":
+                    carta.transform.Find("Borde/Color").GetComponent<Image>().color = negro;
+                    break;
+                case "BV":
+                    carta.transform.Find("Borde/Color").GetComponent<Image>().color = rojo;
+                    break;
+                case "NR":
+                    carta.transform.Find("Borde/Color").GetComponent<Image>().color = verde;
+                    break;
+            }
+        }*/
+    }
+}

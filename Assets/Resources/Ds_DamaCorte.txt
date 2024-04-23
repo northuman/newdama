@@ -1,0 +1,2 @@
+Cada vez que juegues un instantáneo o un conjuro puedes pagar R.
+Pon un contador +1/+1 a la criatura objetivo.

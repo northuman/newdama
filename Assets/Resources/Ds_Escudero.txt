@@ -1,0 +1,1 @@
+Cuando el Escudero ataque, hace 1 de daño al jugador atacado.
