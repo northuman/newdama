@@ -43,15 +43,14 @@ public class MostrarCarta : MonoBehaviour
         numCartasEnBaraja = Jugador.tamanyoBaraja;
 
         mostrarCarta[0] = CartaDatabase.listaCartas[mostrarId];
-        
-        //Determina el color de las cartas
-        
+                
     }
 
     
     void Update()
     {
         
+        //Le pone el color a la carta
         color = mostrarCarta[0].color;
         UtilCartas.colorearCarta(this.gameObject);
         

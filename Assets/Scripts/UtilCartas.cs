@@ -47,7 +47,6 @@ static class UtilCartas{
     {      
         //guardo el nombre del color de la carta
         string colorCarta = carta.GetComponent<MostrarCarta>().color;
-        Debug.Log("La carta es "+colorCarta);
 
         Color blanco = new Color32(186,178,162,255);
         Color negro = new Color32(41,41,41,255);
@@ -73,10 +72,7 @@ static class UtilCartas{
         RB.SetKeys(colors, alphas);
         */
         
-        //carta.transform.Find("Borde/Color").GetComponent<Image>().color = verde;
-        
         if(colorCarta.Length==1){
-            Debug.Log("Entro al if");
             switch(colorCarta)
             {
                 case "B":

@@ -17,7 +17,8 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
         if(eventData.button == 0){
             //Guardo el gameObject seleccionado
             cartaSeleccionada = eventData.pointerClick.gameObject;
-            Debug.Log("Selecciono carta " + cartaSeleccionada.GetComponent<MostrarCarta>().nombreCarta +" con Id " + cartaSeleccionada.GetComponent<MostrarCarta>().id);
+            //Debug.Log("Selecciono carta " + cartaSeleccionada.GetComponent<MostrarCarta>().nombreCarta +" con Id " + cartaSeleccionada.GetComponent<MostrarCarta>().id);
+        
         }
     }
     public void OnPointerEnter (PointerEventData eventData)
