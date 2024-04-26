@@ -29,8 +29,10 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         Arrastrar arrastrando = eventData.pointerDrag.GetComponent<Arrastrar>();
         if (arrastrando != null)
         {
-            string tipo = eventData.pointerDrag.GetComponent<MostrarCarta>().tipo; 
             //se guarda el tipo de la carta que se está arrastrando
+            string tipo = eventData.pointerDrag.GetComponent<MostrarCarta>().tipo; 
+            //guardo el id para poder añadir la carta a su lista correspondiente
+            int id= eventData.pointerDrag.GetComponent<MostrarCarta>().id;
 
             if(validarTipo(tipo))
             {
@@ -56,6 +58,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                 if(tipo.Equals("Tierra"))
                 {
                     validar = true;
+
                 }
                 break;
             case tipoDropZone.BATALLA:

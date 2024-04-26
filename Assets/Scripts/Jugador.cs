@@ -9,15 +9,15 @@ public class Jugador : MonoBehaviour
     public int[] mana; //BLANCO, NEGRO, ROJO, VERDE
     public List<Carta> barajaOriginal = new List<Carta>();
     public List<Carta> barajaPartida;
-    public List<Carta> mano;    //Ahora son cartas; cambiar prefab!!
+    public List<Carta> mano;
     public List<CartasJugadas> cementerio;
     public List<CartasJugadas> pila;
     public List<CartasJugadas> tierras;
     public List<CartasJugadas> batalla;
-    public GameObject CartaJugada;//solo para probar
+    public GameObject CartaJugada;
     public static List<Carta> staticbarajaPartida = new List<Carta>();
-    public static int tamanyoBaraja;   //solo para probar
-    public int x;//solo para probar
+    public static int tamanyoBaraja;   
+    public int x;
     public GameObject[] Clones;
     public GameObject Mano;
 
@@ -39,6 +39,7 @@ public class Jugador : MonoBehaviour
     {
         barajaPartida = barajaOriginal.ToList();
         barajaPartida.Randomizar();
+        staticbarajaPartida = barajaPartida;
     }
 
     //hay que crear la barajaOriginal para poder probar
@@ -62,8 +63,15 @@ public class Jugador : MonoBehaviour
         bool robar = false;
         if(barajaPartida.Count>=num){
             for(int i = 0; i<num;i++){
+                
                 mano.Add(barajaPartida[barajaPartida.Count-1]);
+                Debug.Log("añado carta " +barajaPartida[barajaPartida.Count-1].id);
+                
                 barajaPartida.RemoveAt(barajaPartida.Count-1);
+                StartCoroutine(InstanciarPrefab());
+                
+                
+                Debug.Log("robo de carta"); 
             }
             robar = true;
         }
@@ -334,23 +342,24 @@ public class Jugador : MonoBehaviour
             barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[x]));
         }
         crearBarajaPartida();
-
-        StartCoroutine(StartGame());
+        robarCarta(7);
+        //StartCoroutine(InstanciarPrefab());
+        
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-
         staticbarajaPartida = barajaPartida;
+        
     }
-    IEnumerator StartGame()
+    IEnumerator InstanciarPrefab()
     {
-        for(int i = 0; i <=6; i++) //Aquí está la cantidad de cartas que se mostrará en la mano al iniciar 
-        {
-            yield return new WaitForSeconds(0.5f);
 
-            Instantiate(CartaJugada, transform.position, transform.rotation);
-        }
+        yield return new WaitForSeconds(0.5f);
+        Instantiate(CartaJugada, transform.position, transform.rotation);
+        
+        Debug.Log("instancio carta " + CartaJugada.GetComponent<MostrarCarta>().id);
     }
 }

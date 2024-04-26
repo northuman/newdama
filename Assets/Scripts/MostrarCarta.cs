@@ -36,14 +36,14 @@ public class MostrarCarta : MonoBehaviour
     public string color;
     public GameObject Mano;
     public int numCartasEnBaraja;
-
+    public GameObject Player;
 
     void Start()
     {
-        numCartasEnBaraja = Jugador.tamanyoBaraja;
+        Player = GameObject.Find("Jugador");
+        numCartasEnBaraja = Player.GetComponent<Jugador>().mano.Count;
 
         mostrarCarta[0] = CartaDatabase.listaCartas[mostrarId];
-                
     }
 
     
@@ -89,16 +89,15 @@ public class MostrarCarta : MonoBehaviour
         staticReverso = reverso;
 
         //Cuando la carta salga del mazo se le pone el tag "clone"
-        
         if(this.tag == "Clone")
         {   
             //si es un clon se saca de la baraja y se quita el tag
-            mostrarCarta[0] = Jugador.staticbarajaPartida[numCartasEnBaraja - 1];
+            //mostrarCarta[0] = Player.GetComponent<Jugador>().mano[numCartasEnBaraja - 1];
+            mostrarCarta[0] = CartaDatabase.listaCartas[id];
             numCartasEnBaraja -= 1;
-            Jugador.tamanyoBaraja -= 1;
             reverso = false;
             this.tag = "Untagged";
-        }
-        
+        } 
+
     }
 }
