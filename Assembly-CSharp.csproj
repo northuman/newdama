@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\CartaDatabase.cs" />
     <Compile Include="Assets\Scripts\CartaPanelBaraja.cs" />
     <Compile Include="Assets\Scripts\DropZone.cs" />
+    <Compile Include="Assets\Scripts\Partida.cs" />
     <Compile Include="Assets\Scripts\CartasJugadas.cs" />
     <Compile Include="Assets\Scripts\Arrastrar.cs" />
   </ItemGroup>

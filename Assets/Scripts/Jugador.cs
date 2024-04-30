@@ -5,6 +5,7 @@ using UnityEngine;
 public class Jugador : MonoBehaviour
 {
 
+    public string nombre;
     public int vida;
     public int[] mana; //BLANCO, NEGRO, ROJO, VERDE
     public List<Carta> barajaOriginal = new List<Carta>();
@@ -16,9 +17,9 @@ public class Jugador : MonoBehaviour
     public List<CartasJugadas> batalla;
     public GameObject CartaJugada;
     public static List<Carta> staticbarajaPartida = new List<Carta>();
+    public static List<Carta> staticMano = new List<Carta>();
     public static int tamanyoBaraja;   
     public int x;
-    public GameObject[] Clones;
     public GameObject Mano;
 
     bool tierraJugada = false;
@@ -44,6 +45,18 @@ public class Jugador : MonoBehaviour
 
     //hay que crear la barajaOriginal para poder probar
 
+    public void rellenarBaraja()
+    {
+        Debug.Log("Relleno baraja para " + nombre);
+        x = 0;
+        tamanyoBaraja = 40;
+        for(int i = 0; i < tamanyoBaraja; i++)
+        {        
+            x = Random.Range(1,6);
+            barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[x]));
+        }
+    }
+
     public void enderezoInicial()
     {
         for(int i = 0; i<batalla.Count; i++){
@@ -63,15 +76,12 @@ public class Jugador : MonoBehaviour
         bool robar = false;
         if(barajaPartida.Count>=num){
             for(int i = 0; i<num;i++){
-                
-                mano.Add(barajaPartida[barajaPartida.Count-1]);
-                Debug.Log("añado carta " +barajaPartida[barajaPartida.Count-1].id);
-                
+                Debug.Log("robo de carta para " + nombre); 
+                mano.Add(barajaPartida[barajaPartida.Count-1]);               
                 barajaPartida.RemoveAt(barajaPartida.Count-1);
+                
                 StartCoroutine(InstanciarPrefab());
                 
-                
-                Debug.Log("robo de carta"); 
             }
             robar = true;
         }
@@ -334,15 +344,15 @@ public class Jugador : MonoBehaviour
     {   
 
         //logica necesaria porque no tenemos editor de barajas
-        x = 0;
-        tamanyoBaraja = 40;
-        for(int i = 0; i < tamanyoBaraja; i++)
-        {        
-            x = Random.Range(1,6);
-            barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[x]));
-        }
-        crearBarajaPartida();
-        robarCarta(7);
+        //x = 0;
+        //tamanyoBaraja = 40;
+        //for(int i = 0; i < tamanyoBaraja; i++)
+        //{        
+        //    x = Random.Range(1,6);
+        //    barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[x]));
+        //}
+        //crearBarajaPartida();
+        //robarCarta(7);
         //StartCoroutine(InstanciarPrefab());
         
         
@@ -352,14 +362,14 @@ public class Jugador : MonoBehaviour
     void Update()
     {
         staticbarajaPartida = barajaPartida;
+        staticMano = mano;
         
     }
     IEnumerator InstanciarPrefab()
     {
-
         yield return new WaitForSeconds(0.5f);
         Instantiate(CartaJugada, transform.position, transform.rotation);
-        
+
         Debug.Log("instancio carta " + CartaJugada.GetComponent<MostrarCarta>().id);
     }
 }

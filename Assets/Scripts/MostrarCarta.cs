@@ -34,15 +34,18 @@ public class MostrarCarta : MonoBehaviour
     public bool reverso;
     public static bool staticReverso;
     public string color;
-    public GameObject Mano;
+    public GameObject ManoJugador;
+    public GameObject ManoOponente;
     public int numCartasEnBaraja;
-    public GameObject Player;
+    public int numCartasMano;
+    public int contador;
+    public GameObject Jugador1;
 
     void Start()
     {
-        Player = GameObject.Find("Jugador");
-        numCartasEnBaraja = Player.GetComponent<Jugador>().mano.Count;
-
+        Jugador1 = GameObject.Find("Jugador");
+        
+        numCartasEnBaraja = Jugador.tamanyoBaraja;
         mostrarCarta[0] = CartaDatabase.listaCartas[mostrarId];
     }
 
@@ -79,8 +82,9 @@ public class MostrarCarta : MonoBehaviour
 
 
         //Busca el panel con nombre Mano y lo guarda como GameObject
-        Mano = GameObject.Find("Mano");
-        if(this.transform.parent == Mano.transform.parent)
+        ManoJugador = GameObject.Find("ManoJugador");
+        ManoOponente = GameObject.Find("ManoOponente");
+        if(this.transform.parent == ManoJugador.transform.parent)
         {
             //Si la carta está en la mano se le da la vuelta
             reverso = false;
@@ -88,16 +92,14 @@ public class MostrarCarta : MonoBehaviour
 
         staticReverso = reverso;
 
-        //Cuando la carta salga del mazo se le pone el tag "clone"
-        if(this.tag == "Clone")
-        {   
-            //si es un clon se saca de la baraja y se quita el tag
-            //mostrarCarta[0] = Player.GetComponent<Jugador>().mano[numCartasEnBaraja - 1];
-            mostrarCarta[0] = CartaDatabase.listaCartas[id];
-            numCartasEnBaraja -= 1;
-            reverso = false;
-            this.tag = "Untagged";
-        } 
+        numCartasMano = Jugador1.GetComponent<Jugador>().mano.Count;
 
+        for(int i = 0; i < numCartasMano; i++){
+
+            //Debug.Log("Muestro carta " + Jugador.staticMano[i].id);
+            mostrarCarta[0] = Jugador.staticMano[i];
+            reverso = false;
+
+        }
     }
 }
