@@ -135,6 +135,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plantilla (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 465451593607068670, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869711096609674890, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8567375816385713155, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -310,6 +318,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plantilla (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 465451593607068670, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869711096609674890, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8567375816385713155, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -428,6 +444,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Plantilla (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 465451593607068670, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869711096609674890, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8567375816385713155, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -524,7 +548,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4869711096609674890, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -545,6 +570,14 @@ PrefabInstance:
     - target: {fileID: 465451593607068670, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
       propertyPath: m_Name
       value: Plantilla (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 465451593607068670, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4869711096609674890, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8567375816385713155, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
       propertyPath: m_Pivot.x

@@ -38,7 +38,6 @@ public class MostrarCarta : MonoBehaviour
     public GameObject ManoOponente;
     public int numCartasEnBaraja;
     public int numCartasMano;
-    public int contador;
     public GameObject Jugador1;
 
     void Start()
@@ -46,13 +45,13 @@ public class MostrarCarta : MonoBehaviour
         Jugador1 = GameObject.Find("Jugador");
         
         numCartasEnBaraja = Jugador.tamanyoBaraja;
-        mostrarCarta[0] = CartaDatabase.listaCartas[mostrarId];
+
     }
 
     
     void Update()
     {
-        
+        mostrarCarta[0] = Jugador1.GetComponent<Jugador>().findById(id);
         //Le pone el color a la carta
         color = mostrarCarta[0].color;
         UtilCartas.colorearCarta(this.gameObject);
@@ -93,13 +92,9 @@ public class MostrarCarta : MonoBehaviour
         staticReverso = reverso;
 
         numCartasMano = Jugador1.GetComponent<Jugador>().mano.Count;
+        
+        reverso = false;
 
-        for(int i = 0; i < numCartasMano; i++){
-
-            //Debug.Log("Muestro carta " + Jugador.staticMano[i].id);
-            mostrarCarta[0] = Jugador.staticMano[i];
-            reverso = false;
-
-        }
+        //}
     }
 }
