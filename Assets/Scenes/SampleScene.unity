@@ -278,6 +278,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddc3acc86d9725c43902611c815c1a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 1
   nombre: jugador 1
   vida: 0
   mana: 
@@ -722,7 +723,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00018310547, y: 108.065796}
+  m_AnchoredPosition: {x: -0.00024414062, y: 108.065796}
   m_SizeDelta: {x: -200, y: -822.895}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &401493544
@@ -1057,6 +1058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddc3acc86d9725c43902611c815c1a4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 2
   nombre: jugador 2
   vida: 0
   mana: 
@@ -1674,7 +1676,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 40.4, y: -552}
+  m_AnchoredPosition: {x: 40.399902, y: -552.0001}
   m_SizeDelta: {x: -847.1001, y: -740.24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1867434108

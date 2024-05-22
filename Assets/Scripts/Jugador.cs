@@ -5,6 +5,7 @@ using UnityEngine;
 public class Jugador : MonoBehaviour
 {
 
+    public int id;
     public string nombre;
     public int vida;
     public int[] mana; //BLANCO, NEGRO, ROJO, VERDE
@@ -350,6 +351,7 @@ public class Jugador : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
     }
 
     //Rutina para instanciar prefabs
@@ -359,10 +361,11 @@ public class Jugador : MonoBehaviour
         //yield return new WaitForSeconds(0.5f);
         Instantiate(CartaJugada, transform.position, transform.rotation);
         CartaJugada.GetComponent<MostrarCarta>().id = carta.id;
+        CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
+        
         Debug.Log("instancio carta " + CartaJugada.GetComponent<MostrarCarta>().id);
         yield return null;
 
-        
     }
 
     //Encontrar carta por ID

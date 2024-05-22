@@ -13,6 +13,7 @@ public class Reverso : MonoBehaviour
     //Comprueba si la carta esta girada o no
     void Update()
     {
+        
         if(MostrarCarta.staticReverso == true)
         {
             ReversoCarta.SetActive(true);
@@ -21,5 +22,6 @@ public class Reverso : MonoBehaviour
         {
             ReversoCarta.SetActive(false);
         }
+        
     }
 }

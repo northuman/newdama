@@ -37,19 +37,31 @@ public class MostrarCarta : MonoBehaviour
     public GameObject ManoJugador;
     public GameObject ManoOponente;
     public int numCartasEnBaraja;
-    public int numCartasMano;
     public GameObject Jugador1;
+    public GameObject Jugador2;
+
     void Start()
     {
         Jugador1 = GameObject.Find("Jugador");
         numCartasEnBaraja = Jugador.tamanyoBaraja;
-
+        Jugador2 = GameObject.Find("Oponente");
     }
 
     
     void Update()
     {
-        mostrarCarta[0] = Jugador1.GetComponent<Jugador>().findById(id);
+        if(Jugador1.GetComponent<Jugador>().findById(id) != null){
+            
+            mostrarCarta[0] = Jugador1.GetComponent<Jugador>().findById(id);
+            reverso = false;
+        }
+        else if(Jugador2.GetComponent<Jugador>().findById(id) != null){
+            
+            mostrarCarta[0] = Jugador2.GetComponent<Jugador>().findById(id);
+            reverso = true;
+            
+        }
+        staticReverso = reverso; 
 
         //Le pone el color a la carta
         color = mostrarCarta[0].color;
@@ -83,18 +95,12 @@ public class MostrarCarta : MonoBehaviour
         //Busca el panel con nombre Mano y lo guarda como GameObject
         ManoJugador = GameObject.Find("ManoJugador");
         ManoOponente = GameObject.Find("ManoOponente");
+        
         if(this.transform.parent == ManoJugador.transform.parent)
         {
-            //Si la carta está en la mano se le da la vuelta
-            reverso = false;
-        }
-
-        staticReverso = reverso;
-
-        numCartasMano = Jugador1.GetComponent<Jugador>().mano.Count;
-        
-        reverso = false;
-
-        //}
+            //Si la carta está en la mano siempre se ve
+            //reverso = false;
+            
+        }  
     }
 }
