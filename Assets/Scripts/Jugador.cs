@@ -69,6 +69,12 @@ public class Jugador : MonoBehaviour
     }
 
 
+    /**Robar carta
+    num: cantidad de cartas a robar.
+    Se añade una carta a la mano por iteración
+    Se llama a InstanciarPrefab para que haga una copia de la plantilla con la carta que se ha robado
+    Se quita la carta de la baraja
+    **/
     public bool robarCarta(int num){
         bool robar = false;
         if(barajaPartida.Count>=num){
@@ -346,6 +352,8 @@ public class Jugador : MonoBehaviour
     {
     }
 
+    //Rutina para instanciar prefabs
+    //Instancia una plantilla de carta vacía. Se le pasa una carta y le pone su id a la instancia.
     IEnumerator InstanciarPrefab(Carta carta)
     {
         //yield return new WaitForSeconds(0.5f);
@@ -357,7 +365,8 @@ public class Jugador : MonoBehaviour
         
     }
 
-
+    //Encontrar carta por ID
+    //Se le pasa un id, busca en BarajaOriginal y devuelve la carta
     public Carta findById(int id){
         foreach (Carta c in barajaOriginal){
             if (c.id == id){

@@ -47,7 +47,7 @@ public class Partida : MonoBehaviour
         jugadores[0].crearBarajaPartida();
         jugadores[1].crearBarajaPartida();
         jugadores[0].robarCarta(7);
-        //jugadores[1].robarCarta(7);
+        //jugadores[1].robarCarta(7);   comentado porque cartas del jugador 2 no van a su sitio
     }
 
     public void partida()

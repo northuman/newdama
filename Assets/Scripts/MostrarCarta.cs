@@ -39,11 +39,9 @@ public class MostrarCarta : MonoBehaviour
     public int numCartasEnBaraja;
     public int numCartasMano;
     public GameObject Jugador1;
-
     void Start()
     {
         Jugador1 = GameObject.Find("Jugador");
-        
         numCartasEnBaraja = Jugador.tamanyoBaraja;
 
     }
@@ -52,8 +50,10 @@ public class MostrarCarta : MonoBehaviour
     void Update()
     {
         mostrarCarta[0] = Jugador1.GetComponent<Jugador>().findById(id);
+
         //Le pone el color a la carta
         color = mostrarCarta[0].color;
+
         UtilCartas.colorearCarta(this.gameObject);
         
         //Se asignan los valores a la carta desde cartaDatabase
