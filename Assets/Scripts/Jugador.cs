@@ -94,7 +94,8 @@ public class Jugador : MonoBehaviour
 
     //num : Carta jugada, indice de mano
     //tonum : Carta sobre la que es jugada (encantamientos a cartas), indice de batalla
-    public void jugarCarta(int num, int tonum){
+    public bool jugarCarta(int num, int tonum = -1){
+        bool jugable = false;
         if(num<mano.Count){
             int tipocar = mano[num].tipo;
             //Jugar tierra
@@ -113,7 +114,7 @@ public class Jugador : MonoBehaviour
                 //Comprobar si hay mana suficiente
 
                 bool auto = true; //Usar tierras automaticamente
-                bool jugable = false;
+                
 
                 //Comprobar teniendo en cuenta tierras no giradas o no
                 if(auto)
@@ -147,6 +148,7 @@ public class Jugador : MonoBehaviour
                 }
             }
         }
+        return jugable;
     }
 
     //Activar efecto carta tierra

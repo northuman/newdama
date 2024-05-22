@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Carta.cs" />
     <Compile Include="Assets\Scripts\MostrarCarta.cs" />
     <Compile Include="Assets\Scripts\UtilCartas.cs" />
+    <Compile Include="Assets\Scripts\UIElements.cs" />
     <Compile Include="Assets\Scripts\Seleccionar.cs" />
     <Compile Include="Assets\Scripts\Reverso.cs" />
     <Compile Include="Assets\Scripts\BarajaJugador.cs" />
