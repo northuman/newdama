@@ -3,17 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/*
+* Descripcion: DropZone cambia el parent de la carta para que al soltarla se coloque en el panel.
+* Adicionalmente se comprueba si está permitido colocarla
+* OnPointerEnter :
+* OnDrop : Si se está arrastrando una carta, se guarda su tipo y su id. 
+* Se llama a validarTipo. Si es válido cambio parentToReturnTo al panel de destino.
+* OnPointerExit :
+*/
+
 public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-/*
-* Este script tiene la función de cambiar el parent de la carta para que al soltarla se 
-* coloque en el panel
-* Adicionalmente se comprueba si está permitido colocarla
-*/
     public enum tipoDropZone {MANO, TIERRAS, BATALLA}
-    /*MANO : admite todos los tipos de carta
-    /TIERRAS : admite solo tierras
-    / BATALLA : admite crriaturas e instantaneos
+    
+    /*
+    * MANO : admite todos los tipos de carta
+    * TIERRAS : admite solo tierras
+    * BATALLA : admite crriaturas e instantaneos
     */
 
     public tipoDropZone tipoZona;
@@ -22,6 +28,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     {
 
     }
+
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log(eventData.pointerDrag.name + " dropea en " + gameObject.name);
@@ -29,24 +36,23 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         Arrastrar arrastrando = eventData.pointerDrag.GetComponent<Arrastrar>();
         if (arrastrando != null)
         {
-            //se guarda el tipo de la carta que se está arrastrando
             string tipo = eventData.pointerDrag.GetComponent<MostrarCarta>().tipo; 
-            //guardo el id para poder añadir la carta a su lista correspondiente
+
             int id= eventData.pointerDrag.GetComponent<MostrarCarta>().id;
 
             if(validarTipo(tipo))
             {
-            //si el tipo es el correcto se cambia el parent 
-            arrastrando.parentToReturnTo = this.transform;
+                arrastrando.parentToReturnTo = this.transform;
             }
         }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        
+
     }
 
-    public bool validarTipo(string tipo) //funcion que comprueba si la carta se puede colocar en el panel
+    //comprueba si la carta se puede colocar en el panel
+    public bool validarTipo(string tipo) 
     {
         bool validar = false;
         switch(tipoZona)
@@ -72,17 +78,13 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     }
 
 
-
-
-    // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

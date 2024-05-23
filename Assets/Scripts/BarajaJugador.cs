@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Script obsoleto
 public class BarajaJugador : MonoBehaviour
 {
     /*

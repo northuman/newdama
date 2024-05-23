@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+*Script para controlar las cartas que se utilizan. 
+*Cuando una Carta sale del mazo se convierte en CartaJugada para poder modificar sus estadísticas sin afectar a la carta original.
+*/
+
 public class CartasJugadas : MonoBehaviour
 {
     public GameObject ManoJugador;
@@ -26,7 +31,7 @@ public class CartasJugadas : MonoBehaviour
         encantamientos = new List<Carta>();
     }
 
-    // Start is called before the first frame update
+
     void Start()
     {
         j1 = GameObject.Find("Jugador");
@@ -55,7 +60,6 @@ public class CartasJugadas : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+/*
+* Script para los elementos de la interfaz
+*/
+
 public class UIElements : MonoBehaviour
 {
     public int vida1;

@@ -7,11 +7,15 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Script con funciones auxiliares para manejar las cartas
+*/
 
 static class UtilCartas{
 
     
     private static System.Random rng = new System.Random();
+
     //Shuffle, randomizar orden en lista
     public static void Randomizar<T>(this IList<T> list){  
         int n = list.Count;  
@@ -43,7 +47,8 @@ static class UtilCartas{
         return new List<TSource>(source);
     }
 
-    public static void colorearCarta(GameObject carta)  //funcion para cambiar el color de las cartas
+    //Funcion para cambiar el color de las cartas
+    public static void colorearCarta(GameObject carta)  
     {      
         //guardo el nombre del color de la carta
         string colorCarta = carta.GetComponent<MostrarCarta>().color;
@@ -57,7 +62,8 @@ static class UtilCartas{
         Sprite nobleza = Resources.Load<Sprite>("nobleza");
         //carta.transform.Find("Borde/Simbolo").AddComponent<Image>().sprite=nobleza; -> colocar el simbolo de cada baraja
         
-        
+
+        // Esta parte es para crear los gradientes pero no funciona
         /*
         var RB = new Gradient();
         // Blend color from red at 0% to blue at 100%
@@ -95,6 +101,9 @@ static class UtilCartas{
                     break;
             }
         }
+
+        //Falta resolver cómo hacer las cartas de dos colores 
+
         /*
         else if(colorCarta.Length==2){
             switch(colorCarta)
