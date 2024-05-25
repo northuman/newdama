@@ -20,8 +20,8 @@ public class Carta
     public string color;
     public int fuerza;
     public int resistencia;
-    public TextAsset descripcion; //Es de tipo TextAsset porque coge el texto de un archivo .txt ubicado en Resources 
-    public TextAsset flavour;   // ====
+    public string descripcion; //Es de tipo TextAsset porque coge el texto de un archivo .txt ubicado en Resources 
+    public string flavour;   // ====
     
     //public List<Efecto> efectos; //Aun no está hecho
 
@@ -31,7 +31,7 @@ public class Carta
 
     }
 
-    public Carta(string NombreCarta,int Tipo, string Rareza, int[] CosteMana,string Color, int Fuerza, int Resistencia, TextAsset Descripcion, TextAsset Flavour){
+    public Carta(string NombreCarta,int Tipo, string Rareza, int[] CosteMana,string Color, int Fuerza, int Resistencia, string Descripcion, string Flavour){
 
         nombreCarta=NombreCarta;
         tipo=Tipo;

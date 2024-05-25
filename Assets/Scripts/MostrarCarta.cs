@@ -18,8 +18,8 @@ public class MostrarCarta : MonoBehaviour
     public string costeMana;
     public int fuerza;
     public int resistencia;
-    public TextAsset descripcion;
-    public TextAsset flavour;
+    public string descripcion;
+    public string flavour;
     //public Sprite spriteImagen;
 
 

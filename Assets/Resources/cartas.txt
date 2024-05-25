@@ -1,0 +1,6 @@
+Señorío/0/Común/00000/R/0/0/Hola que tal esto es una descripcion4/Esto es el flavour4
+Escudero/1/Común/00010/B/1/1/Hola que tal esto es una descripcion1/Esto es el flavour1
+Gentilhombre/1/Común/10010/N/1/1/Hola que tal esto es una descripcion5/Esto es el flavour5
+Dama de corte/1/Común/20010/R/1/1/Hola que tal esto es una descripcion2/Esto es el flavour2
+Barón/1/Común/20020/V/2/2/Hola que tal esto es una descripcion3/Esto es el flavour3
+Oveja/1/Común/10010/V/4/5/Hola que tal esto es una descripcion6/Esto es el flavour6
