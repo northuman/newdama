@@ -50,7 +50,7 @@ public class Jugador : MonoBehaviour
         tamanyoBaraja = 40;
         for(int i = 0; i < tamanyoBaraja; i++)
         {        
-            x = Random.Range(1,6);
+            x = Random.Range(0,9);
             barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[x]));
         }
     }
@@ -100,7 +100,7 @@ public class Jugador : MonoBehaviour
             int tipocar = mano[num].tipo;
             //Jugar tierra
             if(tipocar == (int)Carta.Tipos.TIERRA && !tierraJugada){
-                tierras.Add(new CartasJugadas(mano[num]));
+                tierras.Add(gameObject.AddComponent<CartasJugadas>());
                 mano.RemoveAt(num);
                 tierraJugada = true;
             }
@@ -131,12 +131,12 @@ public class Jugador : MonoBehaviour
                     if( tipocar == (int)Carta.Tipos.ARTEFACTO ||
                         tipocar == (int)Carta.Tipos.CRIATURA){
 
-                        batalla.Add(new CartasJugadas(mano[num]));
+                        batalla.Add(gameObject.AddComponent<CartasJugadas>());
 
                     }else if(tipocar == (int)Carta.Tipos.CONJURO ||
                         tipocar == (int)Carta.Tipos.INSTANTANEO){
                         
-                        pila.Add(new CartasJugadas(mano[num]));
+                        pila.Add(gameObject.AddComponent<CartasJugadas>());
 
                     }else if(tipocar == (int)Carta.Tipos.ENCANTAMIENTO){
                         
