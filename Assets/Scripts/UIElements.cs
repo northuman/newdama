@@ -10,6 +10,7 @@ using UnityEngine;
 public class UIElements : MonoBehaviour
 {
     public int vida1;
+    public int mana;
     public TMP_Text vida1Text;
     public GameObject jugador1;
     // Start is called before the first frame update

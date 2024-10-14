@@ -8,3 +8,5 @@ Gentilhombre/1/Común/10010/N/1/1/Hola que tal esto es una descripcion5/Esto es 
 Dama de corte/1/Común/20010/R/1/1/Hola que tal esto es una descripcion2/Esto es el flavour2
 Barón/1/Común/20020/V/2/2/Hola que tal esto es una descripcion3/Esto es el flavour3
 Oveja/1/Común/10010/V/4/5/Hola que tal esto es una descripcion6/Esto es el flavour6
+Parroquia/0/Común/00000/B/0/0/Una parroquia/Si
+Escudero/1/Común/00010/R/1/1/Cuando el Escudero ataque, hace 1 de daño al jugador atacado./Los escuderos acompañaban siempre a los caballeros. Servían a estos individuos para aprender las funciones de su amo y tener la posibilidad de ser.......

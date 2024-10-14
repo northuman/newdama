@@ -49,7 +49,7 @@ public class CartaDatabase : MonoBehaviour
     }
 
     private int[] ParseCoste(string coste) {
-        Debug.Log(coste[0]);
+        //Debug.Log(coste[0]);
         return new int[5] {int.Parse(coste[0].ToString()), int.Parse(coste[1].ToString()), int.Parse(coste[2].ToString()), int.Parse(coste[3].ToString()), int.Parse(coste[4].ToString())};
     }   
 }

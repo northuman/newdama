@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     GameObject cartaSeleccionada = null;
-
+    
     
     public void OnPointerDown (PointerEventData eventData)
     {}
@@ -20,7 +20,10 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
             //Guardo el gameObject seleccionado
             cartaSeleccionada = eventData.pointerClick.gameObject;
             Debug.Log("Selecciono " + cartaSeleccionada.GetComponent<MostrarCarta>().nombreCarta +" con Id " + cartaSeleccionada.GetComponent<MostrarCarta>().id);
-        
+            if(cartaSeleccionada.GetComponent<MostrarCarta>().tipo == "Tierra")
+            {
+               GameObject.Find("Jugador").gameObject.GetComponent<Jugador>().girarTierra(cartaSeleccionada); 
+            }
         }
     }
     public void OnPointerEnter (PointerEventData eventData)
@@ -30,12 +33,12 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
 
 
 
-    // Start is called before the first frame update
+    //
     void Start()
     {
         
     }
-    // Update is called once per frame
+    //
     void Update()
     {
          

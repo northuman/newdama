@@ -29,7 +29,7 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
         parentToReturnTo = this.transform.parent;
         this.transform.SetParent(this.transform.parent.parent);
         GetComponent<CanvasGroup>().blocksRaycasts = false;
-        Debug.Log("Arrastrando" + this.gameObject.name);
+        
         //if(j1.GetComponent<Jugador>().jugarCarta(buscarCartaenMano(idCarta, j1))){
         //}
     }

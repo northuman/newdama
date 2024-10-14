@@ -420,10 +420,11 @@ MonoBehaviour:
     tipo: 0
     rareza: 
     costeMana: 
+    color: 
     fuerza: 0
     resistencia: 0
-    descripcion: {fileID: 0}
-    flavour: {fileID: 0}
+    descripcion: 
+    flavour: 
   mostrarId: 1
   id: 0
   nombreCarta: 
@@ -432,17 +433,21 @@ MonoBehaviour:
   costeMana: 
   fuerza: 0
   resistencia: 0
-  descripcion: {fileID: 0}
-  flavour: {fileID: 0}
-  nombreText: {fileID: 8334025006009292291}
-  tipoText: {fileID: 6950651508595099781}
-  manaText: {fileID: 3676817657781104601}
-  statsText: {fileID: 4824926616330041340}
-  descText: {fileID: 7777775356312693783}
-  flavourText: {fileID: 1550135957880097775}
+  descripcion: 
+  flavour: 
+  nombreText: {fileID: 0}
+  tipoText: {fileID: 0}
+  manaText: {fileID: 0}
+  statsText: {fileID: 0}
+  descText: {fileID: 0}
+  flavourText: {fileID: 0}
   reverso: 1
-  Mano: {fileID: 0}
+  color: 
+  ManoJugador: {fileID: 0}
+  ManoOponente: {fileID: 0}
   numCartasEnBaraja: 0
+  Jugador1: {fileID: 0}
+  Jugador2: {fileID: 0}
 --- !u!114 &3156472279864505412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,7 +510,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 214b4663edc626f42ae2ca6bc0072e80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mano: {fileID: 0}
+  ManoJugador: {fileID: 0}
+  ManoOponente: {fileID: 0}
   CartaJugada: {fileID: 2602950743713347416}
   carta:
     id: 8
@@ -513,15 +519,19 @@ MonoBehaviour:
     tipo: 0
     rareza: 
     costeMana: 
+    color: 
     fuerza: 0
     resistencia: 0
-    descripcion: {fileID: 0}
-    flavour: {fileID: 0}
+    descripcion: 
+    flavour: 
   fuerzaActual: 0
   resistenciaActual: 0
   mareo: 0
   girada: 0
   encantamientos: []
+  perteneceAJugador: 0
+  j1: {fileID: 0}
+  j2: {fileID: 0}
 --- !u!1 &2970021984697018893
 GameObject:
   m_ObjectHideFlags: 0

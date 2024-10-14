@@ -300,7 +300,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 48796585}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25.43457, y: 109.534546, z: -2.4819477}
+  m_LocalPosition: {x: 25.43457, y: 47, z: -2.4819477}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -442,12 +442,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 860936995}
     m_Modifications:
+    - target: {fileID: -2276743229384636465, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 465451593607068670, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
       propertyPath: m_Name
       value: Plantilla (1)
       objectReference: {fileID: 0}
     - target: {fileID: 465451593607068670, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 663136176837663310, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4869711096609674890, guid: 00fdda723bf433a49a709a609dc9562a, type: 3}
@@ -1205,7 +1213,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -757, y: -491}
+  m_AnchoredPosition: {x: -757, y: -517}
   m_SizeDelta: {x: -1666.1815, y: -816.68}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &860936996
@@ -1558,7 +1566,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 1000.39996, y: 0}
+  m_AnchoredPosition: {x: 1000.39996, y: 63}
   m_SizeDelta: {x: 1072.9, y: 339.76}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1095842986
@@ -1889,7 +1897,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 40.4, y: -540}
+  m_AnchoredPosition: {x: 40.399902, y: -600}
   m_SizeDelta: {x: -847.1001, y: -740.24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1867434108
@@ -2131,6 +2139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vida1: 0
+  mana: 0
   vida1Text: {fileID: 870922718}
   jugador1: {fileID: 0}
 --- !u!114 &2049273641

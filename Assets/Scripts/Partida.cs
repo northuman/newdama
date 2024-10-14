@@ -40,6 +40,9 @@ public class Partida : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // esto no lo puedo hacer en el start, tengo que hacer una función que rellene las barajas
+        // start y update se tienen que quedar solo con llamadas a otras funciones
+
         Debug.Log("Start Partida");
         generarPrioridadJugador();
         jugadores[0].rellenarBaraja();
@@ -129,7 +132,7 @@ public class Partida : MonoBehaviour
         jugadores.Intercambio(0,1);
     }
 
-    // Update is called once per frame
+    //
     void Update()
     {
         

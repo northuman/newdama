@@ -32,7 +32,7 @@ public class MostrarCarta : MonoBehaviour
     public TMP_Text flavourText;
     //public Image fotoImagen;
     public bool reverso;
-    public static bool staticReverso;
+    //public static bool staticReverso;
     public string color;
     public GameObject ManoJugador;
     public GameObject ManoOponente;
@@ -45,27 +45,24 @@ public class MostrarCarta : MonoBehaviour
         Jugador1 = GameObject.Find("Jugador");
         numCartasEnBaraja = Jugador.tamanyoBaraja;
         Jugador2 = GameObject.Find("Oponente");
+
     }
 
-    
-    void Update()
+    public void RenderizarCarta()
     {
+
+        //Coge las cartas de cada juegador
         if(Jugador1.GetComponent<Jugador>().findById(id) != null){
             
             mostrarCarta[0] = Jugador1.GetComponent<Jugador>().findById(id);
-            reverso = false;
         }
         else if(Jugador2.GetComponent<Jugador>().findById(id) != null){
             
             mostrarCarta[0] = Jugador2.GetComponent<Jugador>().findById(id);
-            reverso = true;
-            
         }
-        staticReverso = reverso; 
 
         //Le pone el color a la carta
         color = mostrarCarta[0].color;
-
         UtilCartas.colorearCarta(this.gameObject);
         
         //Se asignan los valores a la carta desde cartaDatabase
@@ -91,16 +88,25 @@ public class MostrarCarta : MonoBehaviour
         flavourText.text = "" + flavour;
         //fotoImagen.sprite = spriteImagen;
 
-
+        /*
+        if(tipo != "Tierra"){
+            
+        }
+        else{
+            this.transform.Find("Borde/Color/Lineas/Stats").GetComponent<Image>().enabled = false;
+        }
+        */
+        
+    
         //Busca el panel con nombre Mano y lo guarda como GameObject
         ManoJugador = GameObject.Find("ManoJugador");
         ManoOponente = GameObject.Find("ManoOponente");
         
-        if(this.transform.parent == ManoJugador.transform.parent)
-        {
-            //Si la carta está en la mano siempre se ve
-            //reverso = false;
-            
-        }  
     }
+    
+    void Update()
+    {
+        RenderizarCarta();
+    }
+
 }

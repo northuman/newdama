@@ -45,7 +45,7 @@ public class Jugador : MonoBehaviour
 
     public void rellenarBaraja()
     {
-        Debug.Log("Relleno baraja para " + nombre);
+        //Debug.Log("Relleno baraja para " + nombre);
         x = 0;
         tamanyoBaraja = 40;
         for(int i = 0; i < tamanyoBaraja; i++)
@@ -69,6 +69,15 @@ public class Jugador : MonoBehaviour
         tierraJugada=false;
     }
 
+    public void girarTierra(GameObject tierraSeleccionada)
+    {
+        GameObject panelTierras = GameObject.Find("AreaTierras");
+        if(tierraSeleccionada.transform.parent.gameObject == panelTierras){
+            tierraSeleccionada.GetComponent<Reverso>().GirarCarta();
+
+        }
+    }
+
 
     /**Robar carta
     num: cantidad de cartas a robar.
@@ -80,7 +89,7 @@ public class Jugador : MonoBehaviour
         bool robar = false;
         if(barajaPartida.Count>=num){
             for(int i = 0; i<num;i++){
-                Debug.Log("robo de carta para " + nombre); 
+                //Debug.Log("robo de carta para " + nombre); 
                 mano.Add(barajaPartida[barajaPartida.Count-1]);    
                 //CartaJugada.GetComponent<MostrarCarta>().id = barajaPartida[barajaPartida.Count-1].id;  
                 
@@ -345,12 +354,12 @@ public class Jugador : MonoBehaviour
     }
 
 
-    // Start is called before the first frame update
+    //
     void Start()
     {    
     }
 
-    // Update is called once per frame
+    // 
     void Update()
     {
         //CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
@@ -365,7 +374,7 @@ public class Jugador : MonoBehaviour
         CartaJugada.GetComponent<MostrarCarta>().id = carta.id;
         CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
         
-        Debug.Log("instancio carta " + CartaJugada.GetComponent<MostrarCarta>().id);
+        //Debug.Log("instancio carta " + CartaJugada.GetComponent<MostrarCarta>().id);
         yield return null;
 
     }

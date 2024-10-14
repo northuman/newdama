@@ -7,22 +7,40 @@ using UnityEngine;
 public class Reverso : MonoBehaviour
 {
     public GameObject ReversoCarta;
-    void Start()
-    {
-        
-    }
 
-    void Update()
+    public void GirarCarta()
     {
-        
-        if(MostrarCarta.staticReverso == true)
+        if(this.enabled == false)
         {
+            this.enabled = true;
             ReversoCarta.SetActive(true);
         }
         else
         {
+            this.enabled = false;
             ReversoCarta.SetActive(false);
         }
+    }
+
+    private void IniciarConReverso()
+    {
+        int perteneceA = -1;
+        if(ReversoCarta.GetComponentInParent<CartasJugadas>() != null){
+            perteneceA = ReversoCarta.GetComponentInParent<CartasJugadas>().perteneceAJugador;
+            if(perteneceA == 1)
+            {
+                GirarCarta();
+            }
+
+        }
+    }
+    void Start()
+    {
+        IniciarConReverso();
+    }
+
+    void Update()
+    {
         
     }
 }

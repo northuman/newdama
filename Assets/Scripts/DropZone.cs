@@ -31,7 +31,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log(eventData.pointerDrag.name + " dropea en " + gameObject.name);
+        //Debug.Log(eventData.pointerDrag.name + " dropea en " + gameObject.name);
 
         Arrastrar arrastrando = eventData.pointerDrag.GetComponent<Arrastrar>();
         if (arrastrando != null)
@@ -76,6 +76,8 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         }
         return validar;
     }
+
+
 
 
     void Start()

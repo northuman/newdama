@@ -20,7 +20,7 @@ public class Carta
     public string color;
     public int fuerza;
     public int resistencia;
-    public string descripcion; //Es de tipo TextAsset porque coge el texto de un archivo .txt ubicado en Resources 
+    public string descripcion; //
     public string flavour;   // ====
     
     //public List<Efecto> efectos; //Aun no está hecho
