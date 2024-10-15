@@ -99,6 +99,34 @@ public class Jugador : MonoBehaviour
         mana[3] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[4];
     }
 
+    public bool ComprobarMana(GameObject carta)
+    {
+        bool ok = true;
+        for(int i = 0; i < mana.Length; i++){
+            if(mana[i] - carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1] < 0){
+                ok = false;
+            }
+        }
+        return ok;
+    }
+
+    //Intentando calcular lo que cuesta sacar una carta y si tienes suficiente
+    public bool CalcularCoste(GameObject carta){
+        bool ok = false;
+        int costeInc;
+        
+        if(carta != null){
+            costeInc = carta.GetComponent<MostrarCarta>().GetCarta().costeMana[0];
+            string tipo = carta.GetComponent<MostrarCarta>().tipo;
+
+            if(tipo == "Criatura" || tipo == "Conjuro" || tipo == "Instantáneo" || tipo == "Encantamiento"){
+                if(ComprobarMana(carta)){
+                    ok = true;
+                }
+            }
+        }
+        return ok;
+    }
 
     /**Robar carta
     num: cantidad de cartas a robar.

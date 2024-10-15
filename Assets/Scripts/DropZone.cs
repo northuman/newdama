@@ -14,6 +14,7 @@ using UnityEngine.EventSystems;
 
 public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    GameObject cartaSeleccionada = null;
     public enum tipoDropZone {MANO, TIERRAS, BATALLA}
     
     /*
@@ -36,13 +37,16 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         Arrastrar arrastrando = eventData.pointerDrag.GetComponent<Arrastrar>();
         if (arrastrando != null)
         {
+            cartaSeleccionada = eventData.pointerDrag.gameObject;
             string tipo = eventData.pointerDrag.GetComponent<MostrarCarta>().tipo; 
-
             int id= eventData.pointerDrag.GetComponent<MostrarCarta>().id;
 
+            //comprobando si el tipo es valido
             if(validarTipo(tipo))
             {
                 arrastrando.parentToReturnTo = this.transform;
+                //comprobando si tienes mana suficiente
+                //if(cartaSeleccionada.GetComponent<Jugador>().CalcularCoste(cartaSeleccionada)){}
             }
         }
     }
@@ -76,9 +80,6 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         }
         return validar;
     }
-
-
-
 
     void Start()
     {
