@@ -47,6 +47,8 @@ static class UtilCartas{
         return new List<TSource>(source);
     }
 
+    
+
     //Funcion para cambiar el color de las cartas
     public static void colorearCarta(GameObject carta)  
     {      

@@ -1,12 +1,16 @@
-Señorío/0/Común/00000/R/0/0/Hola que tal esto es una descripcion4/Esto es el flavour4
-Señorío/0/Común/00000/R/0/0/Hola que tal esto es una descripcion4/Esto es el flavour4
-Señorío/0/Común/00000/R/0/0/Hola que tal esto es una descripcion4/Esto es el flavour4
-Señorío/0/Común/00000/R/0/0/Hola que tal esto es una descripcion4/Esto es el flavour4
-Señorío/0/Común/00000/R/0/0/Hola que tal esto es una descripcion4/Esto es el flavour4
-Escudero/1/Común/00010/B/1/1/Hola que tal esto es una descripcion1/Esto es el flavour1
-Gentilhombre/1/Común/10010/N/1/1/Hola que tal esto es una descripcion5/Esto es el flavour5
-Dama de corte/1/Común/20010/R/1/1/Hola que tal esto es una descripcion2/Esto es el flavour2
-Barón/1/Común/20020/V/2/2/Hola que tal esto es una descripcion3/Esto es el flavour3
-Oveja/1/Común/10010/V/4/5/Hola que tal esto es una descripcion6/Esto es el flavour6
-Parroquia/0/Común/00000/B/0/0/Una parroquia/Si
+Señorío/0/Común/00010/R/0/0/Hola que tal esto es una descripcion/Esto es el flavour
+Señorío/0/Común/00010/R/0/0/Hola que tal esto es una descripcion/Esto es el flavour
+Señorío/0/Común/00010/R/0/0/Hola que tal esto es una descripcion/Esto es el flavour
+Señorío/0/Común/00010/R/0/0/Hola que tal esto es una descripcion/Esto es el flavour
+Señorío/0/Común/00010/R/0/0/Hola que tal esto es una descripcion/Esto es el flavour
+Escudero/1/Común/00010/B/1/1/Hola que tal esto es una descripcion/Esto es el flavour
+Gentilhombre/1/Común/10010/N/1/1/Hola que tal esto es una descripcion/Esto es el flavour
+Dama de corte/1/Común/20010/R/1/1/Hola que tal esto es una descripcion/Esto es el flavour
+Barón/1/Común/20020/V/2/2/Hola que tal esto es una descripcion/Esto es el flavour
+Parroquia/0/Común/01000/B/0/0/Una parroquia/Si
 Escudero/1/Común/00010/R/1/1/Cuando el Escudero ataque, hace 1 de daño al jugador atacado./Los escuderos acompañaban siempre a los caballeros. Servían a estos individuos para aprender las funciones de su amo y tener la posibilidad de ser.......
+Hidalgo/1/Común/10011/R/3/2/ Girar: Otorga G.  Girar: haz un punto de daño a cualquier objetivo./Flavour
+Chantre/1/Común/22000/B/1/2/Las criaturas que controlas obtienen +0/+2 cuando bloquean./Flavour
+Campesino/1/Común/00001/V/1/1/Girar: Otorga G./Flavour
+Burgo/0/Común/00001/V/0/0/Tierra verde/Flavour
+Arrabal/0/Común/00100/N/0/0/Tierra negra/Flavour

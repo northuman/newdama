@@ -24,24 +24,22 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
     public void OnBeginDrag(PointerEventData eventData)
     {   
         GameObject j1 = GameObject.Find("Jugador");
-        int idCarta = eventData.pointerDrag.gameObject.GetComponent<MostrarCarta>().id;
-        
-        parentToReturnTo = this.transform.parent;
-        this.transform.SetParent(this.transform.parent.parent);
-        GetComponent<CanvasGroup>().blocksRaycasts = false;
-        
-        //if(j1.GetComponent<Jugador>().jugarCarta(buscarCartaenMano(idCarta, j1))){
-        //}
+        int perteneceA = eventData.pointerDrag.gameObject.GetComponent<CartasJugadas>().perteneceAJugador;
+        if(perteneceA == 1){
+
+            int idCarta = eventData.pointerDrag.gameObject.GetComponent<MostrarCarta>().id;
+            
+            parentToReturnTo = this.transform.parent;
+            this.transform.SetParent(this.transform.parent.parent);
+            GetComponent<CanvasGroup>().blocksRaycasts = false;
+            
+        }
+        else{
+            //eventData.pointerDrag.gameObject.GetComponent<Arrastrar>().enabled = false;
+            this.enabled = false;
+        }
     }
 
-    public int buscarCartaenMano(int idCarta, GameObject jugador){
-        for(int i = 0; i < jugador.GetComponent<Jugador>().mano.Count; i++){
-            if(idCarta == jugador.GetComponent<Jugador>().mano[i].id){
-                return i;
-            }
-        }
-        return -1;
-    }
     public void OnDrag(PointerEventData eventData)
     {
         this.transform.position = eventData.position;
@@ -52,7 +50,6 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
         this.transform.SetParent(parentToReturnTo);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
-
 
 
     void Start()

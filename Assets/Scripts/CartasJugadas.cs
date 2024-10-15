@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /*
@@ -22,12 +23,14 @@ public class CartasJugadas : MonoBehaviour
     public GameObject j1;
     public GameObject j2;
 
+
+    
     public CartasJugadas(Carta cartp){
-        carta = cartp;
+        carta = new Carta(cartp);
         fuerzaActual = cartp.fuerza;
         resistenciaActual = cartp.resistencia;
-        mareo = true;
-        girada = false;
+        //girada = false;
+        //mareo = false;
         encantamientos = new List<Carta>();
     }
 
@@ -42,8 +45,7 @@ public class CartasJugadas : MonoBehaviour
 
         if(perteneceAJugador== j2.GetComponent<Jugador>().id)
         {
-            CartaJugada.transform.Rotate(180, 0, 0);
-            
+            CartaJugada.GetComponent<Reverso>().transform.Rotate(0, 0, 180);      
         }
 
         if(perteneceAJugador== j1.GetComponent<Jugador>().id)
@@ -53,11 +55,8 @@ public class CartasJugadas : MonoBehaviour
         }
         else if(perteneceAJugador== j2.GetComponent<Jugador>().id)
         {
-            CartaJugada.transform.SetParent(ManoOponente.transform);
-            
-            
+            CartaJugada.transform.SetParent(ManoOponente.transform);   
         }
-
     }
 
     void Update()

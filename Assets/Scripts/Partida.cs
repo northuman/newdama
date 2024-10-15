@@ -74,7 +74,7 @@ public class Partida : MonoBehaviour
     public void faseInicio()
     {
         //Enderezar cartas giradas
-        jugadores[0].enderezoInicial();
+        //jugadores[0].enderezoInicial();
 
         //Mantenimiento (efectos etc)
 

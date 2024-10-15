@@ -48,6 +48,10 @@ public class MostrarCarta : MonoBehaviour
 
     }
 
+    public Carta GetCarta()
+    {
+        return mostrarCarta[0];
+    }
     public void RenderizarCarta()
     {
 
@@ -82,22 +86,24 @@ public class MostrarCarta : MonoBehaviour
         //Se asignan los valores de la carta a los de la interfaz
         nombreText.text = "" + nombreCarta;
         tipoText.text = "" + tipo + " - " + rareza;
-        manaText.text = "" + costeMana;
-        statsText.text = "" + fuerza + " / " + resistencia;
         descText.text = "" + descripcion;
         flavourText.text = "" + flavour;
         //fotoImagen.sprite = spriteImagen;
 
-        /*
+
+        //si la carta es una tierra se muestra distinta        
         if(tipo != "Tierra"){
+            manaText.text = "" + costeMana;
+            statsText.text = "" + fuerza + " / " + resistencia;
             
         }
         else{
+            manaText.text = "";
+            statsText.text = "";
             this.transform.Find("Borde/Color/Lineas/Stats").GetComponent<Image>().enabled = false;
         }
-        */
         
-    
+        
         //Busca el panel con nombre Mano y lo guarda como GameObject
         ManoJugador = GameObject.Find("ManoJugador");
         ManoOponente = GameObject.Find("ManoOponente");

@@ -8,7 +8,7 @@ public class Jugador : MonoBehaviour
     public int id;
     public string nombre;
     public int vida;
-    public int[] mana; //BLANCO, NEGRO, ROJO, VERDE
+    public int[] mana; 
     public List<Carta> barajaOriginal = new List<Carta>();
     public List<Carta> barajaPartida;
     public List<Carta> mano;
@@ -25,7 +25,7 @@ public class Jugador : MonoBehaviour
 
     public Jugador( List<Carta> baraja)
     {
-        vida = 20;
+        
         barajaOriginal = baraja;
         barajaPartida = new List<Carta>();
         mano = new List<Carta>();
@@ -50,11 +50,12 @@ public class Jugador : MonoBehaviour
         tamanyoBaraja = 40;
         for(int i = 0; i < tamanyoBaraja; i++)
         {        
-            x = Random.Range(0,9);
+            x = Random.Range(0,CartaDatabase.listaCartas.Count -1);
             barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[x]));
         }
     }
 
+    /* obsoleto
     public void enderezoInicial()
     {
         for(int i = 0; i<batalla.Count; i++){
@@ -67,15 +68,35 @@ public class Jugador : MonoBehaviour
         }
 
         tierraJugada=false;
-    }
+    }*/
 
     public void girarTierra(GameObject tierraSeleccionada)
     {
         GameObject panelTierras = GameObject.Find("AreaTierras");
         if(tierraSeleccionada.transform.parent.gameObject == panelTierras){
             tierraSeleccionada.GetComponent<Reverso>().GirarCarta();
-
+            if(tierraSeleccionada.GetComponent<CartasJugadas>().girada == true){
+                SumarMana(tierraSeleccionada);
+            }else{
+                RestarMana(tierraSeleccionada);
+            }
         }
+    }
+
+    public void SumarMana(GameObject cartaSeleccionada)
+    {
+        mana[0] += cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[1];
+        mana[1] += cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[2];
+        mana[2] += cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[3];
+        mana[3] += cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[4];
+        
+    }
+    public void RestarMana(GameObject cartaSeleccionada)
+    {
+        mana[0] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[1];
+        mana[1] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[2];
+        mana[2] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[3];
+        mana[3] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[4];
     }
 
 
@@ -357,6 +378,8 @@ public class Jugador : MonoBehaviour
     //
     void Start()
     {    
+        vida = 20;
+        mana = new int[]{0,0,0,0};
     }
 
     // 

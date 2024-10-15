@@ -19,7 +19,7 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
         if(eventData.button == 0){
             //Guardo el gameObject seleccionado
             cartaSeleccionada = eventData.pointerClick.gameObject;
-            Debug.Log("Selecciono " + cartaSeleccionada.GetComponent<MostrarCarta>().nombreCarta +" con Id " + cartaSeleccionada.GetComponent<MostrarCarta>().id);
+            //Debug.Log("Selecciono " + cartaSeleccionada.GetComponent<MostrarCarta>().nombreCarta +" con Id " + cartaSeleccionada.GetComponent<MostrarCarta>().id);
             if(cartaSeleccionada.GetComponent<MostrarCarta>().tipo == "Tierra")
             {
                GameObject.Find("Jugador").gameObject.GetComponent<Jugador>().girarTierra(cartaSeleccionada); 

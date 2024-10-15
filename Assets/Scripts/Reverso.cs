@@ -7,18 +7,24 @@ using UnityEngine;
 public class Reverso : MonoBehaviour
 {
     public GameObject ReversoCarta;
+    public bool cartaGirada;
+
 
     public void GirarCarta()
     {
-        if(this.enabled == false)
+        if(this.enabled == false)   //si está boca arriba
         {
-            this.enabled = true;
-            ReversoCarta.SetActive(true);
+            this.enabled = true;    
+            ReversoCarta.SetActive(true);   //se pone boca abajo
+            cartaGirada = true;
+            ReversoCarta.GetComponentInParent<CartasJugadas>().girada = cartaGirada;
         }
-        else
+        else    //si está boca abajo
         {
             this.enabled = false;
-            ReversoCarta.SetActive(false);
+            ReversoCarta.SetActive(false);  //boca arriba
+            cartaGirada = false;
+            ReversoCarta.GetComponentInParent<CartasJugadas>().girada = cartaGirada;
         }
     }
 
@@ -27,6 +33,7 @@ public class Reverso : MonoBehaviour
         int perteneceA = -1;
         if(ReversoCarta.GetComponentInParent<CartasJugadas>() != null){
             perteneceA = ReversoCarta.GetComponentInParent<CartasJugadas>().perteneceAJugador;
+            
             if(perteneceA == 1)
             {
                 GirarCarta();
