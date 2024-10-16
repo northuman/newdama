@@ -26,6 +26,9 @@ public class UIElements : MonoBehaviour
     public TMP_Text manaVerde;
     
 
+    /*
+    Separa el array de maná en valores individuales para que se pueda mostrar en la interfaz
+    */
     public void SepararMana()
     { 
         if (jugador1.GetComponent<Jugador>().mana != null){
@@ -37,6 +40,10 @@ public class UIElements : MonoBehaviour
         }
     }
 
+    /*
+    Este método hace que se muestre el maná de forma dinámica. 
+    Cuando es 0 no se muestra la interfaz
+    */
     public void ShowMana()
     {
         if(manaB == 0){
@@ -60,6 +67,7 @@ public class UIElements : MonoBehaviour
             panelMana.transform.Find("Verde").gameObject.SetActive(true);
         }
         
+        //Asigna los valores a las casillas de la interfaz
         manaBlanco.text = "" + manaB;
         manaNegro.text = "" + manaN;
         manaRojo.text = "" + manaR;
@@ -74,6 +82,7 @@ public class UIElements : MonoBehaviour
     
     void Update()
     {
+        //Los elementos de la interfaz se actualizan cada frame
         vida = jugador1.GetComponent<Jugador>().vida;
         vida1.text = "" + vida;
         SepararMana();

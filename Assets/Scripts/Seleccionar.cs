@@ -21,7 +21,8 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
             cartaSeleccionada = eventData.pointerClick.gameObject;
             if(cartaSeleccionada.GetComponent<MostrarCarta>().tipo == "Tierra")
             {
-               GameObject.Find("Jugador").gameObject.GetComponent<Jugador>().girarTierra(cartaSeleccionada); 
+                //Si es una tierra se le da la vuelta
+               GameObject.Find("Jugador").gameObject.GetComponent<Jugador>().GirarTierra(cartaSeleccionada); 
             }
         }
     }

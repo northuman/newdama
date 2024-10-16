@@ -10,6 +10,10 @@ public class Reverso : MonoBehaviour
     public bool cartaGirada;
 
 
+    /*
+    Comprueba si la carta está girada o no, y le da la vuelta.
+    Cambia la propiedad de girada de la carta
+    */
     public void GirarCarta()
     {
         if(this.enabled == false)   //si está boca arriba
@@ -28,6 +32,9 @@ public class Reverso : MonoBehaviour
         }
     }
 
+    /*
+    COntrola que las cartas del jugador salgan boca arriba al iniciar la partida
+    */
     private void IniciarConReverso()
     {
         int perteneceA = -1;

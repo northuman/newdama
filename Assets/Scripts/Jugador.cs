@@ -42,10 +42,8 @@ public class Jugador : MonoBehaviour
     }
 
     //hay que crear la barajaOriginal para poder probar
-
     public void rellenarBaraja()
     {
-        //Debug.Log("Relleno baraja para " + nombre);
         x = 0;
         tamanyoBaraja = 40;
         for(int i = 0; i < tamanyoBaraja; i++)
@@ -70,7 +68,12 @@ public class Jugador : MonoBehaviour
         tierraJugada=false;
     }*/
 
-    public void girarTierra(GameObject tierraSeleccionada)
+    /*
+    Comprueba si está en el panel de tierras y se llama a GirarCarta()
+    Si la carta está girada se llama a SumarMana(), si no a RestarMana()
+    Se le pasa una carta.
+    */
+    public void GirarTierra(GameObject tierraSeleccionada)
     {
         GameObject panelTierras = GameObject.Find("AreaTierras");
         if(tierraSeleccionada.transform.parent.gameObject == panelTierras){
@@ -83,6 +86,15 @@ public class Jugador : MonoBehaviour
         }
     }
 
+    
+    /* 
+    * SumarMana()
+    Suma a cada posición del maná del jugador, la posición correspondiente del coste de maná de la carta.
+    Se le pasa una carta.
+    * RestarMana()
+    Resta a cada posición de la misma manera que sumar.
+    */
+    
     public void SumarMana(GameObject cartaSeleccionada)
     {
         mana[0] += cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[1];
@@ -99,6 +111,13 @@ public class Jugador : MonoBehaviour
         mana[3] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[4];
     }
 
+    /*
+    Aquí se harán los cálculos del maná. 
+    Se tiene que comprobar que el juegador tenga suficiente.
+    También se tiene que comprobar qué tipo de carta es.
+    Devuelve true si tiene suficiente maná.
+    Deberá llamar a RestarMana().
+    */
     public bool ComprobarMana(GameObject carta)
     {
         bool ok = true;
@@ -110,7 +129,7 @@ public class Jugador : MonoBehaviour
         return ok;
     }
 
-    //Intentando calcular lo que cuesta sacar una carta y si tienes suficiente
+    //Esta función es redundante, se puede hacer con la de arriba
     public bool CalcularCoste(GameObject carta){
         bool ok = false;
         int costeInc;
@@ -138,9 +157,8 @@ public class Jugador : MonoBehaviour
         bool robar = false;
         if(barajaPartida.Count>=num){
             for(int i = 0; i<num;i++){
-                //Debug.Log("robo de carta para " + nombre); 
+                
                 mano.Add(barajaPartida[barajaPartida.Count-1]);    
-                //CartaJugada.GetComponent<MostrarCarta>().id = barajaPartida[barajaPartida.Count-1].id;  
                 
                 StartCoroutine(InstanciarPrefab(barajaPartida[barajaPartida.Count-1]));
                 barajaPartida.RemoveAt(barajaPartida.Count-1);
@@ -406,6 +424,8 @@ public class Jugador : MonoBehaviour
     //
     void Start()
     {    
+        //Esto está aquí porque tiene que hacerse una vez al principio
+        //El constructor de la clase, al tener un parámetro, no se ejecuta de forma automática
         vida = 20;
         mana = new int[]{0,0,0,0};
     }
@@ -413,7 +433,7 @@ public class Jugador : MonoBehaviour
     // 
     void Update()
     {
-        //CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
+        
     }
 
     //Rutina para instanciar prefabs

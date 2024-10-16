@@ -8,7 +8,6 @@ using static UtilCartas;
 public class Partida : MonoBehaviour
 {
     public enum OrdenJugadores {JUGADOR, OPONENTE};
-
     public Jugador jugador;
     public Jugador oponente;
     List<Jugador> jugadores;

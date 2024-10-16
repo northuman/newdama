@@ -37,17 +37,20 @@ public class CartasJugadas : MonoBehaviour
 
     void Start()
     {
+        //Asigno los juegadores
         j1 = GameObject.Find("Jugador");
         j2 = GameObject.Find("Oponente");
-
+        //Asigno los paneles 
         ManoJugador = GameObject.Find("ManoJugador");
         ManoOponente = GameObject.Find("ManoOponente");
 
+        //Rotar las cartas del oponente, innecesario porque no se ven
         if(perteneceAJugador== j2.GetComponent<Jugador>().id)
         {
             CartaJugada.GetComponent<Reverso>().transform.Rotate(0, 0, 180);      
         }
 
+        //Coloca las cartas en la mano correspondiente según a quién pertenecen
         if(perteneceAJugador== j1.GetComponent<Jugador>().id)
         {
             CartaJugada.transform.SetParent(ManoJugador.transform);

@@ -48,14 +48,19 @@ public class MostrarCarta : MonoBehaviour
 
     }
 
+    //Esta función permite obtener los parámetros de Carta desde esta clase
     public Carta GetCarta()
     {
         return mostrarCarta[0];
     }
+
+    /*
+    Coge los parámetros de las cartas y rellena las plantillas
+    */
     public void RenderizarCarta()
     {
 
-        //Coge las cartas de cada juegador
+        //Coge las cartas de cada jugador
         if(Jugador1.GetComponent<Jugador>().findById(id) != null){
             
             mostrarCarta[0] = Jugador1.GetComponent<Jugador>().findById(id);
@@ -69,7 +74,7 @@ public class MostrarCarta : MonoBehaviour
         color = mostrarCarta[0].color;
         UtilCartas.colorearCarta(this.gameObject);
         
-        //Se asignan los valores a la carta desde cartaDatabase
+        //Se asignan los valores a la carta que coge de cada jugador
         id = mostrarCarta[0].id; 
         nombreCarta = mostrarCarta[0].nombreCarta;
         tipo = mostrarCarta[0].tipoToString(mostrarCarta[0].tipo);
@@ -79,7 +84,6 @@ public class MostrarCarta : MonoBehaviour
         resistencia = mostrarCarta[0].resistencia;
         descripcion = mostrarCarta[0].descripcion;
         flavour = mostrarCarta[0].flavour;
-
         //spriteImagen = mostrarCarta[0].spriteImagen;
 
 
@@ -91,18 +95,17 @@ public class MostrarCarta : MonoBehaviour
         //fotoImagen.sprite = spriteImagen;
 
 
-        //si la carta es una tierra se muestra distinta        
+        //si la carta No es una tierra, se muestran sus parámetros      
         if(tipo != "Tierra"){
             manaText.text = "" + costeMana;
-            statsText.text = "" + fuerza + " / " + resistencia;
-            
+            statsText.text = "" + fuerza + " / " + resistencia; 
         }
+        //si es una tierra, se ocultan el maná y las estadísticas.
         else{
             manaText.text = "";
             statsText.text = "";
             this.transform.Find("Borde/Color/Lineas/Stats").GetComponent<Image>().enabled = false;
         }
-        
         
         //Busca el panel con nombre Mano y lo guarda como GameObject
         ManoJugador = GameObject.Find("ManoJugador");
@@ -112,6 +115,7 @@ public class MostrarCarta : MonoBehaviour
     
     void Update()
     {
+        //Se renderiza la carta cada frame
         RenderizarCarta();
     }
 
