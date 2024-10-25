@@ -25,12 +25,10 @@ public class Partida : MonoBehaviour
         if(!turno){
             jugadores.Add(jugador);
             jugadores.Add(oponente);
-            Debug.Log("Jugador es primero");
         //Primero oponente
         }else{
             jugadores.Add(oponente);
             jugadores.Add(jugador);
-            Debug.Log("Oponente es primero");
         }
     }
 

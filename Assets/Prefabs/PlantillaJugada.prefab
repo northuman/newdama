@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 4265848530549438299}
   - component: {fileID: -2804190339114115970}
   - component: {fileID: -1583185832247422437}
-  - component: {fileID: -6143219013612552785}
   m_Layer: 5
   m_Name: PlantillaJugada
   m_TagString: Untagged
@@ -109,7 +108,7 @@ MonoBehaviour:
     descripcion: 
     flavour: 
   mostrarId: 1
-  id: 60
+  id: 72
   nombreCarta: 
   tipo: 
   rareza: 
@@ -216,18 +215,6 @@ MonoBehaviour:
   perteneceAJugador: 2
   j1: {fileID: 0}
   j2: {fileID: 0}
---- !u!114 &-6143219013612552785
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465451593607068670}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eca6cc244e05f904298feb5863ada219, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1133520282259681244
 GameObject:
   m_ObjectHideFlags: 0

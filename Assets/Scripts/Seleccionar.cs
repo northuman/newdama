@@ -7,12 +7,35 @@ using UnityEngine.EventSystems;
 public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     GameObject cartaSeleccionada = null;
+    public GameObject panelFront;
+    GameObject copiaDeCarta;
+    public Transform parentToReturnTo = null;
+    Vector3 nuevaEscala;
+    bool rightClick = false;
     
-    
+
     public void OnPointerDown (PointerEventData eventData)
-    {}
+    {
+        //click derecho
+        if(eventData.button == PointerEventData.InputButton.Right){
+            if(this.gameObject.GetComponent<MostrarCarta>().enabled){
+
+                cartaSeleccionada = this.gameObject;
+                rightClick = true;
+                parentToReturnTo = this.transform.parent;
+
+                EnsenyarCarta(cartaSeleccionada, true);
+            }
+        }
+    }
     public void OnPointerUp (PointerEventData eventData) 
-    {}
+    {
+        if (cartaSeleccionada != null){
+            if(rightClick){
+                EnsenyarCarta(cartaSeleccionada, false);
+            }
+        }
+    }   
     public void OnPointerClick(PointerEventData eventData)
     {
         //Si se pulsa el click izquierdo
@@ -26,21 +49,28 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
             }
         }
     }
-    public void OnPointerEnter (PointerEventData eventData)
-    {}
-    public void OnPointerExit (PointerEventData eventData)
-    {} 
+    public void OnPointerEnter (PointerEventData eventData){}
+    public void OnPointerExit (PointerEventData eventData){} 
 
-
-
-    //
-    void Start()
-    {
-        
+    public void EnsenyarCarta(GameObject carta, bool click){
+        if(carta.GetComponent<Reverso>().enabled == false){
+            if(click){
+                Debug.Log("instancio la carta");
+                copiaDeCarta = Instantiate(carta,panelFront.transform, false);
+                
+                copiaDeCarta.transform.localScale = nuevaEscala;
+            }
+            else{
+                Destroy(copiaDeCarta);
+            }
+        }
     }
-    //
-    void Update()
-    {
-         
+
+    
+    void Start(){
+        panelFront = GameObject.Find("PanelFrontal");
+        nuevaEscala = new Vector3(1.5f, 1.5f,0);
     }
+    
+    void Update(){}
 }
