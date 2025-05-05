@@ -25,7 +25,7 @@ public class CartasJugadas : MonoBehaviour
     public GameObject j2;
 
 
-    
+    /* 
     public CartasJugadas(Carta cartp){
         carta = new Carta(cartp);
         fuerzaActual = cartp.fuerza;
@@ -33,6 +33,31 @@ public class CartasJugadas : MonoBehaviour
         //girada = false;
         //mareo = false;
         encantamientos = new List<Carta>();
+    }
+    */
+
+    public void Inicializar(Carta cartp)
+    {
+        carta = new Carta(cartp); 
+        fuerzaActual = cartp.fuerza;
+        resistenciaActual = cartp.resistencia;
+        encantamientos = new List<Carta>();
+        //mareo = false;
+        //girada = false;
+    }
+
+
+    public void RotarCarta(){
+        if (this != null){
+            if(girada == false){
+                this.transform.Rotate(0 ,0 ,-90);
+                girada = true;
+            }
+            else{
+                this.transform.Rotate(0,0,90);
+                girada = false;
+            }
+        }
     }
 
 

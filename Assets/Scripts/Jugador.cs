@@ -77,7 +77,8 @@ public class Jugador : MonoBehaviour
     {
         GameObject panelTierras = GameObject.Find("AreaTierras");
         if(tierraSeleccionada.transform.parent.gameObject == panelTierras){
-            tierraSeleccionada.GetComponent<Reverso>().GirarCarta();
+            tierraSeleccionada.GetComponent<CartasJugadas>().RotarCarta();
+            //tierraSeleccionada.GetComponent<Reverso>().GirarCarta();
             if(tierraSeleccionada.GetComponent<CartasJugadas>().girada == true){
                 SumarMana(tierraSeleccionada);
             }else{

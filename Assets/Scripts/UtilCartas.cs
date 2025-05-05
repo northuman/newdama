@@ -16,6 +16,7 @@ static class UtilCartas{
     
     private static System.Random rng = new System.Random();
 
+
     //Shuffle, randomizar orden en lista
     public static void Randomizar<T>(this IList<T> list){  
         int n = list.Count;  

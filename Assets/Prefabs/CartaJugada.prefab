@@ -461,6 +461,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ReversoCarta: {fileID: 5754993283630874525}
+  cartaGirada: 0
 --- !u!114 &6286006768882204344
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -498,6 +499,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc5ccd58635a85459d7d3b0e75289c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelFront: {fileID: 0}
+  parentToReturnTo: {fileID: 0}
 --- !u!114 &-9049145156255222487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,6 +515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ManoJugador: {fileID: 0}
   ManoOponente: {fileID: 0}
+  PanelFrontal: {fileID: 0}
   CartaJugada: {fileID: 2602950743713347416}
   carta:
     id: 8

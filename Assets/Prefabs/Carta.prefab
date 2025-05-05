@@ -417,10 +417,11 @@ MonoBehaviour:
     tipo: 0
     rareza: 
     costeMana: 
+    color: 
     fuerza: 0
     resistencia: 0
-    descripcion: {fileID: 0}
-    flavour: {fileID: 0}
+    descripcion: 
+    flavour: 
   mostrarId: 1
   id: 0
   nombreCarta: 
@@ -429,17 +430,21 @@ MonoBehaviour:
   costeMana: 
   fuerza: 0
   resistencia: 0
-  descripcion: {fileID: 0}
-  flavour: {fileID: 0}
-  nombreText: {fileID: 8334025006009292291}
-  tipoText: {fileID: 6950651508595099781}
-  manaText: {fileID: 3676817657781104601}
-  statsText: {fileID: 4824926616330041340}
-  descText: {fileID: 7777775356312693783}
-  flavourText: {fileID: 1550135957880097775}
+  descripcion: 
+  flavour: 
+  nombreText: {fileID: 0}
+  tipoText: {fileID: 0}
+  manaText: {fileID: 0}
+  statsText: {fileID: 0}
+  descText: {fileID: 0}
+  flavourText: {fileID: 0}
   reverso: 1
-  Mano: {fileID: 0}
+  color: 
+  ManoJugador: {fileID: 0}
+  ManoOponente: {fileID: 0}
   numCartasEnBaraja: 0
+  Jugador1: {fileID: 0}
+  Jugador2: {fileID: 0}
 --- !u!114 &3156472279864505412
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -453,6 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ReversoCarta: {fileID: 5754993283630874525}
+  cartaGirada: 0
 --- !u!114 &536713912611905920
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1115,6 +1121,10 @@ PrefabInstance:
     - target: {fileID: 3442716374319844892, guid: b71dcaf6abd6fec43a49444dac4314d6, type: 3}
       propertyPath: m_Name
       value: Reverso
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442716374319844892, guid: b71dcaf6abd6fec43a49444dac4314d6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6167982537799469885, guid: b71dcaf6abd6fec43a49444dac4314d6, type: 3}
       propertyPath: m_Pivot.x

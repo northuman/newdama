@@ -35,7 +35,7 @@ RectTransform:
   - {fileID: 7246399484856778149}
   - {fileID: 1200183135044006974}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -93,6 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ReversoCarta: {fileID: 3442716374319844892, guid: b71dcaf6abd6fec43a49444dac4314d6, type: 3}
+  cartaGirada: 0
 --- !u!114 &-3772165489532428461
 MonoBehaviour:
   m_ObjectHideFlags: 0
