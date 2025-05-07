@@ -61,13 +61,13 @@ public class MostrarCarta : MonoBehaviour
     {
 
         //Coge las cartas de cada jugador
-        if(Jugador1.GetComponent<Jugador>().findById(id) != null){
+        if(Jugador1.GetComponent<Jugador>().FindById(id) != null){
             
-            mostrarCarta[0] = Jugador1.GetComponent<Jugador>().findById(id);
+            mostrarCarta[0] = Jugador1.GetComponent<Jugador>().FindById(id);
         }
-        else if(Jugador2.GetComponent<Jugador>().findById(id) != null){
+        else if(Jugador2.GetComponent<Jugador>().FindById(id) != null){
             
-            mostrarCarta[0] = Jugador2.GetComponent<Jugador>().findById(id);
+            mostrarCarta[0] = Jugador2.GetComponent<Jugador>().FindById(id);
         }
 
         //Le pone el color a la carta

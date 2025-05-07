@@ -30,10 +30,10 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
     {   
         if(eventData.button == 0){
             GameObject j1 = GameObject.Find("Jugador");
-            int perteneceA = eventData.pointerDrag.gameObject.GetComponent<CartasJugadas>().perteneceAJugador;
+            int perteneceA = eventData.pointerDrag.GetComponent<CartasJugadas>().perteneceAJugador;
             if(perteneceA == 1){
-                int idCarta = eventData.pointerDrag.gameObject.GetComponent<MostrarCarta>().id;
-                
+                GameObject cartaArrastrada = eventData.pointerDrag;
+                int idCarta = eventData.pointerDrag.GetComponent<MostrarCarta>().id;               
                 parentToReturnTo = this.transform.parent;
                 this.transform.SetParent(this.transform.parent.parent);
                 GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -42,7 +42,6 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
                 this.enabled = false;
             }
         }
-            
     }
 
     /*

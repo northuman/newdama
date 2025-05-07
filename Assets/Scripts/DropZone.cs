@@ -15,7 +15,10 @@ using UnityEngine.EventSystems;
 public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     GameObject cartaSeleccionada = null;
-    public enum tipoDropZone {MANO, TIERRAS, BATALLA}
+    GameObject jugador1 = null;
+    GameObject jugador2 = null;
+    public enum TipoDropZone {MANO, TIERRAS, BATALLA}
+    public TipoDropZone tipoZona;
     
     /*
     * MANO : admite todos los tipos de carta
@@ -23,12 +26,8 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     * BATALLA : admite crriaturas e instantaneos
     */
 
-    public tipoDropZone tipoZona;
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-
-    }
+    public void OnPointerEnter(PointerEventData eventData){}
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -36,43 +35,36 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         Arrastrar arrastrando = eventData.pointerDrag.GetComponent<Arrastrar>();
         if (arrastrando != null)
         {
-            cartaSeleccionada = eventData.pointerDrag.gameObject;
-            string tipo = eventData.pointerDrag.GetComponent<MostrarCarta>().tipo; 
-            int id= eventData.pointerDrag.GetComponent<MostrarCarta>().id;
-
-            //comprobando si el tipo es valido
-            if(validarTipo(tipo))
+            cartaSeleccionada = eventData.pointerDrag;
+            string tipo = eventData.pointerDrag.GetComponent<MostrarCarta>().tipo;
+            //int id= eventData.pointerDrag.GetComponent<MostrarCarta>().id;
+            if(ValidarTipo(tipo) && ValidarMana(cartaSeleccionada))
             {
                 arrastrando.parentToReturnTo = this.transform;
-                //comprobando si tienes mana suficiente
-                //if(cartaSeleccionada.GetComponent<Jugador>().CalcularCoste(cartaSeleccionada)){}
             }
         }
     }
-    public void OnPointerExit(PointerEventData eventData)
-    {
-
-    }
+    public void OnPointerExit(PointerEventData eventData){}
 
     //comprueba si la carta se puede colocar en el panel
-    public bool validarTipo(string tipo) 
+    public bool ValidarTipo(string tipo) 
     {
         bool validar = false;
         switch(tipoZona)
-        {
-            case tipoDropZone.MANO: 
+        {   
+            //esto está activado de momento para poder mover las cartas libremente 
+            case TipoDropZone.MANO: 
                 validar = true;
                 break;
-            case tipoDropZone.TIERRAS:
+            case TipoDropZone.TIERRAS:
                 if(tipo.Equals("Tierra"))
                 {
                     validar = true;
-
                 }
                 break;
-            case tipoDropZone.BATALLA:
+            case TipoDropZone.BATALLA:
                 if(tipo.Equals("Criatura") || tipo.Equals("Instantáneo"))
-                {
+                {   
                     validar = true;
                 }
                 break;
@@ -80,13 +72,34 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         return validar;
     }
 
-    void Start()
-    {
-
+    public bool ValidarMana(GameObject carta){
+        bool ok = false;
+        if(carta != null){
+            string tipo = carta.GetComponent<MostrarCarta>().tipo;
+            int perteneceA = carta.GetComponent<CartasJugadas>().perteneceAJugador;
+            if(tipo.Equals("Criatura")){
+                if(perteneceA==1){
+                    if(jugador1.GetComponent<Jugador>().ComprobarMana(carta)){
+                        jugador1.GetComponent<Jugador>().RestarMana(carta);
+                        ok = true;
+                    }
+                }
+                else if(perteneceA==2){
+                    if(jugador2.GetComponent<Jugador>().ComprobarMana(carta)){
+                        jugador2.GetComponent<Jugador>().RestarMana(carta);
+                        ok = true;
+                    }
+                }
+            }else{
+                ok = true;
+            }          
+        }
+        return ok;
     }
 
-    void Update()
+    void Start()
     {
-
+        jugador1 = GameObject.Find("Jugador");
+        jugador2 = GameObject.Find("Oponente");
     }
 }

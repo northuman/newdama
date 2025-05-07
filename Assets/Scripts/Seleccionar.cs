@@ -41,7 +41,7 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
         //Si se pulsa el click izquierdo
         if(eventData.button == 0){
             //Guardo el gameObject seleccionado
-            cartaSeleccionada = eventData.pointerClick.gameObject;
+            cartaSeleccionada = eventData.pointerClick;
             if(cartaSeleccionada.GetComponent<MostrarCarta>().tipo == "Tierra")
             {
                 //Si es una tierra se le da la vuelta
@@ -55,9 +55,8 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
     public void EnsenyarCarta(GameObject carta, bool click){
         if(carta.GetComponent<Reverso>().enabled == false){
             if(click){
-                Debug.Log("instancio la carta");
+                //instancio la carta
                 copiaDeCarta = Instantiate(carta,panelFront.transform, false);
-                
                 copiaDeCarta.transform.localScale = nuevaEscala;
             }
             else{

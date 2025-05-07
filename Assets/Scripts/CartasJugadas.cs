@@ -63,7 +63,7 @@ public class CartasJugadas : MonoBehaviour
 
     void Start()
     {
-        //Asigno los juegadores
+        //Asigno los jugadores
         j1 = GameObject.Find("Jugador");
         j2 = GameObject.Find("Oponente");
         //Asigno los paneles 

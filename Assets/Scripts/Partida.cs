@@ -32,9 +32,6 @@ public class Partida : MonoBehaviour
         }
     }
 
-    
-
-    // Start is called before the first frame update
     void Start()
     {
         // esto no lo puedo hacer en el start, tengo que hacer una función que rellene las barajas
@@ -46,8 +43,8 @@ public class Partida : MonoBehaviour
         jugadores[1].rellenarBaraja();
         jugadores[0].crearBarajaPartida();
         jugadores[1].crearBarajaPartida();
-        jugadores[0].robarCarta(7);
-        jugadores[1].robarCarta(7);   
+        jugadores[0].RobarCarta(7);
+        jugadores[1].RobarCarta(7);   
 
     }
 
@@ -78,7 +75,7 @@ public class Partida : MonoBehaviour
 
         bool falloRobar;
         //Robar 1, si no puede pierde
-        falloRobar = jugadores[0].robarCarta(1);
+        falloRobar = jugadores[0].RobarCarta(1);
         if(falloRobar){
             if(!turno) ganador = 2;
             else       ganador = 1;
@@ -112,10 +109,10 @@ public class Partida : MonoBehaviour
         //Reducir mano a 7 si lo supera
         //Eliminar desde el final de la mano
         while(jugadores[0].mano.Count > 7){
-            jugadores[0].eliminarCartaMano(jugadores[0].mano.Count);
+            jugadores[0].EliminarCartaMano(jugadores[0].mano.Count);
         }
         //Reiniciar efectos y danyo en cartas
-        jugadores[0].reiniciarEstadisticasBatalla();
+        jugadores[0].ReiniciarEstadisticasBatalla();
     }
 
     public void faseFinal(){
@@ -129,9 +126,4 @@ public class Partida : MonoBehaviour
         jugadores.Intercambio(0,1);
     }
 
-    //
-    void Update()
-    {
-        
-    }
 }
