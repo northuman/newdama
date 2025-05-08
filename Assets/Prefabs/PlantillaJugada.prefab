@@ -33,7 +33,7 @@ RectTransform:
   m_GameObject: {fileID: 465451593607068670}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.55, y: 0.55, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7246399484856778149}
@@ -108,7 +108,7 @@ MonoBehaviour:
     descripcion: 
     flavour: 
   mostrarId: 1
-  id: 76
+  id: 81
   nombreCarta: 
   tipo: 
   rareza: 

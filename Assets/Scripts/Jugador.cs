@@ -21,6 +21,7 @@ public class Jugador : MonoBehaviour
     public GameObject Mano;
 
     //bool tierraJugada = false;
+    public MensajeManager mensaje;
 
     void Start()
     {    
@@ -58,16 +59,16 @@ public class Jugador : MonoBehaviour
     }
 
     /*
-    Comprueba si está en el panel de tierras y se llama a GirarCarta()
+    Comprueba si está en el panel de tierras y se llama a RotarCarta()
     Si la carta está girada se llama a SumarMana(), si no a RestarMana()
-    Se le pasa una carta.
+    Se le pasa un GameObject carta.
     */
     public void GirarTierra(GameObject tierraSeleccionada)
     {
         GameObject panelTierras = GameObject.Find("AreaTierras");
         if(tierraSeleccionada.transform.parent.gameObject == panelTierras){
             tierraSeleccionada.GetComponent<CartasJugadas>().RotarCarta();
-            //tierraSeleccionada.GetComponent<Reverso>().GirarCarta();
+            
             if(tierraSeleccionada.GetComponent<CartasJugadas>().girada == true){
                 SumarMana(tierraSeleccionada);
             }else{
@@ -81,30 +82,33 @@ public class Jugador : MonoBehaviour
     * SumarMana()
     Suma a cada posición del maná del jugador, la posición correspondiente del coste de maná de la carta.
     Se le pasa una carta.
-    * RestarMana()
-    Resta a cada posición de la misma manera que sumar.
+    
     */
     
     public void SumarMana(GameObject cartaSeleccionada)
     {
-        mana[0] += cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[1];
-        mana[1] += cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[2];
-        mana[2] += cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[3];
-        mana[3] += cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[4];
-        
+        Carta carta = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta();
+        for(int i = 0; i < 4; i++){
+            mana[i] += carta.costeMana[i+1];
+        }
     }
+
+    /* RestarMana()
+    Resta a cada posición de maná de color.
+    Después comprueba el coste de maná incoloro.
+    */
     public void RestarMana(GameObject cartaSeleccionada)
     {
-        mana[0] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[1];
-        mana[1] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[2];
-        mana[2] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[3];
-        mana[3] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[4];
+        Carta carta = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta();
+        for (int i = 0; i < 4; i++){
+            mana[i] -= carta.costeMana[i+1];
+        }
 
         int incoloro = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[0];
         int restado = 0;
         int pos = 0;
 
-        //resta del mana incoloro       restado=0   incoloro=2  restante=0
+        //resta del mana incoloro
         while (restado < incoloro){
             if (mana[pos] > 0){
                 mana[pos] -= 1;
@@ -117,8 +121,7 @@ public class Jugador : MonoBehaviour
 
     /*
     Aquí se hacen los cálculos del maná. 
-    Se tiene que comprobar que el juegador tenga suficiente.
-    También se tiene que comprobar qué tipo de carta es.
+    Se comprueba que el juegador tenga suficiente.
     Devuelve true si tiene suficiente maná.
     */
     public bool ComprobarMana(GameObject carta)
@@ -128,7 +131,7 @@ public class Jugador : MonoBehaviour
         for(int i = 0; i < mana.Length; i++){
             if(mana[i] - carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1] < 0){
                 ok = false;
-                Debug.Log("No tienes maná suficiente");
+                mensaje.MostrarMensaje("No tienes suficiente maná!");
             }else{
                 if(carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1] > 0){
                     cantidad += carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1];
@@ -141,6 +144,9 @@ public class Jugador : MonoBehaviour
         return ok;
     }
 
+    /*Función auxiliar para el cálculo de maná
+    Te dice cuánto maná queda en el momento de la invocación
+    */
     public int ManaRestante(int cantidad){
         int restante = 0;
         for(int i = 0; i < mana.Length; i++){
@@ -159,10 +165,8 @@ public class Jugador : MonoBehaviour
         bool robar = false;
         if(barajaPartida.Count>=num){
             for(int i = 0; i<num;i++){
-                
-                mano.Add(barajaPartida[barajaPartida.Count-1]);    
-                
-                StartCoroutine(InstanciarPrefab(barajaPartida[barajaPartida.Count-1]));
+                mano.Add(barajaPartida[^1]);    
+                StartCoroutine(InstanciarPrefab(barajaPartida[^1]));
                 barajaPartida.RemoveAt(barajaPartida.Count-1);
             }
             robar = true;
@@ -170,7 +174,6 @@ public class Jugador : MonoBehaviour
         return robar;
     }
 
-     
     public void ReiniciarEstadisticasBatalla(){
         //Reiniciar a cada carta en campo de batalla fuerza y resistencia por defecto
         for(int i = 0; i<batalla.Count; i++){
@@ -183,15 +186,11 @@ public class Jugador : MonoBehaviour
     //Instancia una plantilla de carta vacía. Se le pasa una carta y le pone su id a la instancia.
     IEnumerator InstanciarPrefab(Carta carta)
     {
-        //yield return new WaitForSeconds(0.5f);
         Instantiate(CartaJugada, transform.position, transform.rotation);
         CartaJugada.GetComponent<MostrarCarta>().id = carta.id;
         CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
-        //CartaJugada.transform.localScale = new Vector3(0.5f, 0.5f, 0);
-        
         
         yield return null;
-
     }
 
     //Encontrar carta por ID

@@ -10,16 +10,8 @@ public class CartaDatabase : MonoBehaviour
     void Awake()
     {
         CargarCartas();
-        //BARAJA NOBLEZA    
+
         //listaCartas.Add(new Carta("None",0,"Común", new int[5],"B", 0,0,Resources.Load<TextAsset>("None"), Resources.Load<TextAsset>("None") ));
-        //listaCartas.Add(new Carta("Escudero",1, "Común", new int[5] {0,0,0,1,0},"B",1,1, Resources.Load<TextAsset>("Ds_Escudero"), Resources.Load<TextAsset>("Fl_Escudero") ));
-        //listaCartas.Add(new Carta("Gentilhombre",1,"Común", new int[5] {1,0,0,1,0},"N", 1,1, Resources.Load<TextAsset>("Ds_Gentilhombre"), Resources.Load<TextAsset>("Fl_Gentilhombre") ));
-        //listaCartas.Add(new Carta("Dama de corte",1,"Común", new int[5] {2,0,0,1,0},"R",1,1,Resources.Load<TextAsset>("Ds_DamaCorte"), Resources.Load<TextAsset>("Fl_DamaCorte") ));
-        //listaCartas.Add(new Carta("Barón",1,"Común", new int[5] {2,0,0,2,0},"V",2,2,Resources.Load<TextAsset>("Ds_Baron"), Resources.Load<TextAsset>("None") ));
-        //listaCartas.Add(new Carta("Señorío",0,"Común", new int[5] {0,0,0,0,0},"R",0,0,Resources.Load<TextAsset>("None"), Resources.Load<TextAsset>("None") ));
-        
-        //
-    
     }
 
     //Parametros {nombre, tipo, rareza, coste, color, ataque, defensa, descripcion, flavour}            

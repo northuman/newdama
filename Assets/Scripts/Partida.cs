@@ -34,21 +34,22 @@ public class Partida : MonoBehaviour
 
     void Start()
     {
-        // esto no lo puedo hacer en el start, tengo que hacer una función que rellene las barajas
-        // start y update se tienen que quedar solo con llamadas a otras funciones
-
-        Debug.Log("Start Partida");
-        GenerarPrioridadJugador();
-        jugadores[0].RellenarBaraja();
-        jugadores[1].RellenarBaraja();
-        jugadores[0].CrearBarajaPartida();
-        jugadores[1].CrearBarajaPartida();
-        jugadores[0].RobarCarta(7);
-        jugadores[1].RobarCarta(7);   
-
+        AccionesPrevias();
     }
 
-    public void partida()
+    public void AccionesPrevias(){
+        Debug.Log("Acciones de inicio");
+
+        GenerarPrioridadJugador();
+
+        for(int i = 0; i < 2; i++){
+            jugadores[i].RellenarBaraja();
+            jugadores[i].CrearBarajaPartida();
+            jugadores[i].RobarCarta(7);
+        }
+    }
+
+    public void BuclePartida()
     {
         while(ganador==0/*jugador.vida >= 0 && oponente.vida >= 0 && jugador.biblioteca.Count >= 0 && oponente.biblioteca.Count >= 0*/){
             //Fase inicio
