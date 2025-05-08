@@ -54,9 +54,7 @@ public class MostrarCarta : MonoBehaviour
         return mostrarCarta[0];
     }
 
-    /*
-    Coge los parámetros de las cartas y rellena las plantillas
-    */
+    //Coge los parámetros de las cartas y rellena las plantillas
     public void RenderizarCarta()
     {
 
@@ -72,14 +70,14 @@ public class MostrarCarta : MonoBehaviour
 
         //Le pone el color a la carta
         color = mostrarCarta[0].color;
-        UtilCartas.colorearCarta(this.gameObject);
+        UtilCartas.ColorearCarta(this.gameObject);
         
         //Se asignan los valores a la carta que coge de cada jugador
         id = mostrarCarta[0].id; 
         nombreCarta = mostrarCarta[0].nombreCarta;
-        tipo = mostrarCarta[0].tipoToString(mostrarCarta[0].tipo);
+        tipo = mostrarCarta[0].TipoToString(mostrarCarta[0].tipo);
         rareza = mostrarCarta[0].rareza;
-        costeMana = mostrarCarta[0].manaToString(mostrarCarta[0].costeMana);
+        costeMana = mostrarCarta[0].ManaToString(mostrarCarta[0].costeMana);
         fuerza = mostrarCarta[0].fuerza;
         resistencia = mostrarCarta[0].resistencia;
         descripcion = mostrarCarta[0].descripcion;

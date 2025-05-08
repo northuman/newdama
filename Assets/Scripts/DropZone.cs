@@ -54,7 +54,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         {   
             //esto está activado de momento para poder mover las cartas libremente 
             case TipoDropZone.MANO: 
-                validar = true;
+                validar = false;
                 break;
             case TipoDropZone.TIERRAS:
                 if(tipo.Equals("Tierra"))

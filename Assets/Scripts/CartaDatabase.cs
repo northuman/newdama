@@ -5,7 +5,7 @@ using System.IO;
 
 public class CartaDatabase : MonoBehaviour
 {
-    public static List<Carta> listaCartas = new List<Carta>();
+    public static List<Carta> listaCartas = new();
 
     void Awake()
     {
@@ -33,13 +33,13 @@ public class CartaDatabase : MonoBehaviour
 
         if(txt != null){
 
-            using (StringReader sr = new StringReader(txt.text)) {
-                string linea;
-                while((linea = sr.ReadLine()) != null) {
-                    
-                    string[] partes = linea.Split('/');
-                    listaCartas.Add(new Carta(partes[0], int.Parse(partes[1]), partes[2], ParseCoste(partes[3]), partes[4], int.Parse(partes[5]), int.Parse(partes[6]), partes[7], partes[8]));
-                }
+            using StringReader sr = new(txt.text);
+            string linea;
+            while ((linea = sr.ReadLine()) != null)
+            {
+
+                string[] partes = linea.Split('/');
+                listaCartas.Add(new Carta(partes[0], int.Parse(partes[1]), partes[2], ParseCoste(partes[3]), partes[4], int.Parse(partes[5]), int.Parse(partes[6]), partes[7], partes[8]));
             }
 
         }

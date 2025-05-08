@@ -14,9 +14,9 @@ public class Partida : MonoBehaviour
     bool turno = false; //0 Turno jugador; 1 Turno oponente
     int ganador = 0;
 
-    public void generarPrioridadJugador()
+    public void GenerarPrioridadJugador()
     {
-        turno = Convert.ToBoolean(numAleatorio(0,1));
+        turno = Convert.ToBoolean(NumAleatorio(0,1));
         turno = false; // fuerza el turno del jugador para probar
 
         jugadores = new List<Jugador>();
@@ -38,11 +38,11 @@ public class Partida : MonoBehaviour
         // start y update se tienen que quedar solo con llamadas a otras funciones
 
         Debug.Log("Start Partida");
-        generarPrioridadJugador();
-        jugadores[0].rellenarBaraja();
-        jugadores[1].rellenarBaraja();
-        jugadores[0].crearBarajaPartida();
-        jugadores[1].crearBarajaPartida();
+        GenerarPrioridadJugador();
+        jugadores[0].RellenarBaraja();
+        jugadores[1].RellenarBaraja();
+        jugadores[0].CrearBarajaPartida();
+        jugadores[1].CrearBarajaPartida();
         jugadores[0].RobarCarta(7);
         jugadores[1].RobarCarta(7);   
 
@@ -52,7 +52,7 @@ public class Partida : MonoBehaviour
     {
         while(ganador==0/*jugador.vida >= 0 && oponente.vida >= 0 && jugador.biblioteca.Count >= 0 && oponente.biblioteca.Count >= 0*/){
             //Fase inicio
-            faseInicio();
+            FaseInicio();
             if(ganador==0){
                 //Fase principal 1
 
@@ -65,7 +65,7 @@ public class Partida : MonoBehaviour
         };
     }
 
-    public void faseInicio()
+    public void FaseInicio()
     {
         //Enderezar cartas giradas
         //jugadores[0].enderezoInicial();
@@ -82,11 +82,11 @@ public class Partida : MonoBehaviour
         } 
     }
 
-    public void fasePrincipal(){
+    public void FasePrincipal(){
         //Jugar carta
     }
 
-    public void faseCombate(){
+    public void FaseCombate(){
         //Activar habilidades principio combate
 
         //Declaracion atacantes jugador0->jugador1
@@ -105,21 +105,16 @@ public class Partida : MonoBehaviour
 
     }
 
-    public void pasoLimpieza(){
+    public void PasoLimpieza(){
         //Reducir mano a 7 si lo supera
         //Eliminar desde el final de la mano
-        while(jugadores[0].mano.Count > 7){
-            jugadores[0].EliminarCartaMano(jugadores[0].mano.Count);
-        }
-        //Reiniciar efectos y danyo en cartas
-        jugadores[0].ReiniciarEstadisticasBatalla();
     }
 
-    public void faseFinal(){
+    public void FaseFinal(){
         //Resolver efectos comienzo paso final
 
         //Paso limpieza
-        pasoLimpieza();
+        PasoLimpieza();
 
         //Cambiar turno
         turno = !turno;

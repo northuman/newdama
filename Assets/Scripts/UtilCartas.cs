@@ -37,7 +37,7 @@ static class UtilCartas{
     }
 
     //Int aleatorio de num1 a num2, ellos incluidos
-    public static int numAleatorio(int num1, int num2){
+    public static int NumAleatorio(int num1, int num2){
         int res = rng.Next(num1,num2+1);
         return res;
     }
@@ -51,7 +51,7 @@ static class UtilCartas{
     
 
     //Funcion para cambiar el color de las cartas
-    public static void colorearCarta(GameObject carta)  
+    public static void ColorearCarta(GameObject carta)  
     {      
         //guardo el nombre del color de la carta
         string colorCarta = carta.GetComponent<MostrarCarta>().color;

@@ -45,16 +45,10 @@ public class Reverso : MonoBehaviour
             {
                 GirarCarta();
             }
-
         }
     }
     void Start()
     {
         IniciarConReverso();
-    }
-
-    void Update()
-    {
-        
     }
 }

@@ -45,7 +45,7 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
             if(cartaSeleccionada.GetComponent<MostrarCarta>().tipo == "Tierra")
             {
                 //Si es una tierra se le da la vuelta
-               GameObject.Find("Jugador").gameObject.GetComponent<Jugador>().GirarTierra(cartaSeleccionada); 
+               GameObject.Find("Jugador").GetComponent<Jugador>().GirarTierra(cartaSeleccionada); 
             }
         }
     }
@@ -65,11 +65,8 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
         }
     }
 
-    
     void Start(){
         panelFront = GameObject.Find("PanelFrontal");
         nuevaEscala = new Vector3(1.5f, 1.5f,0);
     }
-    
-    void Update(){}
 }

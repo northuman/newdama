@@ -8,8 +8,8 @@ public class Jugador : MonoBehaviour
     public int id;
     public string nombre;
     public int vida;
-    public int[] mana; 
-    public List<Carta> barajaOriginal = new List<Carta>();
+    public int[] mana;  
+    public List<Carta> barajaOriginal;
     public List<Carta> barajaPartida;
     public List<Carta> mano;
     public List<CartasJugadas> cementerio;
@@ -18,13 +18,20 @@ public class Jugador : MonoBehaviour
     public List<CartasJugadas> batalla;
     public GameObject CartaJugada;
     public static int tamanyoBaraja;   
-    public int x;
     public GameObject Mano;
 
     //bool tierraJugada = false;
 
+    void Start()
+    {    
+        InicializarJugador();  
+    }
+    
     public void InicializarJugador(){
         //barajaOriginal = baraja;
+        vida = 20;
+        mana = new int[]{0,0,0,0};
+        barajaOriginal = new List<Carta>();
         barajaPartida = new List<Carta>();
         mano = new List<Carta>();
         cementerio = new List<CartasJugadas>();
@@ -33,21 +40,20 @@ public class Jugador : MonoBehaviour
         batalla = new List<CartasJugadas>();
     }
 
-    public void crearBarajaPartida()
+    public void CrearBarajaPartida()
     {
         barajaPartida = barajaOriginal.ToList();
         barajaPartida.Randomizar();
     }
 
     //hay que crear la barajaOriginal para poder probar
-    public void rellenarBaraja()
+    public void RellenarBaraja()
     {
-        x = 0;
         tamanyoBaraja = 40;
         for(int i = 0; i < tamanyoBaraja; i++)
-        {        
-            x = Random.Range(0,CartaDatabase.listaCartas.Count -1);
-            barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[x]));
+        {
+            int random = Random.Range(0, CartaDatabase.listaCartas.Count - 1);
+            barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[random]));
         }
     }
 
@@ -93,25 +99,54 @@ public class Jugador : MonoBehaviour
         mana[1] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[2];
         mana[2] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[3];
         mana[3] -= cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[4];
+
+        int incoloro = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[0];
+        int restado = 0;
+        int pos = 0;
+
+        //resta del mana incoloro       restado=0   incoloro=2  restante=0
+        while (restado < incoloro){
+            if (mana[pos] > 0){
+                mana[pos] -= 1;
+                restado++;
+            }else{
+                pos++;
+            }
+        }
     }
 
     /*
-    Aquí se harán los cálculos del maná. 
+    Aquí se hacen los cálculos del maná. 
     Se tiene que comprobar que el juegador tenga suficiente.
     También se tiene que comprobar qué tipo de carta es.
     Devuelve true si tiene suficiente maná.
-    Deberá llamar a RestarMana().
     */
     public bool ComprobarMana(GameObject carta)
     {
+        int cantidad = 0;
         bool ok = true;
         for(int i = 0; i < mana.Length; i++){
             if(mana[i] - carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1] < 0){
                 ok = false;
                 Debug.Log("No tienes maná suficiente");
+            }else{
+                if(carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1] > 0){
+                    cantidad += carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1];
+                }
             }
-        }        
+        }
+        if(ok && ManaRestante(cantidad) >= carta.GetComponent<MostrarCarta>().GetCarta().costeMana[0]){
+            ok = true;
+        }else{ok = false;}
         return ok;
+    }
+
+    public int ManaRestante(int cantidad){
+        int restante = 0;
+        for(int i = 0; i < mana.Length; i++){
+            restante += mana[i];
+        }
+        return restante - cantidad;
     }
 
     /**Robar carta
@@ -135,22 +170,7 @@ public class Jugador : MonoBehaviour
         return robar;
     }
 
-    
-    //Elimina carta en mano
-    //num : indice de carta de mano
-    public void EliminarCartaMano(int num){
-        //Eliminar en caso de tener id
-        /*
-        var cartaAEliminar = mano.SingleOrDefault(r => r.Id == num);
-        if (cartaAEliminar != null)
-            mano.Remove(cartaAEliminar);
-            */
-
-        //Eliminar en caso de posicion
-        mano.RemoveAt(num);
-    }
-
-    
+     
     public void ReiniciarEstadisticasBatalla(){
         //Reiniciar a cada carta en campo de batalla fuerza y resistencia por defecto
         for(int i = 0; i<batalla.Count; i++){
@@ -159,16 +179,6 @@ public class Jugador : MonoBehaviour
         }
     }
     
-
-    //
-    void Start()
-    {    
-        //Esto está aquí porque tiene que hacerse una vez al principio
-        //El constructor de la clase, al tener un parámetro, no se ejecuta de forma automática
-        vida = 20;
-        mana = new int[]{0,0,0,0};  
-    }
-
     //Rutina para instanciar prefabs
     //Instancia una plantilla de carta vacía. Se le pasa una carta y le pone su id a la instancia.
     IEnumerator InstanciarPrefab(Carta carta)
@@ -179,7 +189,7 @@ public class Jugador : MonoBehaviour
         CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
         //CartaJugada.transform.localScale = new Vector3(0.5f, 0.5f, 0);
         
-        //Debug.Log("instancio carta " + CartaJugada.GetComponent<MostrarCarta>().id);
+        
         yield return null;
 
     }

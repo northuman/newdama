@@ -66,7 +66,7 @@ public class Carta
     * Parametros: t = tipo de la clase Carta
     * Devuelve: tipo en formato string
     */
-    public string tipoToString(int t)   
+    public string TipoToString(int t)   
     {
         string mostrarTipo = "";
         switch(t)
@@ -100,7 +100,7 @@ public class Carta
     * Parametros: m = vector de coste de la clase
     * Devuelve: coste en formato string
     */
-    public string manaToString(int[] m)
+    public string ManaToString(int[] m)
     {
         string costeTotal = "";
         for(int i=0; i<m.Length; i++){
