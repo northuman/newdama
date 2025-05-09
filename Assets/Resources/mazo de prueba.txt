@@ -1,7 +1,10 @@
-Señorío/0/Común/00010/R/0/0/Descripcion/Flavour
-Gentilhombre/1/Común/10010/R/1/1/Cuando el Gentilhombre entre al campo de batalla, otorga prisa a la criatura roja objetivo./Flavour
-Dama de corte/1/Común/20010/R/1/1/Cada vez que juegues un instantáneo o un conjuro puedes pagar R. Pon un contador +1/+1 a la criatura objetivo./Esto es el flavour
-Barón/1/Común/20020/R/2/2/Cuando el Barón entra al campo de batalla, hace 2 de daño a cualquier objetivo./Esto es el flavour
-Escudero/1/Común/00010/R/1/1/Cuando el Escudero ataque, hace 1 de daño al jugador atacado./Los escuderos acompañaban siempre a los caballeros. Servían a estos individuos para aprender las funciones de su amo y tener la posibilidad de ser.......
-Hidalgo/1/Común/10011/R/3/2/ Girar: Otorga G.  Girar: haz un punto de daño a cualquier objetivo./Flavour
-Caballero/1/Común/20020/R/4/2/Prisa. Arrolla./Flavour
+Señorío#0#Común#00010#R#0#0#Descripcion#Flavour
+Hidalgo#1#Común#10011#R#3#2# Girar: Otorga G.  Girar: haz un punto de daño a cualquier objetivo.#Flavour
+Caballero#1#Común#20020#R#4#2#Prisa. Arrolla.#Flavour
+Escudero#1#Común#00010#R#1#1#Cuando el Escudero ataque, hace 1 de daño al jugador atacado.#Los escuderos acompañaban siempre a los caballeros. Servían a estos individuos para aprender las funciones de su amo y tener la posibilidad de ser.......
+Noble de toga#1#Común#00011#R#1#3#Pagar 2/RV: Duplica el poder de una criatura hasta final de turno.#Flavour
+Gentilhombre#1#Común#10010#R#1#1#Cuando el Gentilhombre entre al campo de batalla, otorga prisa a la criatura roja objetivo.#Flavour
+Barón#1#Común#20020#R#2#2#Cuando el Barón entra al campo de batalla, hace 2 de daño a cualquier objetivo.#Esto es el flavour
+Dama de corte#1#Común#20010#R#1#1#Cada vez que juegues un instantáneo o un conjuro puedes pagar R. Pon un contador +1/+1 a la criatura objetivo.#Esto es el flavour
+Doncel#1#Común#00010#R#1#1#Cuando el Doncel haga daño de combate a un jugador, obtiene un contador +1/+1.#Flavour
+Duque#1#Poco común#10010#R#2#2#Girar: las criaturas atacantes que controlas obtienen +1/+0.#Flavour

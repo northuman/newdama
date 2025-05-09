@@ -6,36 +6,29 @@ using System.IO;
 public class CartaDatabase : MonoBehaviour
 {
     public static List<Carta> listaCartas = new();
-    public TextAsset archivoCartas;
+    public TextAsset archivoCartas; //este es el archivo de donde se van a crear las cartas
     void Awake()
     {
         CargarCartas();
-
         //listaCartas.Add(new Carta("None",0,"Común", new int[5],"B", 0,0,Resources.Load<TextAsset>("None"), Resources.Load<TextAsset>("None") ));
     }
-    //Parametros {nombre, tipo, rareza, coste, color, ataque, defensa, descripcion, flavour}            
-    //Maná { INCOLORO, BLANCO, NEGRO, ROJO, VERDE}
-    //Colores {"B", "N", "R", "V", "BN", "BR", "BV", "NR", "NV", "RN", "RV"}
 
     private void CargarCartas(){
-        // Cargar archivo como TextAsset
-        //TextAsset txt = Resources.Load<TextAsset>("cartas");
-        
-
-        if(archivoCartas != null){
+ 
+        if(archivoCartas != null){  //se comprueba que se haya seleccionado el archivo
 
             using StringReader sr = new(archivoCartas.text);
             string linea;
             while ((linea = sr.ReadLine()) != null)
             {
 
-                string[] partes = linea.Split('/');
+                string[] partes = linea.Split('#');
                 listaCartas.Add(new Carta(partes[0], int.Parse(partes[1]), partes[2], ParseCoste(partes[3]), partes[4], int.Parse(partes[5]), int.Parse(partes[6]), partes[7], partes[8]));
             }
 
         }
         else{
-            Debug.LogError("No se puede cargar las cartas");
+            Debug.LogError("No hay archivo de cartas");
         }
     }
 

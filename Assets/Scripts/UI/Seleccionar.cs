@@ -24,7 +24,7 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
                 rightClick = true;
                 parentToReturnTo = this.transform.parent;
 
-                EnsenyarCarta(cartaSeleccionada, true);
+                //EnsenyarCarta(cartaSeleccionada, true);
             }
         }
     }

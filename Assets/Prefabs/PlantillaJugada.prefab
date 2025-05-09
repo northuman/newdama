@@ -33,7 +33,7 @@ RectTransform:
   m_GameObject: {fileID: 465451593607068670}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.55, y: 0.55, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7246399484856778149}
@@ -157,6 +157,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentToReturnTo: {fileID: 0}
+  escalaOnDrag: 1.2
+  velocidadZoom: 0.1
 --- !u!225 &4265848530549438299
 CanvasGroup:
   m_ObjectHideFlags: 0

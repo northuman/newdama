@@ -1,16 +1,16 @@
-Señorío/0/Común/00010/R/0/0/Descripcion/Flavour
-Gentilhombre/1/Común/10010/R/1/1/Cuando el Gentilhombre entre al campo de batalla, otorga prisa a la criatura roja objetivo./Flavour
-Dama de corte/1/Común/20010/R/1/1/Cada vez que juegues un instantáneo o un conjuro puedes pagar R. Pon un contador +1/+1 a la criatura objetivo./Esto es el flavour
-Barón/1/Común/20020/R/2/2/Cuando el Barón entra al campo de batalla, hace 2 de daño a cualquier objetivo./Esto es el flavour
-Escudero/1/Común/00010/R/1/1/Cuando el Escudero ataque, hace 1 de daño al jugador atacado./Los escuderos acompañaban siempre a los caballeros. Servían a estos individuos para aprender las funciones de su amo y tener la posibilidad de ser.......
-Hidalgo/1/Común/10011/R/3/2/ Girar: Otorga G.  Girar: haz un punto de daño a cualquier objetivo./Flavour
-Caballero/1/Común/20020/R/4/2/Prisa. Arrolla./Flavour
-Parroquia/0/Común/01000/B/0/0/Una parroquia/Si
-Arrabal/0/Común/00100/N/0/0/Descripcion/Flavour
-Burgo/0/Común/00001/V/0/0/Tierra verde/Flavour
-Campesino/1/Común/00001/V/1/1/Girar: Otorga G./Flavour
-Cura urbano/1/Común/01000/B/1/1/Vínculo vital. Pagar (4B): otorga +3\+3 al Cura urbano./Flavour
-Monje/1/Común/11000/B/2/1/Todas las criaturas blancas cuestan 1 menos./Flavour
-Monja/1/Común/11000/B/1/2/Los conjuros y encantamientos blancos cuestan 1 menos./Flavour
-Capellán/1/Poco común/01000/B/1/1/Cada vez que una criatura entre al campo de batalla, gana 1 vida./Flavour
-Chantre/1/Común/22000/R/1/2/Las criaturas que controlas obtienen +0\+2 cuando bloquean./Flavour
+Señorío#0#Común#00010#R#0#0#Descripcion#Flavour
+Gentilhombre#1#Común#10010#R#1#1#Cuando el Gentilhombre entre al campo de batalla, otorga prisa a la criatura roja objetivo.#Flavour
+Dama de corte#1#Común#20010#R#1#1#Cada vez que juegues un instantáneo o un conjuro puedes pagar R. Pon un contador +1#+1 a la criatura objetivo.#Esto es el flavour
+Barón#1#Común#20020#R#2#2#Cuando el Barón entra al campo de batalla, hace 2 de daño a cualquier objetivo.#Esto es el flavour
+Escudero#1#Común#00010#R#1#1#Cuando el Escudero ataque, hace 1 de daño al jugador atacado.#Los escuderos acompañaban siempre a los caballeros. Servían a estos individuos para aprender las funciones de su amo y tener la posibilidad de ser.......
+Hidalgo#1#Común#10011#R#3#2# Girar: Otorga G.  Girar: haz un punto de daño a cualquier objetivo.#Flavour
+Caballero#1#Común#20020#R#4#2#Prisa. Arrolla.#Flavour
+Parroquia#0#Común#01000#B#0#0#Una parroquia#Si
+Arrabal#0#Común#00100#N#0#0#Descripcion#Flavour
+Burgo#0#Común#00001#V#0#0#Tierra verde#Flavour
+Campesino#1#Común#00001#V#1#1#Girar: Otorga G.#Flavour
+Cura urbano#1#Común#01000#B#1#1#Vínculo vital. Pagar (4B): otorga +3/+3 al Cura urbano.#Flavour
+Monje#1#Común#11000#B#2#1#Todas las criaturas blancas cuestan 1 menos.#Flavour
+Monja#1#Común#11000#B#1#2#Los conjuros y encantamientos blancos cuestan 1 menos.#Flavour
+Capellán#1#Poco común#01000#B#1#1#Cada vez que una criatura entre al campo de batalla, gana 1 vida.#Flavour
+Chantre#1#Común#22000#R#1#2#Las criaturas que controlas obtienen +0/+2 cuando bloquean.#Flavour

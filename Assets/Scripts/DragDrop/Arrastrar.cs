@@ -1,7 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Reflection;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -19,6 +16,11 @@ using UnityEngine.EventSystems;
 public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDragHandler
 {
     public Transform parentToReturnTo = null;
+    private Vector3 escalaOriginal;
+    [Range(0.5f, 10f)]
+    private float escalaOnDrag =2f;
+    private float velocidadZoom = 0.1f;
+    private Coroutine zoomCoroutine;
   
     /*
     Primero se comprueba si la carta pertenece al jugador.
@@ -28,46 +30,61 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
     */
     public void OnBeginDrag(PointerEventData eventData)
     {   
-        if(eventData.button == 0){
-            GameObject j1 = GameObject.Find("Jugador");
+        if(eventData.button == 0)
+        {
             int perteneceA = eventData.pointerDrag.GetComponent<CartasJugadas>().perteneceAJugador;
-            if(perteneceA == 1){
-                GameObject cartaArrastrada = eventData.pointerDrag;
-                int idCarta = eventData.pointerDrag.GetComponent<MostrarCarta>().id;               
-                parentToReturnTo = this.transform.parent;
-                this.transform.SetParent(this.transform.parent.parent);
+            if(perteneceA == 1)
+            {
+                escalaOriginal = transform.localScale;    
+                parentToReturnTo = transform.parent;
+                transform.SetParent(transform.parent.parent);
                 GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+                //zoom a la carta
+                if(zoomCoroutine != null)StopCoroutine(zoomCoroutine);
+                zoomCoroutine = StartCoroutine(EscalarCarta(escalaOriginal * escalaOnDrag));
             }
-            else{
-                this.enabled = false;
+            else
+            {
+                enabled = false;
             }
         }
     }
-
     /*
     Se va cambiando la posicion de la carta conforme se arrastra.
     */
     public void OnDrag(PointerEventData eventData)
     {
-        if(eventData.button == 0){
-            this.transform.position = eventData.position;
+        if(eventData.button == 0)
+        {
+            transform.position = eventData.position;
         }
     }
     public void OnEndDrag(PointerEventData eventData)
     {
-        if(eventData.button == 0){
-            this.transform.SetParent(parentToReturnTo);
+        if(eventData.button == 0)
+        {
+            transform.SetParent(parentToReturnTo);
             GetComponent<CanvasGroup>().blocksRaycasts = true;
+
+            // reiniciar escala
+            if (zoomCoroutine != null)StopCoroutine(zoomCoroutine);
+            zoomCoroutine = StartCoroutine(EscalarCarta(escalaOriginal));
         }
     }
 
-    void Start()
+    //corrutina para escalar la carta cuando la arrastras
+    private IEnumerator EscalarCarta(Vector3 escala)
     {
-        
-    }
+        Debug.Log("Escalando de " + transform.localScale + " a " + escala);
 
-    void Update()
-    {
-        
+        Vector3 inicio = transform.localScale;
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / velocidadZoom;
+            transform.localScale = Vector3.Lerp(inicio, escala, t);
+            yield return null;
+        }
     }
 }
