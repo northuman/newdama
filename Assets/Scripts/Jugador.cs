@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Jugador : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class Jugador : MonoBehaviour
     public GameObject CartaJugada;
     public static int tamanyoBaraja;   
     public GameObject Mano;
+    public GameObject Mazo;
 
     //bool tierraJugada = false;
     public MensajeManager mensaje;
@@ -131,7 +133,6 @@ public class Jugador : MonoBehaviour
         for(int i = 0; i < mana.Length; i++){
             if(mana[i] - carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1] < 0){
                 ok = false;
-                mensaje.MostrarMensaje("No tienes suficiente maná!");
             }else{
                 if(carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1] > 0){
                     cantidad += carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1];
@@ -141,6 +142,9 @@ public class Jugador : MonoBehaviour
         if(ok && ManaRestante(cantidad) >= carta.GetComponent<MostrarCarta>().GetCarta().costeMana[0]){
             ok = true;
         }else{ok = false;}
+        if(!ok){
+                mensaje.MostrarMensaje("No tienes suficiente maná!");
+        }
         return ok;
     }
 
@@ -163,15 +167,26 @@ public class Jugador : MonoBehaviour
     **/
     public bool RobarCarta(int num){
         bool robar = false;
-        if(barajaPartida.Count>=num){
-            for(int i = 0; i<num;i++){
-                mano.Add(barajaPartida[^1]);    
-                StartCoroutine(InstanciarPrefab(barajaPartida[^1]));
-                barajaPartida.RemoveAt(barajaPartida.Count-1);
-            }
+        if(barajaPartida.Count>=num)
+        {
+            StartCoroutine(RobarCartasSecuencialmente(num));
             robar = true;
         }
         return robar;
+    }
+
+    IEnumerator RobarCartasSecuencialmente(int num){
+        
+        for (int i = 0; i < num; i++){
+        // Añadimos la carta a la mano del jugador
+        mano.Add(barajaPartida[^1]);
+
+        // Instanciamos y animamos la carta, esperando que termine la animación antes de seguir con la siguiente
+        yield return StartCoroutine(InstanciarPrefab(barajaPartida[^1]));
+
+        // La carta se ha robado y eliminamos de la baraja
+        barajaPartida.RemoveAt(barajaPartida.Count - 1);
+        }
     }
 
     public void ReiniciarEstadisticasBatalla(){
@@ -186,11 +201,47 @@ public class Jugador : MonoBehaviour
     //Instancia una plantilla de carta vacía. Se le pasa una carta y le pone su id a la instancia.
     IEnumerator InstanciarPrefab(Carta carta)
     {
-        Instantiate(CartaJugada, transform.position, transform.rotation);
-        CartaJugada.GetComponent<MostrarCarta>().id = carta.id;
-        CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
+        //Instantiate(CartaJugada, transform.position, transform.rotation);
+        //CartaJugada.GetComponent<MostrarCarta>().id = carta.id;
+        //CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
+        //yield return null;
+
+        // Instancia el prefab y guarda la referencia
         
-        yield return null;
+        GameObject nuevaCarta = Instantiate(CartaJugada, Mazo.transform.position, transform.rotation);
+
+        // Asigna los datos a la carta recién instanciada
+        nuevaCarta.GetComponent<MostrarCarta>().id = carta.id;
+        nuevaCarta.GetComponent<CartasJugadas>().perteneceAJugador = id;
+
+        // Inicializa la carta en una escala pequeña para el efecto
+        nuevaCarta.transform.localScale = Vector3.zero;
+
+        HorizontalLayoutGroup layoutGroup = Mano.GetComponent<HorizontalLayoutGroup>();
+        layoutGroup.enabled = false;
+
+        // Duración de la animación (puedes ajustarlo a tu gusto)
+        float tiempoDeAnimacion = 0.3f;
+        float tiempoPasado = 0f;
+
+        // Mueve la carta de la posición del mazo a la mano del jugador
+        while (tiempoPasado < tiempoDeAnimacion)
+        {
+            // Animación de movimiento: Interpolación lineal de la posición
+            nuevaCarta.transform.position = Vector3.Lerp(Mazo.transform.position, Mano.transform.position, tiempoPasado / tiempoDeAnimacion);
+
+            // Animación de escala: Crece la carta desde 0 a su tamaño normal
+            nuevaCarta.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, tiempoPasado / tiempoDeAnimacion);
+
+            tiempoPasado += Time.deltaTime;
+
+            yield return null;
+        }
+        nuevaCarta.transform.SetParent(Mano.transform);
+
+        layoutGroup.enabled = true;
+
+        yield return new WaitForSeconds(0.1f); 
     }
 
     //Encontrar carta por ID
