@@ -38,8 +38,6 @@ public class Partida : MonoBehaviour
     }
 
     public void AccionesPrevias(){
-        Debug.Log("Acciones de inicio");
-
         GenerarPrioridadJugador();
 
         for(int i = 0; i < 2; i++){

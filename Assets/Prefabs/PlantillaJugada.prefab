@@ -43,7 +43,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 292, y: -136.4}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1445854579109994863
@@ -121,8 +121,8 @@ MonoBehaviour:
   tipoText: {fileID: 8999267349950235868}
   manaText: {fileID: 998422910594403349}
   statsText: {fileID: 7351547243526600669}
-  descText: {fileID: 487080075602886400}
-  flavourText: {fileID: 9006097004612689466}
+  descText: {fileID: 9006097004612689466}
+  flavourText: {fileID: 487080075602886400}
   reverso: 1
   color: 
   ManoJugador: {fileID: 0}
@@ -712,7 +712,7 @@ GameObject:
   - component: {fileID: 5752475256506478407}
   - component: {fileID: 9006097004612689466}
   m_Layer: 5
-  m_Name: Flavor
+  m_Name: DescripcionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -766,7 +766,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Texto literario
+  m_text: Descripcion
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 529f862af491c944f87a85c98668d343, type: 2}
   m_sharedMaterial: {fileID: 8730088798349169443, guid: 529f862af491c944f87a85c98668d343, type: 2}
@@ -1141,7 +1141,7 @@ GameObject:
   - component: {fileID: 9217532185464493732}
   - component: {fileID: 487080075602886400}
   m_Layer: 5
-  m_Name: DescripcionText
+  m_Name: Flavor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

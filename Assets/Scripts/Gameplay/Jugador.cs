@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,23 +44,58 @@ public class Jugador : MonoBehaviour
         batalla = new List<CartasJugadas>();
     }
 
+
+    //hay que crear la barajaOriginal para poder probar
+    //Se crea la baraja con un número determinado de tierras para facilitar las pruebas
+    public void RellenarBaraja()
+    {
+        tamanyoBaraja = 40;
+        int cantidadTierras = 20;
+        int cantidadResto = tamanyoBaraja - cantidadTierras;
+
+        barajaOriginal.Clear();
+
+        List<Carta> listaTierras = CartaDatabase.listaCartas.Where(c => c.tipo == 0).ToList();
+        List<Carta> noTierras = CartaDatabase.listaCartas.Where(c => c.tipo != 0).ToList();
+
+        if (listaTierras.Count == 0 || noTierras.Count == 0){
+            Debug.LogError("No hay suficientes cartas de cada tipo en la base de datos.");
+            return;
+            //por si acaso el archivo está vacío
+        }
+
+        //Se añaden las tierras
+        for (int i = 0; i < cantidadTierras; i++){
+            int randomIndex = Random.Range(0, listaTierras.Count);
+            barajaOriginal.Add(new Carta(listaTierras[randomIndex]));
+        }
+        for (int i = 0; i < cantidadResto; i++){
+            int randomIndex = Random.Range(0, noTierras.Count);
+            barajaOriginal.Add(new Carta(noTierras[randomIndex]));
+        }
+
+        //for(int i = 0; i < tamanyoBaraja; i++)
+        //{
+        //    int random = Random.Range(0, CartaDatabase.listaCartas.Count - 1);
+        //    barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[random]));
+        //}
+    }
+
     public void CrearBarajaPartida()
     {
         barajaPartida = barajaOriginal.ToList();
         barajaPartida.Randomizar();
-    }
+        int contadorTierra = 0;
+        int contadorCriatura = 0;
 
-    //hay que crear la barajaOriginal para poder probar
-    public void RellenarBaraja()
-    {
-        tamanyoBaraja = 40;
-        for(int i = 0; i < tamanyoBaraja; i++)
-        {
-            int random = Random.Range(0, CartaDatabase.listaCartas.Count - 1);
-            barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[random]));
+        //Debug para ver qué cartas hay en la baraja
+        foreach (Carta c in barajaPartida){
+            if(c.tipo == 0){contadorTierra++;};
+            if(c.tipo == 1){contadorCriatura++;};
         }
+        Debug.Log(contadorTierra + "tierras para " + nombre);
+        Debug.Log(contadorCriatura + "criaturas para " + nombre);  
     }
-
     /*
     Comprueba si está en el panel de tierras y se llama a RotarCarta()
     Si la carta está girada se llama a SumarMana(), si no a RestarMana()

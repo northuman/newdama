@@ -6,7 +6,7 @@ using System.IO;
 public class CartaDatabase : MonoBehaviour
 {
     public static List<Carta> listaCartas = new();
-
+    public TextAsset archivoCartas;
     void Awake()
     {
         CargarCartas();
@@ -19,12 +19,12 @@ public class CartaDatabase : MonoBehaviour
 
     private void CargarCartas(){
         // Cargar archivo como TextAsset
-        TextAsset txt = Resources.Load<TextAsset>("cartas");
+        //TextAsset txt = Resources.Load<TextAsset>("cartas");
         
 
-        if(txt != null){
+        if(archivoCartas != null){
 
-            using StringReader sr = new(txt.text);
+            using StringReader sr = new(archivoCartas.text);
             string linea;
             while ((linea = sr.ReadLine()) != null)
             {
