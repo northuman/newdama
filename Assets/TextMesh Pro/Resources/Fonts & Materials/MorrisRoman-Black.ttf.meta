@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a19df2365674130468c7b3bdbf89cb0d
+guid: 2ae32450eef9a7b48870aac14c70fe5a
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Sedan
+  - Morris Roman
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

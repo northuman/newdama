@@ -18,7 +18,7 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
     public Transform parentToReturnTo = null;
     private Vector3 escalaOriginal;
     [Range(0.5f, 10f)]
-    private float escalaOnDrag =2f;
+    private float escalaOnDrag =1.5f;
     private float velocidadZoom = 0.1f;
     private Coroutine zoomCoroutine;
   
@@ -76,8 +76,6 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
     //corrutina para escalar la carta cuando la arrastras
     private IEnumerator EscalarCarta(Vector3 escala)
     {
-        Debug.Log("Escalando de " + transform.localScale + " a " + escala);
-
         Vector3 inicio = transform.localScale;
         float t = 0f;
         while (t < 1f)

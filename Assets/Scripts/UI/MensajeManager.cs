@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 public class MensajeManager : MonoBehaviour
 {
     public TextMeshProUGUI mensajeText;
-    public float duracion = 1f;
+    public float duracion = 0.5f;
 
     private Coroutine rutinaMensajeActual;
 

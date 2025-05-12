@@ -12,7 +12,6 @@ public class CartasJugadas : MonoBehaviour
 {
     public GameObject ManoJugador;
     public GameObject ManoOponente;
-    public GameObject PanelFrontal;
     public GameObject CartaJugada;
     public Carta carta;
     public int fuerzaActual;
@@ -56,7 +55,6 @@ public class CartasJugadas : MonoBehaviour
         //Asigno los paneles 
         ManoJugador = GameObject.Find("ManoJugador");
         ManoOponente = GameObject.Find("ManoOponente");
-        PanelFrontal = GameObject.Find("PanelFrontal");
 
         //Rotar las cartas del oponente, innecesario porque no se ven
         if(perteneceAJugador== j2.GetComponent<Jugador>().id)
@@ -67,22 +65,11 @@ public class CartasJugadas : MonoBehaviour
         //Coloca las cartas en la mano correspondiente según a quién pertenecen
         if(perteneceAJugador== j1.GetComponent<Jugador>().id)
         {
-            if(CartaJugada.transform.parent != PanelFrontal.transform){
-                CartaJugada.transform.SetParent(ManoJugador.transform);
-            }
-
+            CartaJugada.transform.SetParent(ManoJugador.transform);
         }
         else if(perteneceAJugador== j2.GetComponent<Jugador>().id)
         {
             CartaJugada.transform.SetParent(ManoOponente.transform);   
         }
-    }
-
-    void Update()
-    {
-        
-        //CartaJugada.transform.localScale = Vector3.one;
-        //CartaJugada.transform.position = new Vector3(transform.position.x, transform.position.y, -48);
-        //CartaJugada.transform.eulerAngles = new Vector3(25, 0, 0); 
     }
 }

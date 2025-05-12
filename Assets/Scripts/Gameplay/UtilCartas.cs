@@ -62,7 +62,7 @@ static class UtilCartas{
         Color verde = new Color32(81,116,78,255);
         Color gris = new Color32(147,147,147,255);
 
-        Sprite nobleza = Resources.Load<Sprite>("nobleza");
+        Sprite simbolo = null;
         //carta.transform.Find("Borde/Simbolo").AddComponent<Image>().sprite=nobleza; -> colocar el simbolo de cada baraja
         
         if(colorCarta.Length==1){
@@ -70,7 +70,9 @@ static class UtilCartas{
             {
                 case "B":
                     carta.transform.Find("Borde/Color").GetComponent<Image>().color = blanco;
+                    simbolo = Resources.Load<Sprite>("sprites/simbolos/clero");
                     break;
+
                 case "N":
                     carta.transform.Find("Borde/Color").GetComponent<Image>().color = negro;
                     carta.transform.Find("Borde/Color/Lineas/NombreText").GetComponent<TextMeshProUGUI>().color = gris;
@@ -78,14 +80,27 @@ static class UtilCartas{
                     carta.transform.Find("Borde/Color/Lineas/Flavor").GetComponent<TextMeshProUGUI>().color = gris;
                     carta.transform.Find("Borde/Color/Lineas/Tipo").GetComponent<TextMeshProUGUI>().color = gris;
                     carta.transform.Find("Borde/Color/Lineas/DescripcionText").GetComponent<TextMeshProUGUI>().color=gris;
-
+                    simbolo = Resources.Load<Sprite>("sprites/simbolos/marginados");
                     break;
+
                 case "R":
                     carta.transform.Find("Borde/Color").GetComponent<Image>().color = rojo;
+                    simbolo = Resources.Load<Sprite>("sprites/simbolos/nobleza");
                     break;
+
                 case "V":
                     carta.transform.Find("Borde/Color").GetComponent<Image>().color = verde;
+                    simbolo = Resources.Load<Sprite>("sprites/simbolos/pueblo");
                     break;
+
+            }
+
+            // Asignar sprite al objeto "Borde/Simbolo"
+            if (simbolo != null)
+            {
+                Image simboloImage = carta.transform.Find("Borde/Color/Lineas/Simbolo").GetComponent<Image>();
+                simboloImage.sprite = simbolo;
+                simboloImage.enabled = true; // Por si el objeto estaba oculto
             }
         }
     }

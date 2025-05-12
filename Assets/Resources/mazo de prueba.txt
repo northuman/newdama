@@ -1,4 +1,4 @@
-Señorío#0#Común#00010#R#0#0#Descripcion#Flavour
+Señorío#0#Común#00010#R#0#0#Descripcion#Flavour 
 Hidalgo#1#Común#10011#R#3#2# Girar: Otorga G.  Girar: haz un punto de daño a cualquier objetivo.#Flavour
 Caballero#1#Común#20020#R#4#2#Prisa. Arrolla.#Flavour
 Escudero#1#Común#00010#R#1#1#Cuando el Escudero ataque, hace 1 de daño al jugador atacado.#Los escuderos acompañaban siempre a los caballeros. Servían a estos individuos para aprender las funciones de su amo y tener la posibilidad de ser.......

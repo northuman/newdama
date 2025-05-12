@@ -7,7 +7,7 @@ using TMPro;
 
 public class MostrarCarta : MonoBehaviour
 {
-    public List<Carta> mostrarCarta = new List<Carta>();
+    public List<Carta> mostrarCarta = new();
     public int mostrarId;
 
     //Parametros de la carta
@@ -82,6 +82,13 @@ public class MostrarCarta : MonoBehaviour
         resistencia = mostrarCarta[0].resistencia;
         descripcion = mostrarCarta[0].descripcion;
         flavour = mostrarCarta[0].flavour;
+
+        string flavourAux ="";
+        if(flavour.Length > 140){
+            flavourAux = flavour.Substring(0, 160) + "...";
+        }else{
+            flavourAux = flavour;
+        }
         //spriteImagen = mostrarCarta[0].spriteImagen;
 
 
@@ -89,7 +96,7 @@ public class MostrarCarta : MonoBehaviour
         nombreText.text = "" + nombreCarta;
         tipoText.text = "" + tipo + " - " + rareza;
         descText.text = "" + descripcion;
-        flavourText.text = "" + flavour;
+        flavourText.text = "" + flavourAux;
         //fotoImagen.sprite = spriteImagen;
 
 

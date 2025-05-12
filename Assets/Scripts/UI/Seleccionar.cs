@@ -1,17 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 //Script para seleccionar una carta y guargar su información
-public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
+public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     GameObject cartaSeleccionada = null;
-    public GameObject panelFront;
-    GameObject copiaDeCarta;
     public Transform parentToReturnTo = null;
     Vector3 nuevaEscala;
     bool rightClick = false;
+    public UIElements funcionUI;
     
 
     public void OnPointerDown (PointerEventData eventData)
@@ -19,12 +18,12 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
         //click derecho
         if(eventData.button == PointerEventData.InputButton.Right){
             if(this.gameObject.GetComponent<MostrarCarta>().enabled){
-
+                
                 cartaSeleccionada = this.gameObject;
                 rightClick = true;
                 parentToReturnTo = this.transform.parent;
 
-                //EnsenyarCarta(cartaSeleccionada, true);
+                funcionUI.EnsenyarTexto(cartaSeleccionada, true);
             }
         }
     }
@@ -32,7 +31,7 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
     {
         if (cartaSeleccionada != null){
             if(rightClick){
-                EnsenyarCarta(cartaSeleccionada, false);
+                funcionUI.EnsenyarTexto(cartaSeleccionada, false);
             }
         }
     }   
@@ -49,25 +48,10 @@ public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHand
             }
         }
     }
-    public void OnPointerEnter (PointerEventData eventData){}
-    public void OnPointerExit (PointerEventData eventData){} 
-
-    public void EnsenyarCarta(GameObject carta, bool click){
-        if(carta.GetComponent<Reverso>().enabled == false){
-            if(click){
-                //instancio la carta
-                copiaDeCarta = Instantiate(carta,panelFront.transform, false);
-                copiaDeCarta.transform.localScale = nuevaEscala;
-                copiaDeCarta.transform.rotation = Quaternion.identity;
-            }
-            else{
-                Destroy(copiaDeCarta);
-            }
-        }
-    }
 
     void Start(){
-        panelFront = GameObject.Find("PanelFrontal");
-        nuevaEscala = new Vector3(1.5f, 1.5f,0);
+        
+        funcionUI = GameObject.Find("UI").GetComponent<UIElements>();
+        
     }
 }

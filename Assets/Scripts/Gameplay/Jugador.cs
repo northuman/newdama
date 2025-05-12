@@ -73,28 +73,12 @@ public class Jugador : MonoBehaviour
             int randomIndex = Random.Range(0, noTierras.Count);
             barajaOriginal.Add(new Carta(noTierras[randomIndex]));
         }
-
-        //for(int i = 0; i < tamanyoBaraja; i++)
-        //{
-        //    int random = Random.Range(0, CartaDatabase.listaCartas.Count - 1);
-        //    barajaOriginal.Add(new Carta(CartaDatabase.listaCartas[random]));
-        //}
     }
 
     public void CrearBarajaPartida()
     {
         barajaPartida = barajaOriginal.ToList();
-        barajaPartida.Randomizar();
-        int contadorTierra = 0;
-        int contadorCriatura = 0;
-
-        //Debug para ver qué cartas hay en la baraja
-        foreach (Carta c in barajaPartida){
-            if(c.tipo == 0){contadorTierra++;};
-            if(c.tipo == 1){contadorCriatura++;};
-        }
-        Debug.Log(contadorTierra + "tierras para " + nombre);
-        Debug.Log(contadorCriatura + "criaturas para " + nombre);  
+        barajaPartida.Randomizar();  
     }
     /*
     Comprueba si está en el panel de tierras y se llama a RotarCarta()
@@ -114,15 +98,12 @@ public class Jugador : MonoBehaviour
             }
         }
     }
-
     
     /* 
     * SumarMana()
     Suma a cada posición del maná del jugador, la posición correspondiente del coste de maná de la carta.
     Se le pasa una carta.
-    
     */
-    
     public void SumarMana(GameObject cartaSeleccionada)
     {
         Carta carta = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta();
@@ -179,7 +160,7 @@ public class Jugador : MonoBehaviour
             ok = true;
         }else{ok = false;}
         if(!ok){
-                mensaje.MostrarMensaje("No tienes suficiente maná!");
+            mensaje.MostrarMensaje("No tienes maná suficiente!");
         }
         return ok;
     }
@@ -198,8 +179,7 @@ public class Jugador : MonoBehaviour
     /**Robar carta
     num: cantidad de cartas a robar.
     Se añade una carta a la mano por iteración
-    Se llama a InstanciarPrefab para que haga una copia de la plantilla con la carta que se ha robado
-    Se quita la carta de la baraja
+    Se llama a RobarCartasSecuencialmente para que haga una copia de la plantilla con la carta que se ha robado
     **/
     public bool RobarCarta(int num){
         bool robar = false;
@@ -225,25 +205,9 @@ public class Jugador : MonoBehaviour
         }
     }
 
-    public void ReiniciarEstadisticasBatalla(){
-        //Reiniciar a cada carta en campo de batalla fuerza y resistencia por defecto
-        for(int i = 0; i<batalla.Count; i++){
-            batalla[i].fuerzaActual = batalla[i].carta.fuerza;
-            batalla[i].resistenciaActual = batalla[i].carta.resistencia;
-        }
-    }
-    
-    //Rutina para instanciar prefabs
-    //Instancia una plantilla de carta vacía. Se le pasa una carta y le pone su id a la instancia.
     IEnumerator InstanciarPrefab(Carta carta)
     {
-        //Instantiate(CartaJugada, transform.position, transform.rotation);
-        //CartaJugada.GetComponent<MostrarCarta>().id = carta.id;
-        //CartaJugada.GetComponent<CartasJugadas>().perteneceAJugador = id;
-        //yield return null;
-
-        // Instancia el prefab y guarda la referencia
-        
+      
         GameObject nuevaCarta = Instantiate(CartaJugada, Mazo.transform.position, transform.rotation);
 
         // Asigna los datos a la carta recién instanciada
@@ -256,7 +220,7 @@ public class Jugador : MonoBehaviour
         HorizontalLayoutGroup layoutGroup = Mano.GetComponent<HorizontalLayoutGroup>();
         layoutGroup.enabled = false;
 
-        // Duración de la animación (puedes ajustarlo a tu gusto)
+        // Duración de la animación
         float tiempoDeAnimacion = 0.3f;
         float tiempoPasado = 0f;
 
@@ -278,6 +242,14 @@ public class Jugador : MonoBehaviour
         layoutGroup.enabled = true;
 
         yield return new WaitForSeconds(0.1f); 
+    }
+
+    public void ReiniciarEstadisticasBatalla(){
+        //Reiniciar a cada carta en campo de batalla fuerza y resistencia por defecto
+        for(int i = 0; i<batalla.Count; i++){
+            batalla[i].fuerzaActual = batalla[i].carta.fuerza;
+            batalla[i].resistenciaActual = batalla[i].carta.resistencia;
+        }
     }
 
     //Encontrar carta por ID

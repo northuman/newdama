@@ -32,8 +32,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     public void OnDrop(PointerEventData eventData)
     {
 
-        Arrastrar arrastrando = eventData.pointerDrag.GetComponent<Arrastrar>();
-        if (arrastrando != null)
+        if (eventData.pointerDrag.TryGetComponent<Arrastrar>(out var arrastrando))
         {
             cartaSeleccionada = eventData.pointerDrag;
             string tipo = eventData.pointerDrag.GetComponent<MostrarCarta>().tipo;
