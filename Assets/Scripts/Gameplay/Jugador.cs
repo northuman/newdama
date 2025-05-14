@@ -216,6 +216,7 @@ public class Jugador : MonoBehaviour
 
         // Inicializa la carta en una escala pequeña para el efecto
         nuevaCarta.transform.localScale = Vector3.zero;
+        Vector3 nuevaEscala = new(0.8f, 0.8f,0f);
 
         HorizontalLayoutGroup layoutGroup = Mano.GetComponent<HorizontalLayoutGroup>();
         layoutGroup.enabled = false;
@@ -230,8 +231,8 @@ public class Jugador : MonoBehaviour
             // Animación de movimiento: Interpolación lineal de la posición
             nuevaCarta.transform.position = Vector3.Lerp(Mazo.transform.position, Mano.transform.position, tiempoPasado / tiempoDeAnimacion);
 
-            // Animación de escala: Crece la carta desde 0 a su tamaño normal
-            nuevaCarta.transform.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, tiempoPasado / tiempoDeAnimacion);
+            // Animación de escala: Crece la carta desde 0 a la nueva escala
+            nuevaCarta.transform.localScale = Vector3.Lerp(Vector3.zero, nuevaEscala, tiempoPasado / tiempoDeAnimacion);
 
             tiempoPasado += Time.deltaTime;
 

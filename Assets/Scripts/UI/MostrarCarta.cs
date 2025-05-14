@@ -83,9 +83,10 @@ public class MostrarCarta : MonoBehaviour
         descripcion = mostrarCarta[0].descripcion;
         flavour = mostrarCarta[0].flavour;
 
+        //Se acorta el flavour para que no se salga de la carta
         string flavourAux ="";
-        if(flavour.Length > 140){
-            flavourAux = flavour.Substring(0, 160) + "...";
+        if(flavour.Length > 145){
+            flavourAux = flavour.Substring(0, 145) + "...";
         }else{
             flavourAux = flavour;
         }
