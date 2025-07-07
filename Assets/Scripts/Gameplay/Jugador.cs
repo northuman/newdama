@@ -4,13 +4,18 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+/*
+* Contiene los parámetros del jugador, la baraja y las funciones de las cartas.
+* InicializarJugador : incializa todos los parámetros.
+*/
+
 public class Jugador : MonoBehaviour
 {
 
     public int id;
     public string nombre;
     public int vida;
-    public int[] mana;  
+    public int[] mana;
     public List<Carta> barajaOriginal;
     public List<Carta> barajaPartida;
     public List<Carta> mano;
@@ -19,7 +24,7 @@ public class Jugador : MonoBehaviour
     public List<CartasJugadas> tierras;
     public List<CartasJugadas> batalla;
     public GameObject CartaJugada;
-    public static int tamanyoBaraja;   
+    public static int tamanyoBaraja;
     public GameObject Mano;
     public GameObject Mazo;
 
@@ -27,19 +32,20 @@ public class Jugador : MonoBehaviour
     public MensajeManager mensaje;
 
     void Start()
-    {    
-        InicializarJugador();  
+    {
+        InicializarJugador();
     }
-    
-    public void InicializarJugador(){
+
+    public void InicializarJugador()
+    {
         //barajaOriginal = baraja;
         vida = 20;
-        mana = new int[]{0,0,0,0};
+        mana = new int[] { 0, 0, 0, 0 };
         barajaOriginal = new List<Carta>();
         barajaPartida = new List<Carta>();
         mano = new List<Carta>();
         cementerio = new List<CartasJugadas>();
-        pila    = new List<CartasJugadas>();
+        pila = new List<CartasJugadas>();
         tierras = new List<CartasJugadas>();
         batalla = new List<CartasJugadas>();
     }
@@ -58,18 +64,21 @@ public class Jugador : MonoBehaviour
         List<Carta> listaTierras = CartaDatabase.listaCartas.Where(c => c.tipo == 0).ToList();
         List<Carta> noTierras = CartaDatabase.listaCartas.Where(c => c.tipo != 0).ToList();
 
-        if (listaTierras.Count == 0 || noTierras.Count == 0){
+        if (listaTierras.Count == 0 || noTierras.Count == 0)
+        {
             Debug.LogError("No hay suficientes cartas de cada tipo en la base de datos.");
             return;
             //por si acaso el archivo está vacío
         }
 
         //Se añaden las tierras
-        for (int i = 0; i < cantidadTierras; i++){
+        for (int i = 0; i < cantidadTierras; i++)
+        {
             int randomIndex = Random.Range(0, listaTierras.Count);
             barajaOriginal.Add(new Carta(listaTierras[randomIndex]));
         }
-        for (int i = 0; i < cantidadResto; i++){
+        for (int i = 0; i < cantidadResto; i++)
+        {
             int randomIndex = Random.Range(0, noTierras.Count);
             barajaOriginal.Add(new Carta(noTierras[randomIndex]));
         }
@@ -78,7 +87,7 @@ public class Jugador : MonoBehaviour
     public void CrearBarajaPartida()
     {
         barajaPartida = barajaOriginal.ToList();
-        barajaPartida.Randomizar();  
+        barajaPartida.Randomizar();
     }
     /*
     Comprueba si está en el panel de tierras y se llama a RotarCarta()
@@ -88,17 +97,21 @@ public class Jugador : MonoBehaviour
     public void GirarTierra(GameObject tierraSeleccionada)
     {
         GameObject panelTierras = GameObject.Find("AreaTierras");
-        if(tierraSeleccionada.transform.parent.gameObject == panelTierras){
+        if (tierraSeleccionada.transform.parent.gameObject == panelTierras)
+        {
             tierraSeleccionada.GetComponent<CartasJugadas>().RotarCarta();
-            
-            if(tierraSeleccionada.GetComponent<CartasJugadas>().girada == true){
+
+            if (tierraSeleccionada.GetComponent<CartasJugadas>().girada == true)
+            {
                 SumarMana(tierraSeleccionada);
-            }else{
+            }
+            else
+            {
                 RestarMana(tierraSeleccionada);
             }
         }
     }
-    
+
     /* 
     * SumarMana()
     Suma a cada posición del maná del jugador, la posición correspondiente del coste de maná de la carta.
@@ -107,8 +120,9 @@ public class Jugador : MonoBehaviour
     public void SumarMana(GameObject cartaSeleccionada)
     {
         Carta carta = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta();
-        for(int i = 0; i < 4; i++){
-            mana[i] += carta.costeMana[i+1];
+        for (int i = 0; i < 4; i++)
+        {
+            mana[i] += carta.costeMana[i + 1];
         }
     }
 
@@ -119,8 +133,9 @@ public class Jugador : MonoBehaviour
     public void RestarMana(GameObject cartaSeleccionada)
     {
         Carta carta = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta();
-        for (int i = 0; i < 4; i++){
-            mana[i] -= carta.costeMana[i+1];
+        for (int i = 0; i < 4; i++)
+        {
+            mana[i] -= carta.costeMana[i + 1];
         }
 
         int incoloro = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta().costeMana[0];
@@ -128,11 +143,15 @@ public class Jugador : MonoBehaviour
         int pos = 0;
 
         //resta del mana incoloro
-        while (restado < incoloro){
-            if (mana[pos] > 0){
+        while (restado < incoloro)
+        {
+            if (mana[pos] > 0)
+            {
                 mana[pos] -= 1;
                 restado++;
-            }else{
+            }
+            else
+            {
                 pos++;
             }
         }
@@ -147,19 +166,27 @@ public class Jugador : MonoBehaviour
     {
         int cantidad = 0;
         bool ok = true;
-        for(int i = 0; i < mana.Length; i++){
-            if(mana[i] - carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1] < 0){
+        for (int i = 0; i < mana.Length; i++)
+        {
+            if (mana[i] - carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i + 1] < 0)
+            {
                 ok = false;
-            }else{
-                if(carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1] > 0){
-                    cantidad += carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i+1];
+            }
+            else
+            {
+                if (carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i + 1] > 0)
+                {
+                    cantidad += carta.GetComponent<MostrarCarta>().GetCarta().costeMana[i + 1];
                 }
             }
         }
-        if(ok && ManaRestante(cantidad) >= carta.GetComponent<MostrarCarta>().GetCarta().costeMana[0]){
+        if (ok && ManaRestante(cantidad) >= carta.GetComponent<MostrarCarta>().GetCarta().costeMana[0])
+        {
             ok = true;
-        }else{ok = false;}
-        if(!ok){
+        }
+        else { ok = false; }
+        if (!ok)
+        {
             mensaje.MostrarMensaje("No tienes maná suficiente!");
         }
         return ok;
@@ -168,9 +195,11 @@ public class Jugador : MonoBehaviour
     /*Función auxiliar para el cálculo de maná
     Te dice cuánto maná queda en el momento de la invocación
     */
-    public int ManaRestante(int cantidad){
+    public int ManaRestante(int cantidad)
+    {
         int restante = 0;
-        for(int i = 0; i < mana.Length; i++){
+        for (int i = 0; i < mana.Length; i++)
+        {
             restante += mana[i];
         }
         return restante - cantidad;
@@ -181,9 +210,10 @@ public class Jugador : MonoBehaviour
     Se añade una carta a la mano por iteración
     Se llama a RobarCartasSecuencialmente para que haga una copia de la plantilla con la carta que se ha robado
     **/
-    public bool RobarCarta(int num){
+    public bool RobarCarta(int num)
+    {
         bool robar = false;
-        if(barajaPartida.Count>=num)
+        if (barajaPartida.Count >= num)
         {
             StartCoroutine(RobarCartasSecuencialmente(num));
             robar = true;
@@ -191,63 +221,76 @@ public class Jugador : MonoBehaviour
         return robar;
     }
 
-    IEnumerator RobarCartasSecuencialmente(int num){
-        
-        for (int i = 0; i < num; i++){
-        // Añadimos la carta a la mano del jugador
-        mano.Add(barajaPartida[^1]);
+    IEnumerator RobarCartasSecuencialmente(int num)
+    {
 
-        // Instanciamos y animamos la carta, esperando que termine la animación antes de seguir con la siguiente
-        yield return StartCoroutine(InstanciarPrefab(barajaPartida[^1]));
+        for (int i = 0; i < num; i++)
+        {
+            // Añadimos la carta a la mano del jugador
+            mano.Add(barajaPartida[^1]);
 
-        // La carta se ha robado y eliminamos de la baraja
-        barajaPartida.RemoveAt(barajaPartida.Count - 1);
+            // Instanciamos y animamos la carta, esperando que termine la animación antes de seguir con la siguiente
+            yield return StartCoroutine(InstanciarPrefab(barajaPartida[^1]));
+
+            // La carta se ha robado y eliminamos de la baraja
+            barajaPartida.RemoveAt(barajaPartida.Count - 1);
         }
     }
 
     IEnumerator InstanciarPrefab(Carta carta)
     {
-      
-        GameObject nuevaCarta = Instantiate(CartaJugada, Mazo.transform.position, transform.rotation);
-
-        // Asigna los datos a la carta recién instanciada
+        GameObject nuevaCarta = Instantiate(CartaJugada, Mazo.transform.position, Quaternion.identity);
         nuevaCarta.GetComponent<MostrarCarta>().id = carta.id;
         nuevaCarta.GetComponent<CartasJugadas>().perteneceAJugador = id;
 
-        // Inicializa la carta en una escala pequeña para el efecto
+        // Escala inicial para animación
         nuevaCarta.transform.localScale = Vector3.zero;
-        Vector3 nuevaEscala = new(0.8f, 0.8f,0f);
 
-        HorizontalLayoutGroup layoutGroup = Mano.GetComponent<HorizontalLayoutGroup>();
-        layoutGroup.enabled = false;
+        // IMPORTANTE: Insertar primero en la mano para que el layout la posicione correctamente
+        nuevaCarta.transform.SetParent(Mano.transform, false);
 
-        // Duración de la animación
-        float tiempoDeAnimacion = 0.3f;
-        float tiempoPasado = 0f;
+        // Esperamos un frame para que el layout la posicione
+        yield return null;
 
-        // Mueve la carta de la posición del mazo a la mano del jugador
-        while (tiempoPasado < tiempoDeAnimacion)
+        // Guardamos la posición final asignada por el layout
+        Vector3 destino = nuevaCarta.transform.position;
+
+        // Sacamos temporalmente la carta del layout para animarla libremente
+        nuevaCarta.transform.SetParent(this.transform, true); // mantener worldPosition
+
+        // Posición inicial y escala
+        Vector3 inicio = Mazo.transform.position;
+        Vector3 escalaFinal = new(0.8f, 0.8f, 0.8f);
+        float t = 0f;
+        float duracion = 0.4f;
+
+        // Animación: mover desde el mazo a su destino final
+        while (t < duracion)
         {
-            // Animación de movimiento: Interpolación lineal de la posición
-            nuevaCarta.transform.position = Vector3.Lerp(Mazo.transform.position, Mano.transform.position, tiempoPasado / tiempoDeAnimacion);
+            float smoothT = Mathf.SmoothStep(0, 1, t / duracion);
 
-            // Animación de escala: Crece la carta desde 0 a la nueva escala
-            nuevaCarta.transform.localScale = Vector3.Lerp(Vector3.zero, nuevaEscala, tiempoPasado / tiempoDeAnimacion);
+            nuevaCarta.transform.position = Vector3.Lerp(inicio, destino, smoothT);
+            nuevaCarta.transform.localScale = Vector3.Lerp(Vector3.zero, escalaFinal, smoothT);
 
-            tiempoPasado += Time.deltaTime;
-
+            t += Time.deltaTime;
             yield return null;
         }
-        nuevaCarta.transform.SetParent(Mano.transform);
 
-        layoutGroup.enabled = true;
+        // Asegura valores finales
+        nuevaCarta.transform.position = destino;
+        nuevaCarta.transform.localScale = escalaFinal;
 
-        yield return new WaitForSeconds(0.1f); 
+        // Finalmente, la volvemos a meter en el layout
+        nuevaCarta.transform.SetParent(Mano.transform, true); // mantener posición
+
+        yield return null;
     }
 
-    public void ReiniciarEstadisticasBatalla(){
+    public void ReiniciarEstadisticasBatalla()
+    {
         //Reiniciar a cada carta en campo de batalla fuerza y resistencia por defecto
-        for(int i = 0; i<batalla.Count; i++){
+        for (int i = 0; i < batalla.Count; i++)
+        {
             batalla[i].fuerzaActual = batalla[i].carta.fuerza;
             batalla[i].resistenciaActual = batalla[i].carta.resistencia;
         }
@@ -255,9 +298,12 @@ public class Jugador : MonoBehaviour
 
     //Encontrar carta por ID
     //Se le pasa un id, busca en BarajaOriginal y devuelve la carta
-    public Carta FindById(int id){
-        foreach (Carta c in barajaOriginal){
-            if (c.id == id){
+    public Carta FindById(int id)
+    {
+        foreach (Carta c in barajaOriginal)
+        {
+            if (c.id == id)
+            {
                 return c;
             }
         }

@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UtilCartas;
 
+/*
+* Controla el flujo de la partida, aquí va el sistema de turnos.
+* 
+*/
 
 public class Partida : MonoBehaviour
 {
-    public enum OrdenJugadores {JUGADOR, OPONENTE};
+    public enum OrdenJugadores { JUGADOR, OPONENTE };
     public Jugador jugador;
     public Jugador oponente;
     List<Jugador> jugadores;
@@ -16,17 +20,20 @@ public class Partida : MonoBehaviour
 
     public void GenerarPrioridadJugador()
     {
-        turno = Convert.ToBoolean(NumAleatorio(0,1));
+        turno = Convert.ToBoolean(NumAleatorio(0, 1));
         turno = false; // fuerza el turno del jugador para probar
 
         jugadores = new List<Jugador>();
 
         //Primero jugador
-        if(!turno){
+        if (!turno)
+        {
             jugadores.Add(jugador);
             jugadores.Add(oponente);
-        //Primero oponente
-        }else{
+            //Primero oponente
+        }
+        else
+        {
             jugadores.Add(oponente);
             jugadores.Add(jugador);
         }
@@ -37,10 +44,12 @@ public class Partida : MonoBehaviour
         AccionesPrevias();
     }
 
-    public void AccionesPrevias(){
+    public void AccionesPrevias()
+    {
         GenerarPrioridadJugador();
 
-        for(int i = 0; i < 2; i++){
+        for (int i = 0; i < 2; i++)
+        {
             jugadores[i].RellenarBaraja();
             jugadores[i].CrearBarajaPartida();
             jugadores[i].RobarCarta(7);
@@ -49,10 +58,12 @@ public class Partida : MonoBehaviour
 
     public void BuclePartida()
     {
-        while(ganador==0/*jugador.vida >= 0 && oponente.vida >= 0 && jugador.biblioteca.Count >= 0 && oponente.biblioteca.Count >= 0*/){
+        while (ganador == 0/*jugador.vida >= 0 && oponente.vida >= 0 && jugador.biblioteca.Count >= 0 && oponente.biblioteca.Count >= 0*/)
+        {
             //Fase inicio
             FaseInicio();
-            if(ganador==0){
+            if (ganador == 0)
+            {
                 //Fase principal 1
 
                 //Fase combate
@@ -61,7 +72,8 @@ public class Partida : MonoBehaviour
 
                 //Fase final
             }
-        };
+        }
+        ;
     }
 
     public void FaseInicio()
@@ -75,17 +87,20 @@ public class Partida : MonoBehaviour
         bool falloRobar;
         //Robar 1, si no puede pierde
         falloRobar = jugadores[0].RobarCarta(1);
-        if(falloRobar){
-            if(!turno) ganador = 2;
-            else       ganador = 1;
-        } 
+        if (falloRobar)
+        {
+            if (!turno) ganador = 2;
+            else ganador = 1;
+        }
     }
 
-    public void FasePrincipal(){
+    public void FasePrincipal()
+    {
         //Jugar carta
     }
 
-    public void FaseCombate(){
+    public void FaseCombate()
+    {
         //Activar habilidades principio combate
 
         //Declaracion atacantes jugador0->jugador1
@@ -104,12 +119,14 @@ public class Partida : MonoBehaviour
 
     }
 
-    public void PasoLimpieza(){
+    public void PasoLimpieza()
+    {
         //Reducir mano a 7 si lo supera
         //Eliminar desde el final de la mano
     }
 
-    public void FaseFinal(){
+    public void FaseFinal()
+    {
         //Resolver efectos comienzo paso final
 
         //Paso limpieza
@@ -117,7 +134,7 @@ public class Partida : MonoBehaviour
 
         //Cambiar turno
         turno = !turno;
-        jugadores.Intercambio(0,1);
+        jugadores.Intercambio(0, 1);
     }
 
 }

@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 
+/*
+* Contiene los parámetros de las cartas, el constructor y funciones auxiliares de cartas.
+*/
+
 public class Carta
 {
 
-    public enum Tipos {TIERRA, CRIATURA, CONJURO, INSTANTANEO, ARTEFACTO, ENCANTAMIENTO};
-    public enum Colores { INCOLORO, BLANCO, NEGRO, ROJO, VERDE};
-    private string[] valoresColores = {"","B","N","R","V"}; //Enum Colores para convertir el coste de maná y poder mostrarlo
+    public enum Tipos { TIERRA, CRIATURA, CONJURO, INSTANTANEO, ARTEFACTO, ENCANTAMIENTO };
+    public enum Colores { INCOLORO, BLANCO, NEGRO, ROJO, VERDE };
+    private string[] valoresColores = { "", "B", "N", "R", "V" }; //Enum Colores para convertir el coste de maná y poder mostrarlo
 
     public static int nextid = 1;
     public int id = nextid++;
@@ -22,41 +26,43 @@ public class Carta
     public int resistencia;
     public string descripcion; //
     public string flavour;   // ====
-    
+
     //public List<Efecto> efectos; //Aun no está hecho
 
     //public Sprite spriteImagen;
 
-    public Carta(){
+    public Carta()
+    {
 
     }
 
-    public Carta(string NombreCarta,int Tipo, string Rareza, int[] CosteMana,string Color, int Fuerza, int Resistencia, string Descripcion, string Flavour){
+    public Carta(string NombreCarta, int Tipo, string Rareza, int[] CosteMana, string Color, int Fuerza, int Resistencia, string Descripcion, string Flavour)
+    {
 
-        nombreCarta=NombreCarta;
-        tipo=Tipo;
-        rareza=Rareza;
-        costeMana=CosteMana;
-        color=Color;
-        fuerza=Fuerza;
-        resistencia=Resistencia;
-        descripcion=Descripcion;
-        flavour=Flavour;
+        nombreCarta = NombreCarta;
+        tipo = Tipo;
+        rareza = Rareza;
+        costeMana = CosteMana;
+        color = Color;
+        fuerza = Fuerza;
+        resistencia = Resistencia;
+        descripcion = Descripcion;
+        flavour = Flavour;
         //spriteImagen=SpriteIm;
 
     }
 
     public Carta(Carta c)
     {
-        nombreCarta=c.nombreCarta;
-        tipo=c.tipo;
-        rareza=c.rareza;
-        costeMana=c.costeMana;
-        color=c.color;
-        fuerza=c.fuerza;
-        resistencia=c.resistencia;
-        descripcion=c.descripcion;
-        flavour=c.flavour;
+        nombreCarta = c.nombreCarta;
+        tipo = c.tipo;
+        rareza = c.rareza;
+        costeMana = c.costeMana;
+        color = c.color;
+        fuerza = c.fuerza;
+        resistencia = c.resistencia;
+        descripcion = c.descripcion;
+        flavour = c.flavour;
 
     }
 
@@ -66,10 +72,10 @@ public class Carta
     * Parametros: t = tipo de la clase Carta
     * Devuelve: tipo en formato string
     */
-    public string TipoToString(int t)   
+    public string TipoToString(int t)
     {
         string mostrarTipo = "";
-        switch(t)
+        switch (t)
         {
             case 0:
                 mostrarTipo = "Tierra";
@@ -89,9 +95,9 @@ public class Carta
             case 5:
                 mostrarTipo = "Encantamiento";
                 break;
-            
+
         }
-        return mostrarTipo; 
+        return mostrarTipo;
     }
 
 
@@ -103,13 +109,16 @@ public class Carta
     public string ManaToString(int[] m)
     {
         string costeTotal = "";
-        for(int i=0; i<m.Length; i++){
+        for (int i = 0; i < m.Length; i++)
+        {
             int contador = m[i];
-            if(i==0 && m[0]>0){
-                costeTotal+= m[0];
+            if (i == 0 && m[0] > 0)
+            {
+                costeTotal += m[0];
             }
-            while(contador>0){
-                costeTotal+=valoresColores[i];
+            while (contador > 0)
+            {
+                costeTotal += valoresColores[i];
                 contador--;
             }
         }

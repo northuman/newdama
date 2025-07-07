@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+* Controla el menú de pausa.
+* Contiene las funciones de los botones.
+* Pausa la partida.
+*/
+
 public class MenuPausa : MonoBehaviour
 {
     public GameObject menuPausa;
@@ -14,10 +20,11 @@ public class MenuPausa : MonoBehaviour
         Time.timeScale = 1f; // Asegura que el tiempo vuelva a la normalidad
         transicion.LoadScene(nombreEscenaMenu); // Llama a la transición
     }
-    public void Reanudar(){
+    public void Reanudar()
+    {
         menuPausa.SetActive(false);
         Time.timeScale = 1f;
-        
+
     }
     void Update()
     {

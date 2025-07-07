@@ -630,7 +630,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2VV
+  m_text: 2BB
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4739bd5012ff4d346b2d2049db156e65, type: 2}
   m_sharedMaterial: {fileID: -5778103673905607777, guid: 4739bd5012ff4d346b2d2049db156e65, type: 2}
@@ -765,8 +765,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "En la Edad Media, un se\xF1or\xEDo era una unidad de territorio o dominio
-    que estaba bajo la autoridad de un se\xF1or feudal."
+  m_text: "Texto de ambientaci\xF3n."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f66686e0d8f08d24a820ab4aba65560b, type: 2}
   m_sharedMaterial: {fileID: 7798242039321473177, guid: f66686e0d8f08d24a820ab4aba65560b, type: 2}
@@ -977,7 +976,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1054,7 +1053,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5, g: 0.27672952, b: 0.29657575, a: 1}
+  m_Color: {r: 0.7294118, g: 0.69803923, b: 0.63529414, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

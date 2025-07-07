@@ -3,7 +3,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-//Script para seleccionar una carta y guargar su información
+/*
+* Controla un comportamiento cuando se hace click sobre un objeto.
+*/
 public class Seleccionar : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 {
     GameObject cartaSeleccionada = null;

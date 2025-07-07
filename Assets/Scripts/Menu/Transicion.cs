@@ -3,6 +3,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 
+/*
+* Controla las animaciones de transición.
+* fadeGroup es la imagen de transición.
+* sceneName es el nombre de la escena que se carga.
+*/
+
 public class Transicion : MonoBehaviour
 {
     public CanvasGroup fadeGroup;

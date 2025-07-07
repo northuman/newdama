@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 /*
-* Descripcion: Script para arrastrar las cartas con el ratón. 
+* Script para arrastrar las cartas con el ratón. 
 * eventData : es la variable que guarda la información del evento, en este caso la carta.
 * OnBeginDrag : se guarda el objeto parent actual para que si el destino no es válido vuelva a su origen
 *               se desactivan los raycast del canvas para que no interfieran con el arrastrado

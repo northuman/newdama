@@ -6,10 +6,8 @@ using UnityEngine.EventSystems;
 /*
 * Descripcion: DropZone cambia el parent de la carta para que al soltarla se coloque en el panel.
 * Adicionalmente se comprueba si está permitido colocarla
-* OnPointerEnter :
 * OnDrop : Si se está arrastrando una carta, se guarda su tipo y su id. 
 * Se llama a validarTipo. Si es válido cambio parentToReturnTo al panel de destino.
-* OnPointerExit :
 */
 
 public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
@@ -25,8 +23,6 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     * TIERRAS : admite solo tierras
     * BATALLA : admite crriaturas e instantaneos
     */
-
-
     public void OnPointerEnter(PointerEventData eventData){}
 
     public void OnDrop(PointerEventData eventData)
@@ -37,7 +33,7 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
             cartaSeleccionada = eventData.pointerDrag;
             string tipo = eventData.pointerDrag.GetComponent<MostrarCarta>().tipo;
             //int id= eventData.pointerDrag.GetComponent<MostrarCarta>().id;
-            if(ValidarTipo(tipo) && ValidarMana(cartaSeleccionada))
+            if (ValidarTipo(tipo) && ValidarMana(cartaSeleccionada))
             {
                 arrastrando.parentToReturnTo = this.transform;
             }
@@ -71,27 +67,41 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         return validar;
     }
 
-    public bool ValidarMana(GameObject carta){
+    /*
+    * Recibe una carta como parámetro.
+    * Si es una criatura entra al bucle.
+    * Llama a ComprobarMana y calcula si se puede jugar la carta, si devuelve true se resta el maná.
+    */
+    public bool ValidarMana(GameObject carta)
+    {
         bool ok = false;
-        if(carta != null){
+        if (carta != null)
+        {
             string tipo = carta.GetComponent<MostrarCarta>().tipo;
             int perteneceA = carta.GetComponent<CartasJugadas>().perteneceAJugador;
-            if(tipo.Equals("Criatura")){
-                if(perteneceA==1){
-                    if(jugador1.GetComponent<Jugador>().ComprobarMana(carta)){
+            if (tipo.Equals("Criatura"))
+            {
+                if (perteneceA == 1)
+                {
+                    if (jugador1.GetComponent<Jugador>().ComprobarMana(carta))
+                    {
                         jugador1.GetComponent<Jugador>().RestarMana(carta);
                         ok = true;
                     }
                 }
-                else if(perteneceA==2){
-                    if(jugador2.GetComponent<Jugador>().ComprobarMana(carta)){
+                else if (perteneceA == 2)
+                {
+                    if (jugador2.GetComponent<Jugador>().ComprobarMana(carta))
+                    {
                         jugador2.GetComponent<Jugador>().RestarMana(carta);
                         ok = true;
                     }
                 }
-            }else{
+            }
+            else
+            {
                 ok = true;
-            }          
+            }
         }
         return ok;
     }

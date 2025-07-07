@@ -5,6 +5,11 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
+/*
+* Controla que se muestre la información de las cartas donde corresponda.
+* RenderizarCarta debería llamarse cuando se cambie la información de una carta, en vez de en el update.
+*/
+
 public class MostrarCarta : MonoBehaviour
 {
     public List<Carta> mostrarCarta = new();
@@ -59,21 +64,23 @@ public class MostrarCarta : MonoBehaviour
     {
 
         //Coge las cartas de cada jugador
-        if(Jugador1.GetComponent<Jugador>().FindById(id) != null){
-            
+        if (Jugador1.GetComponent<Jugador>().FindById(id) != null)
+        {
+
             mostrarCarta[0] = Jugador1.GetComponent<Jugador>().FindById(id);
         }
-        else if(Jugador2.GetComponent<Jugador>().FindById(id) != null){
-            
+        else if (Jugador2.GetComponent<Jugador>().FindById(id) != null)
+        {
+
             mostrarCarta[0] = Jugador2.GetComponent<Jugador>().FindById(id);
         }
 
         //Le pone el color a la carta
         color = mostrarCarta[0].color;
         UtilCartas.ColorearCarta(this.gameObject);
-        
+
         //Se asignan los valores a la carta que coge de cada jugador
-        id = mostrarCarta[0].id; 
+        id = mostrarCarta[0].id;
         nombreCarta = mostrarCarta[0].nombreCarta;
         tipo = mostrarCarta[0].TipoToString(mostrarCarta[0].tipo);
         rareza = mostrarCarta[0].rareza;
@@ -84,10 +91,13 @@ public class MostrarCarta : MonoBehaviour
         flavour = mostrarCarta[0].flavour;
 
         //Se acorta el flavour para que no se salga de la carta
-        string flavourAux ="";
-        if(flavour.Length > 145){
+        string flavourAux = "";
+        if (flavour.Length > 145)
+        {
             flavourAux = flavour.Substring(0, 145) + "...";
-        }else{
+        }
+        else
+        {
             flavourAux = flavour;
         }
         //spriteImagen = mostrarCarta[0].spriteImagen;
@@ -102,23 +112,25 @@ public class MostrarCarta : MonoBehaviour
 
 
         //si la carta No es una tierra, se muestran sus parámetros      
-        if(tipo != "Tierra"){
+        if (tipo != "Tierra")
+        {
             manaText.text = "" + costeMana;
-            statsText.text = "" + fuerza + " / " + resistencia; 
+            statsText.text = "" + fuerza + " / " + resistencia;
         }
         //si es una tierra, se ocultan el maná y las estadísticas.
-        else{
+        else
+        {
             manaText.text = "";
             statsText.text = "";
             this.transform.Find("Borde/Color/Lineas/Stats").GetComponent<Image>().enabled = false;
         }
-        
+
         //Busca el panel con nombre Mano y lo guarda como GameObject
         ManoJugador = GameObject.Find("ManoJugador");
         ManoOponente = GameObject.Find("ManoOponente");
-        
+
     }
-    
+
     void Update()
     {
         //Se renderiza la carta cada frame

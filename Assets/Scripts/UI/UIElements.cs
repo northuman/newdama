@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /*
-* Script para los elementos de la interfaz
+* Contiene los elementos de interfaz y las funciones para mostrarlos.
 */
 
 public class UIElements : MonoBehaviour

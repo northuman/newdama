@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 
+/*
+*Carga el archivo txt seleccionado desde el editor y crea una lista con las cartas.
+*CargarCartas: abre el archivo, separa las líneas por "#", las pasa como parámetro para crear la carta.
+*/
 public class CartaDatabase : MonoBehaviour
 {
     public static List<Carta> listaCartas = new();
@@ -13,9 +17,11 @@ public class CartaDatabase : MonoBehaviour
         //listaCartas.Add(new Carta("None",0,"Común", new int[5],"B", 0,0,Resources.Load<TextAsset>("None"), Resources.Load<TextAsset>("None") ));
     }
 
-    private void CargarCartas(){
- 
-        if(archivoCartas != null){  //se comprueba que se haya seleccionado el archivo
+    private void CargarCartas()
+    {
+
+        if (archivoCartas != null)
+        {  //se comprueba que se haya seleccionado el archivo
 
             using StringReader sr = new(archivoCartas.text);
             string linea;
@@ -27,14 +33,16 @@ public class CartaDatabase : MonoBehaviour
             }
 
         }
-        else{
+        else
+        {
             Debug.LogError("No hay archivo de cartas");
         }
     }
 
-    private int[] ParseCoste(string coste) {
+    private int[] ParseCoste(string coste)
+    {
         //Debug.Log(coste[0]);
-        return new int[5] {int.Parse(coste[0].ToString()), int.Parse(coste[1].ToString()), int.Parse(coste[2].ToString()), int.Parse(coste[3].ToString()), int.Parse(coste[4].ToString())};
-    }   
+        return new int[5] { int.Parse(coste[0].ToString()), int.Parse(coste[1].ToString()), int.Parse(coste[2].ToString()), int.Parse(coste[3].ToString()), int.Parse(coste[4].ToString()) };
+    }
 }
 

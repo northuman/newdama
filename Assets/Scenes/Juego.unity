@@ -5615,7 +5615,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5466df278fbc5ec43b7e691fba834eb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archivoCartas: {fileID: 4900000, guid: bc0dc6aa2bf4d2f449763a74892655b2, type: 3}
+  archivoCartas: {fileID: 4900000, guid: 469efab2d05284f4fb20ad3c1ecddfa8, type: 3}
 --- !u!4 &2095214080
 Transform:
   m_ObjectHideFlags: 0

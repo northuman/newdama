@@ -4,6 +4,13 @@ using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
 
+/*
+* Controla los mensajes que se muestran por pantalla.
+* Pensado para usarse desde otros puntos del código.
+* mensajeText es el objeto del editor.
+* mensaje es el string con el mensaje que se quiere mostrar.
+*/
+
 public class MensajeManager : MonoBehaviour
 {
     public TextMeshProUGUI mensajeText;
@@ -11,20 +18,24 @@ public class MensajeManager : MonoBehaviour
 
     private Coroutine rutinaMensajeActual;
 
-    private void Start(){
+    private void Start()
+    {
         mensajeText.text = "";
         mensajeText.enabled = false;
 
     }
 
-    public void MostrarMensaje(string mensaje){
-        if(rutinaMensajeActual != null){
+    public void MostrarMensaje(string mensaje)
+    {
+        if (rutinaMensajeActual != null)
+        {
             StopCoroutine(rutinaMensajeActual);
         }
         rutinaMensajeActual = StartCoroutine(MostrarMensajeCoroutine(mensaje));
     }
 
-    private IEnumerator MostrarMensajeCoroutine(string mensaje){
+    private IEnumerator MostrarMensajeCoroutine(string mensaje)
+    {
         mensajeText.text = mensaje;
         mensajeText.enabled = true;
         yield return new WaitForSeconds(duracion);
