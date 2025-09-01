@@ -32,10 +32,17 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         {
             cartaSeleccionada = eventData.pointerDrag;
             string tipo = eventData.pointerDrag.GetComponent<MostrarCarta>().tipo;
-            //int id= eventData.pointerDrag.GetComponent<MostrarCarta>().id;
             if (ValidarTipo(tipo) && ValidarMana(cartaSeleccionada))
             {
                 arrastrando.parentToReturnTo = this.transform;
+
+                /* PARA INICIALIZAR CARTA JUGADA*/
+                var cj = cartaSeleccionada.GetComponent<CartasJugadas>();
+                if (cj != null)
+                {
+                    var datos = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta();
+                    cj.Inicializar(datos);
+                }
             }
         }
     }

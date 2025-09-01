@@ -54,6 +54,20 @@ public class Partida : MonoBehaviour
             jugadores[i].CrearBarajaPartida();
             jugadores[i].RobarCarta(7);
         }
+
+        //FORZAR CARTA DEL OPONENTE PARA PROBAR ---------------------
+        ForzarCartaOponente();
+    }
+
+    public void ForzarCartaOponente()
+    {
+        if (oponente.mano.Count > 0)
+        {
+            var cartaPrueba = jugadores[1].mano[0];
+            oponente.mano.RemoveAt(0);
+            oponente.GetComponent<CartasJugadas>();
+            Debug.Log("Carta de prueba añadida al campo del oponente: " + cartaPrueba.nombreCarta);
+        }
     }
 
     public void BuclePartida()
@@ -97,6 +111,8 @@ public class Partida : MonoBehaviour
     public void FasePrincipal()
     {
         //Jugar carta
+
+        
     }
 
     public void FaseCombate()

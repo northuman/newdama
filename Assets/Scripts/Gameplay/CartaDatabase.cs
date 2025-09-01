@@ -30,6 +30,7 @@ public class CartaDatabase : MonoBehaviour
 
                 string[] partes = linea.Split('#');
                 listaCartas.Add(new Carta(partes[0], int.Parse(partes[1]), partes[2], ParseCoste(partes[3]), partes[4], int.Parse(partes[5]), int.Parse(partes[6]), partes[7], partes[8]));
+                Debug.Log($"Carta añadida: {partes[0]}");
             }
 
         }

@@ -25,9 +25,16 @@ public class Carta
     public int fuerza;
     public int resistencia;
     public string descripcion; //
-    public string flavour;   // ====
+    public string flavour;   // 
 
-    //public List<Efecto> efectos; //Aun no está hecho
+    // lista de cosas
+    public List<IAtributo> atributos;
+
+    //public List<IHabilidades> habilidades;
+    //public List<ITriggers> triggers;
+
+   
+
 
     //public Sprite spriteImagen;
 
@@ -48,6 +55,10 @@ public class Carta
         resistencia = Resistencia;
         descripcion = Descripcion;
         flavour = Flavour;
+        atributos = new List<IAtributo>();
+        atributos.Add(new Prisa());
+        
+
         //spriteImagen=SpriteIm;
 
     }
@@ -63,7 +74,8 @@ public class Carta
         resistencia = c.resistencia;
         descripcion = c.descripcion;
         flavour = c.flavour;
-
+        atributos = new List<IAtributo>(c.atributos);
+        Debug.Log($"'{atributos[0]}'");
     }
 
 
