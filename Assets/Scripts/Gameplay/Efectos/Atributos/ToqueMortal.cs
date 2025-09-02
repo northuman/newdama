@@ -5,7 +5,4 @@ public class ToqueMortal : IAtributo
         // Destruye a la carta que ataca
         carta.toqueMortal = true;
     }
-
-    public void AplicarAlHacerDanio(CartasJugadas atacante, int cantidad) { }
-
 }

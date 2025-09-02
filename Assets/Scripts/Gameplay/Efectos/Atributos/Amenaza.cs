@@ -4,6 +4,4 @@ public class Amenaza : IAtributo
     {
         // tienen que bloquearla 2 o mas criaturas
     }
-
-    public void AplicarAlHacerDanio(CartasJugadas atacante, int cantidad) { }
 }

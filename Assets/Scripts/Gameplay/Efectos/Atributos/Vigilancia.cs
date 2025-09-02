@@ -6,7 +6,4 @@ public class Vigilancia : IAtributo
         carta.vigilancia = true;
         carta.girada = false; // La carta no se gira al atacar
     }
-
-    public void AplicarAlHacerDanio(CartasJugadas atacante, int cantidad) { }
-
 }

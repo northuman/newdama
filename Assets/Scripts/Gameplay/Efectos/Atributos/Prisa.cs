@@ -8,7 +8,4 @@ public class Prisa : IAtributo
 
         carta.mareo = false; // Puede atacar el turno en que entra al campo de batalla
     }
-
-    public void AplicarAlHacerDanio(CartasJugadas atacante, int cantidad) { }
-
 }

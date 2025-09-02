@@ -25,6 +25,7 @@ public class CartasJugadas : MonoBehaviour
     public bool destello; //si tiene destello se puede jugar en cualquier momento
     public bool vuelo; //si tiene vuelo solo puede ser bloqueada por cartas con vuelo
     public bool arrolla; //si tiene arrolla, el exceso de daño que haga al atacar se lo hace al jugador
+    public bool vinculoVital; //si tiene vínculo vital, recupera vida igual al daño que haga
     public List<Carta> encantamientos;
     public int perteneceAJugador;
     public GameObject j1;
@@ -90,18 +91,54 @@ public class CartasJugadas : MonoBehaviour
     }
 
     /*METODOS DE ATAQUE Y BLOQUEO QUE HACE FALTA USAR EN LA PARTIDA*/
-    public void Atacar(CartasJugadas objetivo) //FALTA QUE LE HAGA DANIO AL JUGADOR COMO TAL
+    public void Atacar(CartasJugadas objetivo)
     {
         if (!mareo && !defensor) //si esta mareada no puede atacar, si tiene atributo defensor no puede atacar
         {
+            int danioAsignado;
+
             if (toqueMortal)
             {
-                objetivo.RecibirDanio(objetivo.resistenciaActual);
+                danioAsignado = objetivo.resistenciaActual;
             }
             else
             {
-                objetivo.RecibirDanio(fuerzaActual);
+                danioAsignado = this.fuerzaActual;
             }
+
+            //daño a la carta bloqueadora
+            if (objetivo != null)
+            {
+                int danioRealizado = Mathf.Min(danioAsignado, objetivo.resistenciaActual);
+                objetivo.RecibirDanio(danioAsignado);
+
+                if (vinculoVital)
+                {
+                    TratarVida(0, danioRealizado);
+                }
+
+                if (arrolla && danioAsignado > danioRealizado)
+                {
+                    int excesoDanio = danioAsignado - danioRealizado;
+                    TratarVida(1, excesoDanio);
+
+                    if (vinculoVital)
+                    {
+                        TratarVida(0, excesoDanio);
+                    }
+                }
+            }
+
+            else //daño directo al jugador
+            {
+                TratarVida(1, danioAsignado);
+
+                if (vinculoVital)
+                {
+                    TratarVida(0, danioAsignado);
+                }
+            }
+
 
             if (!vigilancia)
             {
@@ -141,7 +178,7 @@ public class CartasJugadas : MonoBehaviour
 
 
 
-    //PENSAR MEJOR EL METODO DE BLOQUEO
+    //FALTA LA LOGICA DEL METODO DE BLOQUEO
     public void Bloquear(CartasJugadas objetivo)
     {
         if (!girada) // si esta girada no puede bloquear
@@ -149,6 +186,34 @@ public class CartasJugadas : MonoBehaviour
             if ((objetivo.vuelo && this.vuelo) || !objetivo.vuelo)
             {
                 //hacer logica de bloqueo
+            }
+        }
+    }
+
+    public void TratarVida(int caso, int danio)
+    {
+        if (caso == 0) //vinculo vital
+        {
+            //le sumamos al jugador que controla la carta el daño realizado
+            if (perteneceAJugador == j1.GetComponent<Jugador>().id)
+            {
+                j1.GetComponent<Jugador>().vida += danio;
+            }
+            else if (perteneceAJugador == j2.GetComponent<Jugador>().id)
+            {
+                j2.GetComponent<Jugador>().vida += danio;
+            }
+        }
+        else if (caso == 1) //arrolla y restar vida al oponente
+        {
+            //le restamos el exceso de daño al jugador contrario
+            if (perteneceAJugador == j1.GetComponent<Jugador>().id)
+            {
+                j2.GetComponent<Jugador>().vida -= danio;
+            }
+            else if (perteneceAJugador == j2.GetComponent<Jugador>().id)
+            {
+                j1.GetComponent<Jugador>().vida -= danio;
             }
         }
     }

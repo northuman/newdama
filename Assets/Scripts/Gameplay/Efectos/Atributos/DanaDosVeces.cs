@@ -5,6 +5,4 @@ public class DanaDosVeces : IAtributo
 		// dana primero y tambien de combate normal
 	}
 
-    public void AplicarAlHacerDanio(CartasJugadas atacante, int cantidad) { }
-
 }

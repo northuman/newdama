@@ -7,7 +7,4 @@ public class Indestructible : IAtributo
         
         carta.indestructible = true; // Marca la carta como indestructible
     }
-
-    public void AplicarAlHacerDanio(CartasJugadas atacante, int cantidad) { }
-
 }

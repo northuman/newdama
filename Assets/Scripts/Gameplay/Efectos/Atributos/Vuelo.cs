@@ -8,7 +8,4 @@ public class Vuelo : IAtributo
         
         carta.vuelo = true;
     }
-
-    public void AplicarAlHacerDanio(CartasJugadas atacante, int cantidad) { }
-
 }

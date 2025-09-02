@@ -5,7 +5,4 @@ public class Defensor : IAtributo
         // No puede atacar. Solo bloquea ataques.
         carta.defensor = true;
     }
-
-    public void AplicarAlHacerDanio(CartasJugadas atacante, int cantidad) { }
-
 }

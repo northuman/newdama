@@ -7,7 +7,4 @@ public class Destello : IAtributo
         carta.mareo = false; // No se puede aplicar mareo a una carta con destello
 
     }
-
-    public void AplicarAlHacerDanio(CartasJugadas atacante, int cantidad) { }
-
 }
