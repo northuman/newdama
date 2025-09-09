@@ -70,7 +70,7 @@ public class Partida : MonoBehaviour
         }
     }
 
-    public void BuclePartida()
+    public void BuclePartida() //SE DEBE DE TENER EN CUENTA EL ATRIBUTO DESTELLO (que puede usarse en cualquier momento/ cualquier fase)
     {
         while (ganador == 0/*jugador.vida >= 0 && oponente.vida >= 0 && jugador.biblioteca.Count >= 0 && oponente.biblioteca.Count >= 0*/)
         {

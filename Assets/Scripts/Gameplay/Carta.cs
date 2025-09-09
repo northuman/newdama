@@ -29,8 +29,7 @@ public class Carta
 
     // lista de cosas
     public List<IAtributo> atributos;
-
-    //public List<IHabilidades> habilidades;
+    //public List<IHabilidad> habilidades;
     //public List<ITriggers> triggers;
 
    

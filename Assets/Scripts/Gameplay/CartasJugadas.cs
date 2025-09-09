@@ -26,6 +26,7 @@ public class CartasJugadas : MonoBehaviour
     public bool vuelo; //si tiene vuelo solo puede ser bloqueada por cartas con vuelo
     public bool arrolla; //si tiene arrolla, el exceso de daño que haga al atacar se lo hace al jugador
     public bool vinculoVital; //si tiene vínculo vital, recupera vida igual al daño que haga
+    public bool noSerBloqueada; //si tiene no ser bloqueada, no puede ser bloqueada
     public List<Carta> encantamientos;
     public int perteneceAJugador;
     public GameObject j1;
@@ -139,6 +140,8 @@ public class CartasJugadas : MonoBehaviour
                 }
             }
 
+            
+
 
             if (!vigilancia)
             {
@@ -181,7 +184,7 @@ public class CartasJugadas : MonoBehaviour
     //FALTA LA LOGICA DEL METODO DE BLOQUEO
     public void Bloquear(CartasJugadas objetivo)
     {
-        if (!girada) // si esta girada no puede bloquear
+        if (!girada && !objetivo.noSerBloqueada) // si esta girada no puede bloquear
         {
             if ((objetivo.vuelo && this.vuelo) || !objetivo.vuelo)
             {
