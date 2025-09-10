@@ -1,13 +1,19 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class CrearFichaHabilidad : IHabilidad
 {
-    public int cantidad;
-    public int tipo;
-    public string nombreCarta;
-    public string color;
-    public int fuerza;
-    public int resistencia;
+    private int cantidad;
+    private int tipo;
+    private string nombreCarta;
+    private string color;
+    private int fuerza;
+    private int resistencia;
+    private Carta cartaFicha;
+    private GameObject go;
 
-    public CrearFichaHabilidad(int cantidad, int tipo = 1, string nombreCarta, string color = "cualquiera", int fuerza = 1, int resistencia = 1)
+    public CrearFichaHabilidad(int cantidad, string nombreCarta, int tipo = 1, string color = "cualquiera", int fuerza = 1, int resistencia = 1)
     {
         this.cantidad = cantidad;
         this.tipo = tipo;
@@ -23,7 +29,7 @@ public class CrearFichaHabilidad : IHabilidad
         for (int i = 0; i < cantidad; i++)
         {
             cartaFicha = new Carta(nombreCarta, tipo, "", null, color, fuerza, resistencia, "", "");
-            GameObject go = new GameObject("Ficha");
+            go = new GameObject("Ficha");
             CartasJugadas ficha= go.AddComponent<CartasJugadas>();
             ficha.Inicializar(cartaFicha);
 

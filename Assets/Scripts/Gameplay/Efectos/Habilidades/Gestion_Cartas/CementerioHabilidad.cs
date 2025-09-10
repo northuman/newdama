@@ -1,8 +1,8 @@
 public class CementerioHabilidad : IHabilidad
 {
     private int cantidad;
-    public bool misma;
-    public bool mano;
+    private bool misma;
+    private bool mano;
 
     public CementerioHabilidad(int cantidad, bool misma, bool mano)
     {
