@@ -15,7 +15,7 @@ public class AdivinarHabilidad : IHabilidad
             for (int i = 0; i < cartajug.j1.GetComponent<Jugador>().barajaPartida.Count && adivinadas < cantidad; i++)
             {
                 Carta cartaAdivinada = cartajug.j1.GetComponent<Jugador>().barajaPartida[i];
-                //Implementar interfaz grafica para que el jugador pueda elegir que hacer con la carta
+                //Implementar interfaz grafica para que el jugador pueda elegir que hacer con la carta ya que eso es parte de las fases de juego
                 //Implementar animacion de cuando se ve la carta
             }
         }
@@ -24,7 +24,7 @@ public class AdivinarHabilidad : IHabilidad
             for (int i = 0; i < cartajug.j2.GetComponent<Jugador>().barajaPartida.Count && adivinadas < cantidad; i++)
             {
                 Carta cartaAdivinada = cartajug.j2.GetComponent<Jugador>().barajaPartida[i];
-                //Implementar interfaz grafica para que el jugador pueda elegir que hacer con la carta
+                //Implementar interfaz grafica para que el jugador pueda elegir que hacer con la carta ya que eso es parte de las fases de juego
                 //Implementar animacion de cuando se ve la carta
             }
         }
