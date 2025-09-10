@@ -193,18 +193,18 @@ public class CartasJugadas : MonoBehaviour
         }
     }
 
-    public void TratarVida(int caso, int danio)
+    public void TratarVida(int caso, int cantidad)
     {
-        if (caso == 0) //vinculo vital
+        if (caso == 0) //vinculo vital o sumar vidas
         {
-            //le sumamos al jugador que controla la carta el daño realizado
+            //le sumamos al jugador que controla la carta el danio realizado o lo que hay que sumar de vida
             if (perteneceAJugador == j1.GetComponent<Jugador>().id)
             {
-                j1.GetComponent<Jugador>().vida += danio;
+                j1.GetComponent<Jugador>().vida += cantidad;
             }
             else if (perteneceAJugador == j2.GetComponent<Jugador>().id)
             {
-                j2.GetComponent<Jugador>().vida += danio;
+                j2.GetComponent<Jugador>().vida += cantidad;
             }
         }
         else if (caso == 1) //arrolla y restar vida al oponente
@@ -212,11 +212,11 @@ public class CartasJugadas : MonoBehaviour
             //le restamos el exceso de daño al jugador contrario
             if (perteneceAJugador == j1.GetComponent<Jugador>().id)
             {
-                j2.GetComponent<Jugador>().vida -= danio;
+                j2.GetComponent<Jugador>().vida -= cantidad;
             }
             else if (perteneceAJugador == j2.GetComponent<Jugador>().id)
             {
-                j1.GetComponent<Jugador>().vida -= danio;
+                j1.GetComponent<Jugador>().vida -= cantidad;
             }
         }
     }
