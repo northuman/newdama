@@ -29,8 +29,8 @@ public class Carta
 
     // lista de cosas
     public List<IAtributo> atributos;
-    //public List<IHabilidad> habilidades;
-    //public List<ITriggers> triggers;
+    public List<IHabilidad> habilidades;
+    public List<ITrigger> triggers;
 
    
 
@@ -56,7 +56,7 @@ public class Carta
         flavour = Flavour;
         atributos = new List<IAtributo>();
         atributos.Add(new Prisa());
-        
+        triggers = new List<ITrigger>();
 
         //spriteImagen=SpriteIm;
 
