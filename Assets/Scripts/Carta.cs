@@ -16,6 +16,7 @@ public class Carta : ScriptableObject {
     public int resistencia;
     public int[] cantidadMana;
     public int[] cantidadMana2;
+    public Sprite ilustracion;
 
     public List<Efecto> efectos;
 

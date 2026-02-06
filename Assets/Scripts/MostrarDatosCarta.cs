@@ -17,6 +17,7 @@ public class MostrarDatosCarta : MonoBehaviour {
     public TMPro.TMP_Text tipos;
     public TMPro.TMP_Text fuerza;
     public TMPro.TMP_Text resistencia;
+    public Image zonaImagen;
 
     TMPro.TextMeshProUGUI goFuerza;
     TMPro.TextMeshProUGUI goResistencia;
@@ -26,6 +27,10 @@ public class MostrarDatosCarta : MonoBehaviour {
         arrastrable = gameObject.GetComponent<Arrastrable>();
         
         nombre.text = carta.nombreCarta;
+        if(carta.ilustracion != null)
+        {
+            zonaImagen.sprite = carta.ilustracion;
+        }
         costeMana.text = StringCosteMana();
         palabrasClave.text = carta.palabrasClave;
         descripcion.text = carta.descripcion;

@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f888d8aab3a73f140b13932d0cd2ea65, type: 3}
+  m_Name: DragonInvasor
+  m_EditorClassIdentifier: 
+  nombreCarta: Dragon Invasor
+  costeMana: 040000000200000000000000000000000000000000000000
+  palabrasClave: 
+  descripcion: Cuando entra al campo de batalla, quema todo a su paso
+  flavour: "-Cinco d\xEDas de viaje y no hemos siquiera pernoctado en alg\xFAn mes\xF3n
+    o en alguna de las numerosas posadas del camino que lleva a Toledo. Empiezo a
+    creer que a mi se\xF1or le complace ver a su humilde servidor andar grandes distancias
+    sin descanso ni montura. \u201CAjusta la armadura\u201D, \u201Calc\xE1nzame mi
+    yelmo\u201D, \u201Cprepara la montura\u201D... Estoy harto de seguir las \xF3rdenes
+    de este caballero, un hidalgo demasiado orgulloso para reconocer que no dispone
+    ni de fortuna, ni de gloria alguna."
+  tipoCarta: Criatura
+  tiposConcretos: "Com\xFAn"
+  fuerza: 6
+  resistencia: 6
+  cantidadMana: 
+  cantidadMana2: 
+  ilustracion: {fileID: 21300000, guid: 802cb4b8d27bc47358b979e93760bc0f, type: 3}
+  efectos:
+  - {fileID: 11400000, guid: ec5043ce37d7e9d4fa6a5432668abf6e, type: 2}
