@@ -785,6 +785,7 @@ GameObject:
   - component: {fileID: 2421649484402084936}
   - component: {fileID: 2421649484402084938}
   - component: {fileID: 2421649484402084937}
+  - component: {fileID: 2739903365431332103}
   m_Layer: 5
   m_Name: Marco Flavour
   m_TagString: Untagged
@@ -851,6 +852,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &2739903365431332103
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2421649484402084943}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &2421649484626068959
 GameObject:
   m_ObjectHideFlags: 0
@@ -883,8 +896,8 @@ RectTransform:
   m_Children:
   - {fileID: 8204568365242596057}
   - {fileID: 8361254038198980689}
-  - {fileID: 1041405757589179236}
   - {fileID: 2421649485156988430}
+  - {fileID: 1041405757589179236}
   - {fileID: 2421649484402084936}
   m_Father: {fileID: 5592273148461926154}
   m_RootOrder: 0
@@ -1259,7 +1272,7 @@ RectTransform:
   - {fileID: 2421649483980922291}
   - {fileID: 2421649483885735269}
   m_Father: {fileID: 2421649484626068952}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2225,6 +2238,7 @@ GameObject:
   - component: {fileID: 1041405757589179236}
   - component: {fileID: 4669580098416844957}
   - component: {fileID: 8662031096606797418}
+  - component: {fileID: 3569419930963423485}
   m_Layer: 5
   m_Name: ImagenArte
   m_TagString: Untagged
@@ -2245,7 +2259,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2421649484626068952}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2290,6 +2304,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3569419930963423485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7610588272352570850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c07f3df2bb2c4ddf9079fa745edf602, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ventanaFlavour: {fileID: 2421649484402084943}
+  tiempoEspera: 3
 --- !u!1 &8435707458654053189
 GameObject:
   m_ObjectHideFlags: 0
