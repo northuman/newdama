@@ -1,4 +1,4 @@
-public class DanaDosVeces : IAtributo
+public class DaniaDosVeces : IAtributo
 {
 	public void aplicarAtributo(CartasJugadas carta)
 	{

@@ -29,19 +29,14 @@ public class CuandoEntra : ITrigger
         habilidad = new VidaHabilidad(vida, sumar);
     }
 
-    //me quedan:
+    //queda:
     //- otorgar prisa a otra carta
     //- destruir carta
     //- revelar mano oponente
     //- elegir accion
     //- sacrificar
-    //-descartar mano
-
-
-
-
-
-
+    //- descartar mano
+    // todo esto esta explicado en el README
 
 
     public void ActivarTrigger(CartasJugadas estaCarta, CartasJugadas oponente = null)

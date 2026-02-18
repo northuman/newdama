@@ -1,7 +1,7 @@
 public class AdivinarHabilidad : IHabilidad
 {
     private int cantidad;
-    public AdivinarHabilidad(int cantidad) //en realidad solo se le muestra la carta al jugador
+    public AdivinarHabilidad(int cantidad) //se le muestra la carta al jugador
     {
         this.cantidad = cantidad;
     }

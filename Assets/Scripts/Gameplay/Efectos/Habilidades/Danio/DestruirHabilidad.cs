@@ -9,6 +9,6 @@ public class DestruirHabilidad : IHabilidad
 
     public void ActivarHabilidad(CartasJugadas carta, CartasJugadas oponente) //hace daño a oponente o al jugador
     {
-        
+        // Esta hecho el metodo de destruir la carta pero esto se debe hacer en el bucle de juego dependiendo de la seleccion fisica del jugador
     }
 }

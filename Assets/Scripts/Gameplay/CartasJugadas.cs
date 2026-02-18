@@ -27,6 +27,7 @@ public class CartasJugadas : MonoBehaviour
     public bool arrolla; //si tiene arrolla, el exceso de daño que haga al atacar se lo hace al jugador
     public bool vinculoVital; //si tiene vínculo vital, recupera vida igual al daño que haga
     public bool noSerBloqueada; //si tiene no ser bloqueada, no puede ser bloqueada
+    public bool amenaza; //si tiene amenaza, el oponente debe bloquearla con 2 o mas criaturas
     public List<Carta> encantamientos;
     public int perteneceAJugador;
     public GameObject j1;

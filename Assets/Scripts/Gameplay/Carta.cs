@@ -27,7 +27,7 @@ public class Carta
     public string descripcion; //
     public string flavour;   // 
 
-    // lista de cosas
+    // lista de efectos
     public List<IAtributo> atributos;
     public List<IHabilidad> habilidades;
     public List<ITrigger> triggers;
@@ -54,8 +54,10 @@ public class Carta
         resistencia = Resistencia;
         descripcion = Descripcion;
         flavour = Flavour;
+        //efectos
         atributos = new List<IAtributo>();
-        atributos.Add(new Prisa());
+        atributos.Add(new Prisa()); //ejemplo de atributo, se le da a todas las cartas para probar que funciona el sistema de atributos
+        habilidades = new List<IHabilidad>();
         triggers = new List<ITrigger>();
 
         //spriteImagen=SpriteIm;
