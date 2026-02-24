@@ -29,5 +29,6 @@ MonoBehaviour:
   resistencia: 1
   cantidadMana: 
   cantidadMana2: 
+  ilustracion: {fileID: 21300000, guid: 5728bc57e978e42088b0abdb4ba7c8d6, type: 3}
   efectos:
   - {fileID: 11400000, guid: 543cac3e83a70b4459996b5858ecbc81, type: 2}

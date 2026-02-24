@@ -17,11 +17,13 @@ MonoBehaviour:
   palabrasClave: 
   descripcion: Equipar 1. Siempre que la criatura equipada ataque, hasta dos criaturas
     atacantes obtienen +1/+1 y arrollar.
+  flavour: 
   tipoCarta: Artefacto
   tiposConcretos: 
   fuerza: 0
   resistencia: 0
   cantidadMana: 
   cantidadMana2: 
+  ilustracion: {fileID: 21300000, guid: 74a03a73dca094801b0cf82510b2a971, type: 3}
   efectos:
   - {fileID: 11400000, guid: f6575aa1b24c4bf4084a2228f5967822, type: 2}
