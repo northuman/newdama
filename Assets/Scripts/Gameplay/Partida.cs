@@ -12,36 +12,30 @@ using static UtilCartas;
 public class Partida : MonoBehaviour
 {
     public enum OrdenJugadores { JUGADOR, OPONENTE };
+    public enum Fases { INICIO, PRINCIPAL_1, COMBATE, PRINCIPAL_2, FINAL };
     public Jugador jugador;
     public Jugador oponente;
     List<Jugador> jugadores;
-    bool turno = false; //0 Turno jugador; 1 Turno oponente
+    bool turno = false; //false = turno jugador; true = turno oponente
+    public Jugador jugadorActivo => turno ? oponente : jugador;
     int ganador = 0;
+    public Fases faseActual; //veo en que momento de partida estamos.
+
+
+    void Start()
+    {
+        AccionesPrevias();
+        //iniciar turno
+        IniciarTurno();
+    }
+
 
     public void GenerarPrioridadJugador()
     {
         turno = Convert.ToBoolean(NumAleatorio(0, 1));
         turno = false; // fuerza el turno del jugador para probar
 
-        jugadores = new List<Jugador>();
-
-        //Primero jugador
-        if (!turno)
-        {
-            jugadores.Add(jugador);
-            jugadores.Add(oponente);
-            //Primero oponente
-        }
-        else
-        {
-            jugadores.Add(oponente);
-            jugadores.Add(jugador);
-        }
-    }
-
-    void Start()
-    {
-        AccionesPrevias();
+        jugadores = new List<Jugador> { jugador, oponente };
     }
 
     public void AccionesPrevias()
@@ -65,54 +59,81 @@ public class Partida : MonoBehaviour
         {
             var cartaPrueba = jugadores[1].mano[0];
             oponente.mano.RemoveAt(0);
-            oponente.GetComponent<CartasJugadas>();
             Debug.Log("Carta de prueba añadida al campo del oponente: " + cartaPrueba.nombreCarta);
         }
     }
 
-    public void BuclePartida() //SE DEBE DE TENER EN CUENTA EL ATRIBUTO DESTELLO (que puede usarse en cualquier momento/ cualquier fase)
+    //SISTEMA DE TURNOS Y FASES (MAQUINA DE ESTADOS)
+
+    public void IniciarTurno()
     {
-        while (ganador == 0/*jugador.vida >= 0 && oponente.vida >= 0 && jugador.biblioteca.Count >= 0 && oponente.biblioteca.Count >= 0*/)
-        {
-            //Fase inicio
-            FaseInicio();
-            if (ganador == 0)
-            {
-                //Fase principal 1
-
-                //Fase combate
-
-                //Fase principal 2
-
-                //Fase final
-            }
-        }
-        ;
+        Debug.Log("--- Comienza el turno de: " + (turno ? "Oponente" : "jugador") + " ---");
+        faseActual = Fases.INICIO;
+        FaseInicio();
     }
 
+    public void AvanzarFase()
+    {
+        if (ganador != 0) return; //si el juego acabó no se hace nada
+
+        switch (faseActual)
+        {
+            case Fases.INICIO:
+                faseActual = Fases.PRINCIPAL_1;
+                FasePrincipal(1);
+                break;
+
+            case Fases.PRINCIPAL_1:
+                faseActual = Fases.COMBATE;
+                FaseCombate();
+                break;
+
+            case Fases.COMBATE:
+                faseActual = Fases.PRINCIPAL_2;
+                FasePrincipal(2);
+                break;
+
+            case Fases.PRINCIPAL_2:
+                Debug.Log(">>> Intentando entrar a fase final...");
+                faseActual = Fases.FINAL;
+                FaseFinal();
+                break;
+
+            case Fases.FINAL:
+                faseActual = Fases.FINAL;
+                IniciarTurno();
+                break;
+        }
+    }
+
+    // LOGICA DE CADA FASE
     public void FaseInicio()
     {
-        //Enderezar cartas giradas
-        //jugadores[0].enderezoInicial();
+        Debug.Log("1. Fase de inicio (enderezco, mantenimiento, robo");
+        //1. Enderezar cartas giradas
+        //jugadorActivo.EnderezarCartas();
 
-        //Mantenimiento (efectos etc)
+        //2. Mantenimiento (Upkeep)
 
-
-        bool falloRobar;
-        //Robar 1, si no puede pierde
-        falloRobar = jugadores[0].RobarCarta(1);
-        if (falloRobar)
+        //3. Robar (Draw)
+        bool falloRobar = jugadorActivo.RobarCarta(1);
+        
+        if (!falloRobar)
         {
-            if (!turno) ganador = 2;
-            else ganador = 1;
+            ganador = turno ? 1 : 2; //si no se puede robar, pierte.
+            Debug.Log("Jugador " + ganador + " ha ganado por deckeo");
         }
+
+        // Cuando acabe la animación de robar, el jugador debería poder darle al botón 
+        // de "Avanzar Fase" para pasar a la Fase Principal 1.
     }
 
-    public void FasePrincipal()
+    public void FasePrincipal(int numeroFase)
     {
-        //Jugar carta
+        Debug.Log($"{numeroFase} Fase principal {numeroFase} (jugar tierras, criaturas, conjuros)");
+        // Aquí el juego se detiene y espera a que el jugador arrastre cartas a la mesa.
+        // Solo avanzará cuando pulse el botón de "AvanzarFase()".
 
-        
     }
 
     public void FaseCombate()
@@ -133,24 +154,45 @@ public class Partida : MonoBehaviour
 
         //Resolver efectos fin de combate e instantaneos
 
+        Debug.Log("3. FASE DE COMBATE (Declarar Atacantes, Bloqueadoras, Daño)");
+        // El combate es un mini-bucle complejo, pero la base está aquí.
+
     }
 
-    public void PasoLimpieza()
-    {
-        //Reducir mano a 7 si lo supera
-        //Eliminar desde el final de la mano
-    }
 
     public void FaseFinal()
     {
-        //Resolver efectos comienzo paso final
+        Debug.Log("4. FASE FINAL (Paso final y limpieza)");
+        Jugador jugadorActivo = turno ? oponente : jugador;
 
-        //Paso limpieza
-        PasoLimpieza();
+        // Paso Limpieza: Si hay más de 7 cartas, obligar a descartar
+        if (jugadorActivo.mano.Count > 7)
+        {
+            Debug.Log("El jugador tiene demasiadas cartas. Debe descartar.");
+            // Aquí activaríamos un estado en la UI para obligarle a descartar antes de cambiar de turno
+        }
 
-        //Cambiar turno
-        turno = !turno;
-        jugadores.Intercambio(0, 1);
+        // El turno termina automáticamente y llamará a AvanzarFase() para reiniciar el bucle
+        AvanzarFase();
+    }
+
+    public void BuclePartida() //SE DEBE DE TENER EN CUENTA EL ATRIBUTO DESTELLO (que puede usarse en cualquier momento/ cualquier fase)
+    {
+        while (ganador == 0/*jugador.vida >= 0 && oponente.vida >= 0 && jugador.biblioteca.Count >= 0 && oponente.biblioteca.Count >= 0*/)
+        {
+            //Fase inicio
+            FaseInicio();
+            if (ganador == 0)
+            {
+                //Fase principal 1
+
+                //Fase combate
+
+                //Fase principal 2
+
+                //Fase final
+            }
+        };
     }
 
 }
