@@ -15,6 +15,7 @@ public class Partida : MonoBehaviour
     public enum Fases { INICIO, PRINCIPAL_1, COMBATE, PRINCIPAL_2, FINAL };
     public Jugador jugador;
     public Jugador oponente;
+    public bool tierrasJugadasEsteTurno = false;
     List<Jugador> jugadores;
     bool turno = false; //false = turno jugador; true = turno oponente
     public Jugador jugadorActivo => turno ? oponente : jugador;
@@ -109,7 +110,10 @@ public class Partida : MonoBehaviour
     // LOGICA DE CADA FASE
     public void FaseInicio()
     {
-        Debug.Log("1. Fase de inicio (enderezco, mantenimiento, robo");
+        Debug.Log("Fase de inicio (enderezco, mantenimiento, robo");
+
+        tierrasJugadasEsteTurno = false; //reiniciamos el contador de tierras jugadas al inicio del turno.
+
         //1. Enderezar cartas giradas
         //jugadorActivo.EnderezarCartas();
 
@@ -154,7 +158,7 @@ public class Partida : MonoBehaviour
 
         //Resolver efectos fin de combate e instantaneos
 
-        Debug.Log("3. FASE DE COMBATE (Declarar Atacantes, Bloqueadoras, Daño)");
+        Debug.Log(" FASE DE COMBATE (Declarar Atacantes, Bloqueadoras, Daño)");
         // El combate es un mini-bucle complejo, pero la base está aquí.
 
     }
@@ -162,7 +166,7 @@ public class Partida : MonoBehaviour
 
     public void FaseFinal()
     {
-        Debug.Log("4. FASE FINAL (Paso final y limpieza)");
+        Debug.Log(" FASE FINAL (Paso final y limpieza)");
         Jugador jugadorActivo = turno ? oponente : jugador;
 
         // Paso Limpieza: Si hay más de 7 cartas, obligar a descartar
