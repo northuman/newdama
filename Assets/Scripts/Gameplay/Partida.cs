@@ -22,6 +22,10 @@ public class Partida : MonoBehaviour
     int ganador = 0;
     public Fases faseActual; //veo en que momento de partida estamos.
 
+    // Zonas de juego del oponente para que la IA sepa dónde poner sus cartas
+    public Transform zonaTierrasOponente;
+    public Transform zonaBatallaOponente;
+
 
     void Start()
     {
@@ -71,6 +75,11 @@ public class Partida : MonoBehaviour
         Debug.Log("--- Comienza el turno de: " + (turno ? "Oponente" : "jugador") + " ---");
         faseActual = Fases.INICIO;
         FaseInicio();
+
+        if (turno)
+        {
+            StartCoroutine(CerebroIA()); // Inicia el turno de la IA
+        }
     }
 
     public void AvanzarFase()
@@ -101,7 +110,9 @@ public class Partida : MonoBehaviour
                 break;
 
             case Fases.FINAL:
-                faseActual = Fases.FINAL;
+            Debug.Log(">>> Termina el turno. Cambiando jugador activo...");
+                turno = !turno; //cambia el jugador activo
+                //faseActual = Fases.FINAL;
                 IniciarTurno();
                 break;
         }
@@ -180,23 +191,89 @@ public class Partida : MonoBehaviour
         AvanzarFase();
     }
 
-    public void BuclePartida() //SE DEBE DE TENER EN CUENTA EL ATRIBUTO DESTELLO (que puede usarse en cualquier momento/ cualquier fase)
+
+    private IEnumerator CerebroIA()
     {
-        while (ganador == 0/*jugador.vida >= 0 && oponente.vida >= 0 && jugador.biblioteca.Count >= 0 && oponente.biblioteca.Count >= 0*/)
+        Debug.Log("IA: Pensando mi turno...");
+        yield return new WaitForSeconds(1.5f); 
+        
+        // Pasa a Principal 1
+        AvanzarFase(); 
+        
+        // 1. LA IA INTENTA JUGAR UNA TIERRA
+        JugarTierraIA();
+        yield return new WaitForSeconds(1.0f);
+
+        // 2. LA IA INTENTA INVOCAR CRIATURAS
+        JugarCriaturasIA();
+        yield return new WaitForSeconds(1.5f);
+
+        // Pasa a Combate
+        AvanzarFase();
+        Debug.Log("IA: No ataco esta vez (aún no sé cómo).");
+        yield return new WaitForSeconds(1.5f);
+
+        // Pasa a Principal 2
+        AvanzarFase();
+        yield return new WaitForSeconds(1.0f);
+
+        // Termina su turno
+        Debug.Log("IA: Termino mi turno, te toca.");
+        AvanzarFase(); 
+    }
+
+    // --- MANOS VIRTUALES DE LA IA ---
+
+    private void JugarTierraIA()
+    {
+        if (oponente.Mano == null) return;
+
+        // Buscamos entre los GameObjects físicos que cuelgan de la mano del oponente
+        foreach (Transform cartaTransform in oponente.Mano.transform)
         {
-            //Fase inicio
-            FaseInicio();
-            if (ganador == 0)
+            MostrarCarta mc = cartaTransform.GetComponent<MostrarCarta>();
+            if (mc != null && mc.tipo == "Tierra" && !tierrasJugadasEsteTurno)
             {
-                //Fase principal 1
-
-                //Fase combate
-
-                //Fase principal 2
-
-                //Fase final
+                // Mueve la carta a la mesa
+                cartaTransform.SetParent(zonaTierrasOponente);
+                
+                // La inicializa (como hace el DropZone)
+                CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
+                if (cj != null) cj.Inicializar(mc.GetCarta());
+                
+                tierrasJugadasEsteTurno = true;
+                Debug.Log("IA: ¡He jugado una Tierra!");
+                break; // Solo bajamos una tierra por turno
             }
-        };
+        }
+    }
+
+    private void JugarCriaturasIA()
+    {
+        if (oponente.Mano == null) return;
+
+        // Hacemos un bucle inverso porque al cambiar el "Parent" de la carta, la lista de hijos se acorta
+        for (int i = oponente.Mano.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform cartaTransform = oponente.Mano.transform.GetChild(i);
+            MostrarCarta mc = cartaTransform.GetComponent<MostrarCarta>();
+            
+            if (mc != null && mc.tipo == "Criatura")
+            {
+                // Comprobamos si la IA tiene maná suficiente
+                if (oponente.ComprobarMana(cartaTransform.gameObject))
+                {
+                    // Restamos el maná y la movemos a la batalla
+                    oponente.RestarMana(cartaTransform.gameObject);
+                    cartaTransform.SetParent(zonaBatallaOponente);
+                    
+                    CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
+                    if (cj != null) cj.Inicializar(mc.GetCarta());
+                    
+                    Debug.Log("IA: ¡He invocado a " + mc.GetCarta().nombreCarta + "!");
+                }
+            }
+        }
     }
 
 }
