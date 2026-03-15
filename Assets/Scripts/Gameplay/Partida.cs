@@ -126,7 +126,7 @@ public class Partida : MonoBehaviour
         tierrasJugadasEsteTurno = false; //reiniciamos el contador de tierras jugadas al inicio del turno.
 
         //1. Enderezar cartas giradas
-        //jugadorActivo.EnderezarCartas();
+        EnderezarCartasMesa();
 
         //2. Mantenimiento (Upkeep)
 
@@ -141,6 +141,22 @@ public class Partida : MonoBehaviour
 
         // Cuando acabe la animación de robar, el jugador debería poder darle al botón 
         // de "Avanzar Fase" para pasar a la Fase Principal 1.
+    }
+
+    private void EnderezarCartasMesa()
+    {
+        // El radar: busca todas las cartas que hay en la escena
+        CartasJugadas[] todasLasCartas = FindObjectsOfType<CartasJugadas>();
+
+        foreach (CartasJugadas carta in todasLasCartas)
+        {
+            // Si la carta es del jugador activo Y está girada...
+            if (carta.perteneceAJugador == jugadorActivo.id && carta.girada == true)
+            {
+                carta.RotarCarta(); // Esto la devuelve a su posición vertical
+            }
+        }
+        Debug.Log("Mesa enderezada para el jugador: " + jugadorActivo.id);
     }
 
     public void FasePrincipal(int numeroFase)
@@ -204,7 +220,11 @@ public class Partida : MonoBehaviour
         JugarTierraIA();
         yield return new WaitForSeconds(1.0f);
 
-        // 2. LA IA INTENTA INVOCAR CRIATURAS
+        // 2. La IA extrae el maná de las tierras que ya tiene en mesa (si es que tiene)
+        ExtraerManaIA();
+        yield return new WaitForSeconds(1.0f);
+
+        // 3. LA IA INTENTA INVOCAR CRIATURAS
         JugarCriaturasIA();
         yield return new WaitForSeconds(1.5f);
 
@@ -235,8 +255,15 @@ public class Partida : MonoBehaviour
             if (mc != null && mc.tipo == "Tierra" && !tierrasJugadasEsteTurno)
             {
                 // Mueve la carta a la mesa
-                cartaTransform.SetParent(zonaTierrasOponente);
-                
+                //cartaTransform.SetParent(zonaTierrasOponente);
+                //Me aseguro de que la carta mire hacia arriba
+                //cartaTransform.localRotation = Quaternion.Euler(0, 0, 0);
+
+                Transform reverso = cartaTransform.Find("Reverso");
+                if(reverso != null)
+                {
+                    reverso.gameObject.SetActive(false); // Desactiva el reverso para mostrar la cara de la carta
+                }
                 // La inicializa (como hace el DropZone)
                 CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
                 if (cj != null) cj.Inicializar(mc.GetCarta());
@@ -248,30 +275,79 @@ public class Partida : MonoBehaviour
         }
     }
 
-    private void JugarCriaturasIA()
+private void JugarCriaturasIA()
     {
-        if (oponente.Mano == null) return;
+        if (oponente.Mano == null) 
+        {
+            Debug.LogWarning("IA: Oye, no tengo enlazado el objeto 'Mano' en el inspector.");
+            return;
+        }
 
-        // Hacemos un bucle inverso porque al cambiar el "Parent" de la carta, la lista de hijos se acorta
+        Debug.Log($"IA: Revisando mi mano... Tengo {oponente.Mano.transform.childCount} cartas físicas.");
+
+        // Hacemos un bucle inverso
         for (int i = oponente.Mano.transform.childCount - 1; i >= 0; i--)
         {
             Transform cartaTransform = oponente.Mano.transform.GetChild(i);
             MostrarCarta mc = cartaTransform.GetComponent<MostrarCarta>();
             
-            if (mc != null && mc.tipo == "Criatura")
+            if (mc != null && mc.GetCarta() != null)
             {
-                // Comprobamos si la IA tiene maná suficiente
-                if (oponente.ComprobarMana(cartaTransform.gameObject))
+                Carta datosCarta = mc.GetCarta();
+                Debug.Log($"IA: Mirando la carta '{datosCarta.nombreCarta}' (Tipo: {mc.tipo})");
+
+                if (mc.tipo == "Criatura")
                 {
-                    // Restamos el maná y la movemos a la batalla
-                    oponente.RestarMana(cartaTransform.gameObject);
-                    cartaTransform.SetParent(zonaBatallaOponente);
+                    Debug.Log($"IA: ¡Es una criatura! Quiero invocar a {datosCarta.nombreCarta}. Voy a ver si tengo maná...");
                     
-                    CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
-                    if (cj != null) cj.Inicializar(mc.GetCarta());
-                    
-                    Debug.Log("IA: ¡He invocado a " + mc.GetCarta().nombreCarta + "!");
+                    // Comprobamos si la IA tiene maná suficiente
+                    if (oponente.ComprobarMana(cartaTransform.gameObject))
+                    {
+                        // Si tiene maná, la invocamos a la zona de batalla
+                        oponente.RestarMana(cartaTransform.gameObject);
+                        // La movemos a la zona de batalla
+                        //cartaTransform.SetParent(zonaBatallaOponente);
+                        // Me aseguro de que la carta mire hacia arriba
+                        //cartaTransform.localRotation = Quaternion.Euler(0, 0, 0);
+
+                        Transform reverso = cartaTransform.Find("Reverso");
+                        if(reverso != null)
+                        {
+                            reverso.gameObject.SetActive(false); // Desactiva el reverso para mostrar la cara de la carta
+                        }
+                        
+                        CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
+                        if (cj != null) cj.Inicializar(datosCarta);
+                        
+                        Debug.Log($"IA: ¡ÉXITO! He invocado a {datosCarta.nombreCarta} en la zona de batalla.");
+                    }
+                    else
+                    {
+                        // ESTA ES LA CLAVE: Nos dirá cuánto maná tiene exactamente y por qué falla
+                        string manaActual = $"[{oponente.mana[0]}, {oponente.mana[1]}, {oponente.mana[2]}, {oponente.mana[3]}]";
+                        Debug.Log($"IA: FRACASO. No tengo maná para {datosCarta.nombreCarta}. Mi maná actual es: {manaActual}");
+                    }
                 }
+            }
+        }
+    }
+    private void ExtraerManaIA()
+    {
+        // Reviso todas las cartas que ya están en la mesa del oponente
+        foreach (Transform cartaTransform in zonaTierrasOponente)
+        {
+            CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
+            
+            // Si es una tierra y NO está girada todavía, la giramos
+            if (cj != null && cj.girada == false)
+            {
+                // La giramos visualmente
+                cj.RotarCarta(); 
+                
+                // Le metemos el maná en el "bolsillo" al oponente
+                oponente.SumarMana(cartaTransform.gameObject);
+                
+                Debug.Log("IA: He girado una tierra para obtener maná.");
             }
         }
     }
