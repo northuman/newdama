@@ -255,7 +255,10 @@ public class Partida : MonoBehaviour
             if (mc != null && mc.tipo == "Tierra" && !tierrasJugadasEsteTurno)
             {
                 // Mueve la carta a la mesa
-                //cartaTransform.SetParent(zonaTierrasOponente);
+                cartaTransform.SetParent(zonaTierrasOponente);
+                cartaTransform.localPosition = Vector3.zero; // Asegura que la carta se posicione correctamente en la zona
+                cartaTransform.localRotation = Quaternion.Euler(0, 0, 0); // Asegura que la carta mire hacia arriba
+                
                 //Me aseguro de que la carta mire hacia arriba
                 //cartaTransform.localRotation = Quaternion.Euler(0, 0, 0);
 
@@ -306,9 +309,10 @@ private void JugarCriaturasIA()
                         // Si tiene maná, la invocamos a la zona de batalla
                         oponente.RestarMana(cartaTransform.gameObject);
                         // La movemos a la zona de batalla
-                        //cartaTransform.SetParent(zonaBatallaOponente);
+                        cartaTransform.SetParent(zonaBatallaOponente);
+                        cartaTransform.localPosition = Vector3.zero; // Asegura que la carta se posicione correctamente en la zona
                         // Me aseguro de que la carta mire hacia arriba
-                        //cartaTransform.localRotation = Quaternion.Euler(0, 0, 0);
+                        cartaTransform.localRotation = Quaternion.Euler(0, 0, 0);
 
                         Transform reverso = cartaTransform.Find("Reverso");
                         if(reverso != null)
