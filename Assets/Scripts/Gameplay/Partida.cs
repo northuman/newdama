@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UtilCartas;
+using UnityEngine.UI;
+using TMPro;
 
 /*
 * Controla el flujo de la partida, aquí va el sistema de turnos.
@@ -28,6 +30,9 @@ public class Partida : MonoBehaviour
     //para la fase final y descartar cartas (maximo 7 en mano)
     public bool esperandoDescarte = false;
     public int cartasParaDescartar = 0;
+    public List <GameObject> criaturasAtacantes = new List<GameObject>();
+    public TextMeshProUGUI textoVidaOponente;
+    public TextMeshProUGUI textoVidaJugador;
 
 
     void Start()
@@ -108,6 +113,10 @@ public class Partida : MonoBehaviour
                 break;
 
             case Fases.COMBATE:
+                if(turno == false)
+                {
+                    ResolverCombate(); // Resolvemos el combate antes de pasar a la siguiente fase
+                }
                 faseActual = Fases.PRINCIPAL_2;
                 FasePrincipal(2);
                 break;
@@ -178,6 +187,21 @@ public class Partida : MonoBehaviour
 
     public void FaseCombate()
     {
+        Debug.Log("--- Fase de combate ---");
+
+        //vacio la lista por si había atacantes del turno anterior
+        criaturasAtacantes.Clear();
+
+        if (turno == false)
+        {
+            Debug.Log("Es el turno del jugador. Esperando a que declare atacantes...");
+            // Aquí el juego se detiene y espera a que el jugador arrastre sus criaturas a la zona de ataque.
+        }
+        else
+        {
+            Debug.Log("Es el turno de la IA. Por ahora no ataca (aún no sé cómo).");
+            AvanzarFase();
+        }
         //Activar habilidades principio combate
 
         //Declaracion atacantes jugador0->jugador1
@@ -197,6 +221,52 @@ public class Partida : MonoBehaviour
         Debug.Log(" FASE DE COMBATE (Declarar Atacantes, Bloqueadoras, Daño)");
         // El combate es un mini-bucle complejo, pero la base está aquí.
 
+    }
+
+    private void ResolverCombate()
+    {
+        // Si nadie ha atacado, no hacemos nada
+        if (criaturasAtacantes.Count == 0) 
+        {
+            Debug.Log("Combate resuelto: No hubo atacantes.");
+            return;
+        }
+
+        int danoTotal = 0;
+
+        // Sumamos el daño de cada criatura en la lista
+        foreach (GameObject atacante in criaturasAtacantes)
+        {
+            if (atacante != null)
+            {
+                Carta datosCarta = atacante.GetComponent<MostrarCarta>().GetCarta();
+                
+                // OJO: Aquí asumo que la variable de ataque en tu clase Carta se llama "ataque". 
+                // Si se llama "fuerza" o "daño", cámbialo en la línea de abajo:
+                danoTotal += datosCarta.fuerza; 
+                
+                Debug.Log($"- {datosCarta.nombreCarta} ataca con {datosCarta.fuerza} de poder.");
+            }
+        }
+
+        Debug.Log($"¡BOOM! El oponente recibe un total de {danoTotal} puntos de daño.");
+        
+        // Restamos la vida al rival
+        oponente.vida -= danoTotal; 
+        
+        Debug.Log($"Al oponente le quedan {oponente.vida} puntos de vida.");
+
+        if(textoVidaOponente != null)
+        {
+            textoVidaOponente.text = oponente.vida.ToString();
+        }
+        else
+        {
+            Debug.LogWarning("Texto de vida del oponente no asignado en el inspector.");
+        }
+
+        // Vaciamos la lista de atacantes para el próximo turno
+        criaturasAtacantes.Clear();
     }
 
 

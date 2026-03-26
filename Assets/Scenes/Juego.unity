@@ -3247,6 +3247,11 @@ MonoBehaviour:
   faseActual: 0
   zonaTierrasOponente: {fileID: 1259472679}
   zonaBatallaOponente: {fileID: 288865800}
+  esperandoDescarte: 0
+  cartasParaDescartar: 0
+  criaturasAtacantes: []
+  textoVidaOponente: {fileID: 2043166024}
+  textoVidaJugador: {fileID: 870922718}
 --- !u!4 &976437035
 Transform:
   m_ObjectHideFlags: 0

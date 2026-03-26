@@ -86,37 +86,76 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
         }
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+public void OnPointerClick(PointerEventData eventData)
     {
         if(eventData.button == 0) // Clic izquierdo
         {
             Partida gestor = FindObjectOfType<Partida>();
+            if(gestor == null) return;
 
-            // 1. ¿El juego nos está pidiendo que descartemos y es nuestro turno?
-            if (gestor != null && gestor.esperandoDescarte == true && gestor.faseActual == Partida.Fases.FINAL)
+            // Obtenemos los componentes de la carta para usarlos en ambas lógicas
+            CartasJugadas cj = GetComponent<CartasJugadas>();
+            MostrarCarta mc = GetComponent<MostrarCarta>();
+
+            if (cj == null || mc == null) return;
+
+            // --------------------------------------------------------
+            // 1. LÓGICA DE DESCARTE (Si estamos en la Fase Final)
+            // --------------------------------------------------------
+            if (gestor.esperandoDescarte == true && gestor.faseActual == Partida.Fases.FINAL)
             {
-                int perteneceA = GetComponent<CartasJugadas>().perteneceAJugador;
+                int perteneceA = cj.perteneceAJugador;
                 
-                // 2. Comprobamos que la carta sea nuestra (no podemos borrarle cartas al rival)
+                // Comprobamos que la carta sea nuestra
                 if (perteneceA == 1) 
                 {
-                    // 3. Borramos la carta de la memoria (la lista lógica)
-                    var datosCarta = GetComponent<MostrarCarta>().GetCarta();
+                    // Borramos la carta de la memoria (la lista lógica)
+                    var datosCarta = mc.GetCarta();
                     gestor.jugador.mano.Remove(datosCarta);
 
-                    // 4. Destruimos la carta visual de la pantalla
+                    // Destruimos la carta visual de la pantalla
                     Destroy(gameObject);
 
-                    // 5. Restamos al contador
+                    // Restamos al contador
                     gestor.cartasParaDescartar--;
                     Debug.Log("Has descartado una carta. Te faltan por tirar: " + gestor.cartasParaDescartar);
 
-                    // 6. Si ya hemos cumplido el cupo... ¡Pasamos turno automáticamente!
+                    // Si ya hemos cumplido el cupo... ¡Pasamos turno automáticamente!
                     if (gestor.cartasParaDescartar <= 0)
                     {
                         gestor.esperandoDescarte = false;
                         Debug.Log("Descarte completado. Pasando el turno al rival...");
                         gestor.AvanzarFase();
+                    }
+                }
+                
+                // IMPORTANTE: Salimos de la función aquí. Si la carta se destruyó,
+                // no queremos que intente ejecutar la lógica de ataque de abajo.
+                return; 
+            }
+
+            // --------------------------------------------------------
+            // 2. LÓGICA DE ATAQUE (Si estamos en la Fase de Combate)
+            // --------------------------------------------------------
+            if (gestor.faseActual == Partida.Fases.COMBATE)
+            {
+                // Solo podemos atacar con nuestras propias cartas y si son criaturas
+                if (cj.perteneceAJugador == 1 && mc.tipo == "Criatura")
+                {
+                    // Regla de Magic: Una carta girada no puede atacar
+                    if (cj.girada == true)
+                    {
+                        Debug.LogWarning("Esta criatura ya está girada (exhausta). No puede atacar.");
+                    }
+                    else
+                    {
+                        // La giramos visualmente para indicar que está atacando
+                        cj.RotarCarta();
+                        
+                        // La metemos en la lista de la guerra de Partida.cs
+                        gestor.criaturasAtacantes.Add(this.gameObject);
+                        
+                        Debug.Log($"¡{mc.GetCarta().nombreCarta} ha sido declarada como atacante!");
                     }
                 }
             }
