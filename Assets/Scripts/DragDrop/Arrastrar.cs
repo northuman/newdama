@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 *             Se vuelven a activar los raycast.
 */
 
-public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDragHandler
+public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     public Transform parentToReturnTo = null;
     private Vector3 escalaOriginal;
@@ -83,6 +83,43 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
             t += Time.deltaTime / velocidadZoom;
             transform.localScale = Vector3.Lerp(inicio, escala, t);
             yield return null;
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if(eventData.button == 0) // Clic izquierdo
+        {
+            Partida gestor = FindObjectOfType<Partida>();
+
+            // 1. ¿El juego nos está pidiendo que descartemos y es nuestro turno?
+            if (gestor != null && gestor.esperandoDescarte == true && gestor.faseActual == Partida.Fases.FINAL)
+            {
+                int perteneceA = GetComponent<CartasJugadas>().perteneceAJugador;
+                
+                // 2. Comprobamos que la carta sea nuestra (no podemos borrarle cartas al rival)
+                if (perteneceA == 1) 
+                {
+                    // 3. Borramos la carta de la memoria (la lista lógica)
+                    var datosCarta = GetComponent<MostrarCarta>().GetCarta();
+                    gestor.jugador.mano.Remove(datosCarta);
+
+                    // 4. Destruimos la carta visual de la pantalla
+                    Destroy(gameObject);
+
+                    // 5. Restamos al contador
+                    gestor.cartasParaDescartar--;
+                    Debug.Log("Has descartado una carta. Te faltan por tirar: " + gestor.cartasParaDescartar);
+
+                    // 6. Si ya hemos cumplido el cupo... ¡Pasamos turno automáticamente!
+                    if (gestor.cartasParaDescartar <= 0)
+                    {
+                        gestor.esperandoDescarte = false;
+                        Debug.Log("Descarte completado. Pasando el turno al rival...");
+                        gestor.AvanzarFase();
+                    }
+                }
+            }
         }
     }
 }

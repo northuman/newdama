@@ -49,6 +49,8 @@ public class DropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
                 {
                     var datos = cartaSeleccionada.GetComponent<MostrarCarta>().GetCarta();
                     cj.Inicializar(datos);
+
+                    gestorPartida.jugadorActivo.mano.Remove(datos); // Elimina la carta de la mano lógica del jugador activo
                 }
 
                 Debug.Log($"carta {tipo} jugada en {tipoZona}");

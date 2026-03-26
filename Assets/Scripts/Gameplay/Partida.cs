@@ -25,6 +25,9 @@ public class Partida : MonoBehaviour
     // Zonas de juego del oponente para que la IA sepa dónde poner sus cartas
     public Transform zonaTierrasOponente;
     public Transform zonaBatallaOponente;
+    //para la fase final y descartar cartas (maximo 7 en mano)
+    public bool esperandoDescarte = false;
+    public int cartasParaDescartar = 0;
 
 
     void Start()
@@ -85,6 +88,12 @@ public class Partida : MonoBehaviour
     public void AvanzarFase()
     {
         if (ganador != 0) return; //si el juego acabó no se hace nada
+
+        if(esperandoDescarte == true)
+        {
+            Debug.Log("¡Espera! Aún tienes que descartar cartas antes de avanzar de fase.");
+            return; // No avanzamos de fase hasta que el jugador descarte las cartas necesarias
+        }
 
         switch (faseActual)
         {
@@ -191,22 +200,73 @@ public class Partida : MonoBehaviour
     }
 
 
-    public void FaseFinal()
+public void FaseFinal()
     {
-        Debug.Log(" FASE FINAL (Paso final y limpieza)");
         Jugador jugadorActivo = turno ? oponente : jugador;
-
-        // Paso Limpieza: Si hay más de 7 cartas, obligar a descartar
-        if (jugadorActivo.mano.Count > 7)
+        Debug.Log(" FASE FINAL (Paso final y limpieza)");
+        
+        int excesoCartas = jugadorActivo.mano.Count - 7;
+        
+        if (excesoCartas > 0)
         {
-            Debug.Log("El jugador tiene demasiadas cartas. Debe descartar.");
-            // Aquí activaríamos un estado en la UI para obligarle a descartar antes de cambiar de turno
-        }
+            Debug.Log($"El jugador tiene {jugadorActivo.mano.Count} cartas en mano, debe descartar {excesoCartas} cartas.");
+            cartasParaDescartar = excesoCartas;
+            esperandoDescarte = true;
 
-        // El turno termina automáticamente y llamará a AvanzarFase() para reiniciar el bucle
-        AvanzarFase();
+            // SI es la IA, le digo que descarte sola. Si es el jugador, esperamos
+            if(turno == true)
+            {
+                StartCoroutine(DescarteAutomaticoIA());
+            }
+            else
+            {
+                Debug.Log("Esperando a que el jugador descarte cartas manualmente...");
+                // ¡AQUÍ NOS DETENEMOS! El código termina aquí y no llama a AvanzarFase()
+                // hasta que tú descartes las cartas con el ratón.
+            }
+        }
+        else
+        {
+            Debug.Log("No es necesario descartar cartas. Avanzando al siguiente turno...");
+            AvanzarFase();
+        }
     }
 
+private IEnumerator DescarteAutomaticoIA()
+    {
+        Debug.Log("IA: Vaya, tengo demasiadas cartas. Pensando cuáles tirar...");
+        yield return new WaitForSeconds(1.5f); 
+        
+        // Mientras la IA tenga que descartar y tenga datos en su lista...
+        while (cartasParaDescartar > 0 && oponente.mano.Count > 0)
+        {
+            // 1. Borramos el dato del "cerebro" del bot (la lista lógica)
+            int indiceUltimaCarta = oponente.mano.Count - 1;
+            oponente.mano.RemoveAt(indiceUltimaCarta);
+            
+            // 2. Borramos el dibujo de la pantalla (el GameObject)
+            // Aseguramos que el panel de la mano (con mayúscula) tenga hijos físicos
+            if (oponente.Mano.transform.childCount > 0) 
+            {
+                // Cogemos la última carta física que cuelga del panel
+                int ultimoHijo = oponente.Mano.transform.childCount - 1;
+                Transform cartaFisica = oponente.Mano.transform.GetChild(ultimoHijo);
+                
+                // ¡La destruimos!
+                Destroy(cartaFisica.gameObject); 
+            }
+            
+            cartasParaDescartar--;
+            Debug.Log($"IA: He descartado una carta. Me quedan por tirar: {cartasParaDescartar}");
+            
+            yield return new WaitForSeconds(0.5f); 
+        }
+
+        // Una vez terminamos de descartar, quitamos el seguro y pasamos el turno
+        esperandoDescarte = false;
+        Debug.Log("IA: He terminado de descartar. Cambio de turno.");
+        AvanzarFase(); 
+    }
 
     private IEnumerator CerebroIA()
     {
@@ -259,8 +319,7 @@ public class Partida : MonoBehaviour
                 cartaTransform.localPosition = Vector3.zero; // Asegura que la carta se posicione correctamente en la zona
                 cartaTransform.localRotation = Quaternion.Euler(0, 0, 0); // Asegura que la carta mire hacia arriba
                 
-                //Me aseguro de que la carta mire hacia arriba
-                //cartaTransform.localRotation = Quaternion.Euler(0, 0, 0);
+                oponente.mano.Remove(mc.GetCarta()); // Elimina la carta de la mano lógica del oponente
 
                 Transform reverso = cartaTransform.Find("Reverso");
                 if(reverso != null)
@@ -313,6 +372,8 @@ private void JugarCriaturasIA()
                         cartaTransform.localPosition = Vector3.zero; // Asegura que la carta se posicione correctamente en la zona
                         // Me aseguro de que la carta mire hacia arriba
                         cartaTransform.localRotation = Quaternion.Euler(0, 0, 0);
+
+                        oponente.mano.Remove(datosCarta); // La eliminamos de la mano lógica del oponente
 
                         Transform reverso = cartaTransform.Find("Reverso");
                         if(reverso != null)
