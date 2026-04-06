@@ -5,6 +5,7 @@ using UnityEngine;
 using static UtilCartas;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 /*
 * Controla el flujo de la partida, aquí va el sistema de turnos.
@@ -33,6 +34,9 @@ public class Partida : MonoBehaviour
     public List <GameObject> criaturasAtacantes = new List<GameObject>();
     public TextMeshProUGUI textoVidaOponente;
     public TextMeshProUGUI textoVidaJugador;
+    public GameObject panelVictoria;
+    public GameObject panelDerrota;
+    private bool juegoTerminado = false;
 
 
     void Start()
@@ -157,8 +161,7 @@ public class Partida : MonoBehaviour
             Debug.Log("Jugador " + ganador + " ha ganado por deckeo");
         }
 
-        // Cuando acabe la animación de robar, el jugador debería poder darle al botón 
-        // de "Avanzar Fase" para pasar a la Fase Principal 1.
+        VerificarEstadoPartida();
     }
 
     private void EnderezarCartasMesa()
@@ -253,6 +256,8 @@ public class Partida : MonoBehaviour
         
         // Restamos la vida al rival
         oponente.vida -= danoTotal; 
+
+        VerificarEstadoPartida();
         
         Debug.Log($"Al oponente le quedan {oponente.vida} puntos de vida.");
 
@@ -483,6 +488,74 @@ private void JugarCriaturasIA()
                 oponente.SumarMana(cartaTransform.gameObject);
                 
                 Debug.Log("IA: He girado una tierra para obtener maná.");
+            }
+        }
+    }
+
+    public void VerificarEstadoPartida()
+    {
+        if(juegoTerminado) return;
+        if(oponente.vida <= 0)
+        {
+            FinalizarJuego(true);
+        }
+        else if (jugador.vida <= 0)
+        {
+            FinalizarJuego(false);
+        }
+    }
+
+    public void FinalizarJuego(bool victoria)
+    {
+        juegoTerminado = true;
+        if(victoria){
+            panelVictoria.SetActive(true);
+            Debug.Log("¡Felicidades! Has ganado la partida.");
+        }
+        else
+        {
+            panelDerrota.SetActive(true);
+            Debug.Log("Lo siento, has perdido la partida.");
+        }
+    }
+
+    public void ReiniciarPartida()
+    {
+        Time.timeScale = 1f; //si no, el juego empezará congelado
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void Update()
+    {
+        // TRUCO: Quitarle 10 de vida al Oponente
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            if (oponente != null)
+            {
+                oponente.vida -= 19;
+                // Actualizamos el texto visual para ver el cambio
+                if (textoVidaOponente != null) 
+                    textoVidaOponente.text = oponente.vida.ToString();
+                
+                Debug.Log("DEBUG: Has usado la tecla K. Vida oponente: " + oponente.vida);
+                
+                // Comprobamos si ha muerto para que salga el panel de Victoria
+                VerificarEstadoPartida();
+            }
+        }
+
+        // TRUCO: Quitarte 10 de vida a TI (para probar la derrota)
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (jugador != null)
+            {
+                jugador.vida -= 10;
+                if (textoVidaJugador != null) 
+                    textoVidaJugador.text = jugador.vida.ToString();
+                
+                Debug.Log("DEBUG: Has usado la tecla L. Tu vida: " + jugador.vida);
+                
+                VerificarEstadoPartida();
             }
         }
     }
