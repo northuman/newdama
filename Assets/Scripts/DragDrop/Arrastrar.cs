@@ -159,6 +159,48 @@ public void OnPointerClick(PointerEventData eventData)
                     }
                 }
             }
+
+            // --------------------------------------------------------
+            // 3. LÓGICA DE BLOQUEO (Si estamos en Fase de Bloqueo y NOS ATACAN)
+            // --------------------------------------------------------
+            if (gestor.faseActual == Partida.Fases.BLOQUEO && gestor.turno == true)
+            {
+                // CASO A: Hacemos clic en NUESTRA propia criatura para que defienda
+                if (cj.perteneceAJugador == 1 && mc.tipo == "Criatura")
+                {
+                    if (cj.girada == true)
+                    {
+                        Debug.LogWarning("No puedes bloquear con una criatura girada (exhausta).");
+                    }
+                    else
+                    {
+                        // La guardamos en el Gestor
+                        gestor.bloqueadorSeleccionado = this.gameObject;
+                        Debug.Log($"Has seleccionado a {mc.GetCarta().nombreCarta} para defender. Ahora haz clic en el atacante enemigo.");
+                    }
+                }
+                
+                // CASO B: Hacemos clic en un ENEMIGO para lanzarle a nuestro defensor
+                else if (cj.perteneceAJugador == 2 && gestor.bloqueadorSeleccionado != null)
+                {
+                    // Comprobamos si este enemigo realmente nos está atacando
+                    if (gestor.criaturasAtacantes.Contains(this.gameObject))
+                    {
+                        // ¡Los emparejamos en el Diccionario!
+                        gestor.emparejamientos[this.gameObject] = gestor.bloqueadorSeleccionado;
+                        
+                        string nomDefensor = gestor.bloqueadorSeleccionado.GetComponent<MostrarCarta>().GetCarta().nombreCarta;
+                        Debug.Log($"¡ORDEN DADA! {nomDefensor} defenderá el ataque de {mc.GetCarta().nombreCarta}.");
+                        
+                        // Vaciamos el cursor para poder elegir otro bloqueador si queremos
+                        gestor.bloqueadorSeleccionado = null; 
+                    }
+                    else
+                    {
+                        Debug.Log("Esa criatura enemiga no te está atacando, elige a otra.");
+                    }
+                }
+            }
         }
     }
 }

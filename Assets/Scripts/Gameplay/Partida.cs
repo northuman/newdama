@@ -15,12 +15,12 @@ using UnityEngine.SceneManagement;
 public class Partida : MonoBehaviour
 {
     public enum OrdenJugadores { JUGADOR, OPONENTE };
-    public enum Fases { INICIO, PRINCIPAL_1, COMBATE, PRINCIPAL_2, FINAL };
+    public enum Fases { INICIO, PRINCIPAL_1, BLOQUEO, COMBATE, PRINCIPAL_2, FINAL };
     public Jugador jugador;
     public Jugador oponente;
     public bool tierrasJugadasEsteTurno = false;
     List<Jugador> jugadores;
-    bool turno = false; //false = turno jugador; true = turno oponente
+    public bool turno = false; //false = turno jugador; true = turno oponente
     public Jugador jugadorActivo => turno ? oponente : jugador;
     int ganador = 0;
     public Fases faseActual; //veo en que momento de partida estamos.
@@ -32,11 +32,14 @@ public class Partida : MonoBehaviour
     public bool esperandoDescarte = false;
     public int cartasParaDescartar = 0;
     public List <GameObject> criaturasAtacantes = new List<GameObject>();
+    public Dictionary<GameObject, GameObject> emparejamientos = new Dictionary<GameObject, GameObject>(); // Para almacenar qué criatura bloquea a cuál
+    public GameObject bloqueadorSeleccionado = null; // Para saber qué bloqueador ha elegido el jugador durante la fase de bloqueo
     public TextMeshProUGUI textoVidaOponente;
     public TextMeshProUGUI textoVidaJugador;
     public GameObject panelVictoria;
     public GameObject panelDerrota;
     private bool juegoTerminado = false;
+
 
 
     void Start()
@@ -117,10 +120,12 @@ public class Partida : MonoBehaviour
                 break;
 
             case Fases.COMBATE:
-                if(turno == false)
-                {
-                    ResolverCombate(); // Resolvemos el combate antes de pasar a la siguiente fase
-                }
+                faseActual = Fases.BLOQUEO;
+                FaseBloqueo();
+                break;
+
+            case Fases.BLOQUEO:
+                ResolverCombate(); // Resolvemos el bloqueo antes de pasar a la siguiente fase
                 faseActual = Fases.PRINCIPAL_2;
                 FasePrincipal(2);
                 break;
@@ -203,7 +208,6 @@ public class Partida : MonoBehaviour
         else
         {
             Debug.Log("Es el turno de la IA. Por ahora no ataca (aún no sé cómo).");
-            AvanzarFase();
         }
         //Activar habilidades principio combate
 
@@ -226,54 +230,52 @@ public class Partida : MonoBehaviour
 
     }
 
-    private void ResolverCombate()
+private void ResolverCombate()
     {
-        // Si nadie ha atacado, no hacemos nada
-        if (criaturasAtacantes.Count == 0) 
-        {
-            Debug.Log("Combate resuelto: No hubo atacantes.");
-            return;
-        }
+        if (criaturasAtacantes.Count == 0) return;
 
         int danoTotal = 0;
+        Jugador objetivo = turno ? jugador : oponente; // Quién recibe los golpes
 
-        // Sumamos el daño de cada criatura en la lista
         foreach (GameObject atacante in criaturasAtacantes)
         {
             if (atacante != null)
             {
-                Carta datosCarta = atacante.GetComponent<MostrarCarta>().GetCarta();
+                Carta datosAtacante = atacante.GetComponent<MostrarCarta>().GetCarta();
                 
-                // OJO: Aquí asumo que la variable de ataque en tu clase Carta se llama "ataque". 
-                // Si se llama "fuerza" o "daño", cámbialo en la línea de abajo:
-                danoTotal += datosCarta.fuerza; 
-                
-                Debug.Log($"- {datosCarta.nombreCarta} ataca con {datosCarta.fuerza} de poder.");
+                // NUEVO: Miramos en el Diccionario si alguien bloquea a este atacante
+                GameObject bloqueador = emparejamientos[atacante];
+
+                if (bloqueador == null)
+                {
+                    // Nadie lo bloquea -> Daño a la cara
+                    danoTotal += datosAtacante.fuerza; 
+                    Debug.Log($"- {datosAtacante.nombreCarta} no es bloqueado. Hace {datosAtacante.fuerza} de daño directo.");
+                }
+                else
+                {
+                    // Ha sido bloqueado -> No hay daño a la cara
+                    Carta datosBloqueador = bloqueador.GetComponent<MostrarCarta>().GetCarta();
+                    Debug.Log($"- ¡CHOQUE! {datosBloqueador.nombreCarta} bloquea a {datosAtacante.nombreCarta}. (0 daño a tu héroe)");
+                    
+                    // (Nota: Más adelante haremos que las criaturas se quiten vida entre ellas aquí)
+                }
             }
         }
 
-        Debug.Log($"¡BOOM! El oponente recibe un total de {danoTotal} puntos de daño.");
-        
-        // Restamos la vida al rival
-        oponente.vida -= danoTotal; 
+        // Aplicamos solo el daño que logró pasar las defensas
+        objetivo.vida -= danoTotal; 
+        Debug.Log($"¡BOOM! El objetivo recibe {danoTotal} de daño. Le quedan {objetivo.vida} vidas.");
 
-        VerificarEstadoPartida();
-        
-        Debug.Log($"Al oponente le quedan {oponente.vida} puntos de vida.");
+        // Actualizamos los textos
+        if (turno == false && textoVidaOponente != null) textoVidaOponente.text = objetivo.vida.ToString();
+        else if (turno == true && textoVidaJugador != null) textoVidaJugador.text = objetivo.vida.ToString();
 
-        if(textoVidaOponente != null)
-        {
-            textoVidaOponente.text = oponente.vida.ToString();
-        }
-        else
-        {
-            Debug.LogWarning("Texto de vida del oponente no asignado en el inspector.");
-        }
-
-        // Vaciamos la lista de atacantes para el próximo turno
+        // Limpiamos la mesa para el siguiente turno
         criaturasAtacantes.Clear();
+        emparejamientos.Clear();
+        bloqueadorSeleccionado = null; // Reiniciamos el cursor
     }
-
 
 public void FaseFinal()
     {
@@ -351,33 +353,34 @@ private IEnumerator DescarteAutomaticoIA()
         // Pasa a Principal 1
         AvanzarFase(); 
         
-        // 1. LA IA INTENTA JUGAR UNA TIERRA
         JugarTierraIA();
         yield return new WaitForSeconds(1.0f);
 
-        // 2. La IA extrae el maná de las tierras que ya tiene en mesa (si es que tiene)
         ExtraerManaIA();
         yield return new WaitForSeconds(1.0f);
 
-        // 3. LA IA INTENTA INVOCAR CRIATURAS
         JugarCriaturasIA();
         yield return new WaitForSeconds(1.5f);
 
-        // Pasa a Combate
         AvanzarFase();
-        Debug.Log("IA: No ataco esta vez (aún no sé cómo).");
         yield return new WaitForSeconds(1.5f);
 
-        // Pasa a Principal 2
-        AvanzarFase();
+        //La IA declara ataques y el código interno nos mete en la faese de bloqueo
+        AtacarIA();
+
+        while(faseActual == Fases.BLOQUEO)
+        {
+            yield return null; // Esperamos sin avanzar el tiempo hasta que el jugador termine de bloquear
+        }
+
         yield return new WaitForSeconds(1.0f);
 
-        // Termina su turno
-        Debug.Log("IA: Termino mi turno, te toca.");
-        AvanzarFase(); 
+        if (faseActual == Fases.PRINCIPAL_2)
+        {
+            Debug.Log("IA: Ya he terminado mis fases. Pasando a Fase Final.");
+            AvanzarFase(); // Empuja a la Fase Final (donde descartará si le sobran)
+        }
     }
-
-    // --- MANOS VIRTUALES DE LA IA ---
 
     private void JugarTierraIA()
     {
@@ -558,6 +561,63 @@ private void JugarCriaturasIA()
                 VerificarEstadoPartida();
             }
         }
+    }
+
+    void FaseBloqueo()
+    {
+        Debug.Log("--- Fase de bloqueo ---");
+        emparejamientos.Clear(); // Limpiamos los bloqueos anteriores
+        foreach(GameObject atacante in criaturasAtacantes)
+        {
+            emparejamientos.Add(atacante, null); // Inicialmente, ningún atacante tiene bloqueador asignado
+        }
+
+        if(turno == false)
+        {
+            Debug.Log("IA: viendo como bloquear tus atacantes...");
+            // Aquí la IA debería analizar qué criaturas tiene en su zona de batalla y decidir cómo bloquear
+
+            //TODO: Implementar lógica de bloqueo de la IA (por ahora no bloquea nada)
+            AvanzarFase(); // Pasamos a la siguiente fase aunque no haya bloqueos
+        }
+        else
+        {
+            if(criaturasAtacantes.Count > 0)
+            {
+                Debug.Log("Jugador: Te atacan. Haz click n tu criatura, luegop en el enemigo para bloquear");
+                //pausa y se espera el raton
+            }
+            else
+            {
+                Debug.Log("Nadie te ataque, pasando de fase...");
+                AvanzarFase();
+            }
+        }
+    }
+
+    private void AtacarIA()
+    {
+        Debug.Log("IA: Analizando a quién mandar al ataque...");
+        
+        // La IA mira todas las cartas que tiene en su lado de la mesa
+        foreach (Transform cartaTransform in zonaBatallaOponente)
+        {
+            CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
+            MostrarCarta mc = cartaTransform.GetComponent<MostrarCarta>();
+
+            // Si es una criatura y NO está girada... ¡Al ataque!
+            if (cj != null && mc != null && cj.girada == false && mc.tipo == "Criatura")
+            {
+                cj.RotarCarta(); // La gira visualmente
+                criaturasAtacantes.Add(cartaTransform.gameObject); // La mete en la lista
+                
+                Debug.Log($"IA: ¡Ataco con {mc.GetCarta().nombreCarta}!");
+            }
+        }
+
+        // Una vez ha decidido quién ataca, en lugar de calcular el daño directo,
+        // pasamos a TU fase de Bloqueo.
+        AvanzarFase(); 
     }
 
 }
