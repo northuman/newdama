@@ -234,49 +234,67 @@ private void ResolverCombate()
     {
         if (criaturasAtacantes.Count == 0) return;
 
-        int danoTotal = 0;
-        Jugador objetivo = turno ? jugador : oponente; // Quién recibe los golpes
+        int danoTotalCara = 0;
+        Jugador objetivo = turno ? jugador : oponente; // Quién recibe los golpes a la cara
 
         foreach (GameObject atacante in criaturasAtacantes)
         {
             if (atacante != null)
             {
-                Carta datosAtacante = atacante.GetComponent<MostrarCarta>().GetCarta();
+                CartasJugadas cjAtacante = atacante.GetComponent<CartasJugadas>();
                 
-                // NUEVO: Miramos en el Diccionario si alguien bloquea a este atacante
+                // Miramos en el Diccionario si alguien bloquea a este atacante
                 GameObject bloqueador = emparejamientos[atacante];
 
                 if (bloqueador == null)
                 {
                     // Nadie lo bloquea -> Daño a la cara
-                    danoTotal += datosAtacante.fuerza; 
-                    Debug.Log($"- {datosAtacante.nombreCarta} no es bloqueado. Hace {datosAtacante.fuerza} de daño directo.");
+                    danoTotalCara += cjAtacante.fuerzaActual; 
+                    Debug.Log($"- {cjAtacante.carta.nombreCarta} no es bloqueado. Hace {cjAtacante.fuerzaActual} de daño directo.");
                 }
                 else
                 {
-                    // Ha sido bloqueado -> No hay daño a la cara
-                    Carta datosBloqueador = bloqueador.GetComponent<MostrarCarta>().GetCarta();
-                    Debug.Log($"- ¡CHOQUE! {datosBloqueador.nombreCarta} bloquea a {datosAtacante.nombreCarta}. (0 daño a tu héroe)");
+                    // ¡CHOQUE! Hay un bloqueador
+                    CartasJugadas cjBloqueador = bloqueador.GetComponent<CartasJugadas>();
+                    Debug.Log($"- ¡CHOQUE! {cjBloqueador.carta.nombreCarta} (Resistencia: {cjBloqueador.resistenciaActual}) bloquea a {cjAtacante.carta.nombreCarta} (Resistencia: {cjAtacante.resistenciaActual}).");
                     
-                    // (Nota: Más adelante haremos que las criaturas se quiten vida entre ellas aquí)
+                    // 1. Calculamos cuánto daño se hacen mutuamente (teniendo en cuenta tu Toque Mortal)
+                    int danoQueHaceAtacante = cjAtacante.toqueMortal ? cjBloqueador.resistenciaActual : cjAtacante.fuerzaActual;
+                    int danoQueHaceBloqueador = cjBloqueador.toqueMortal ? cjAtacante.resistenciaActual : cjBloqueador.fuerzaActual;
+
+                    // 2. Se aplican el daño mutuamente y a la vez
+                    cjBloqueador.RecibirDanio(danoQueHaceAtacante);
+                    cjAtacante.RecibirDanio(danoQueHaceBloqueador);
+
+                    // 3. Arrollar (Aprovechamos que ya lo tenías en tu clase)
+                    if (cjAtacante.arrolla && cjAtacante.fuerzaActual > cjBloqueador.resistenciaActual)
+                    {
+                        int exceso = cjAtacante.fuerzaActual - cjBloqueador.resistenciaActual;
+                        danoTotalCara += exceso;
+                        Debug.Log($"¡{cjAtacante.carta.nombreCarta} arrolla y hace {exceso} de daño a la cara!");
+                    }
                 }
             }
         }
 
-        // Aplicamos solo el daño que logró pasar las defensas
-        objetivo.vida -= danoTotal; 
-        Debug.Log($"¡BOOM! El objetivo recibe {danoTotal} de daño. Le quedan {objetivo.vida} vidas.");
+        // Aplicamos solo el daño directo a la cara que haya pasado
+        if (danoTotalCara > 0)
+        {
+            objetivo.vida -= danoTotalCara; 
+            Debug.Log($"¡BOOM! El objetivo recibe {danoTotalCara} de daño. Le quedan {objetivo.vida} vidas.");
 
-        // Actualizamos los textos
-        if (turno == false && textoVidaOponente != null) textoVidaOponente.text = objetivo.vida.ToString();
-        else if (turno == true && textoVidaJugador != null) textoVidaJugador.text = objetivo.vida.ToString();
+            // Actualizamos los textos
+            if (turno == false && textoVidaOponente != null) textoVidaOponente.text = objetivo.vida.ToString();
+            else if (turno == true && textoVidaJugador != null) textoVidaJugador.text = objetivo.vida.ToString();
+            
+            VerificarEstadoPartida();
+        }
 
         // Limpiamos la mesa para el siguiente turno
         criaturasAtacantes.Clear();
         emparejamientos.Clear();
-        bloqueadorSeleccionado = null; // Reiniciamos el cursor
+        bloqueadorSeleccionado = null; 
     }
-
 public void FaseFinal()
     {
         Jugador jugadorActivo = turno ? oponente : jugador;

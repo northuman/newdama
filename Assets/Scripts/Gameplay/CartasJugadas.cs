@@ -178,6 +178,8 @@ public class CartasJugadas : MonoBehaviour
         {
             j2.GetComponent<Jugador>().cementerio.Add(this);
         }
+
+        Destroy(this.gameObject); //Destruyo el gameObject de la mesa para que desaparezca visualmente.
     }
 
 
