@@ -39,6 +39,8 @@ public class Partida : MonoBehaviour
     public GameObject panelVictoria;
     public GameObject panelDerrota;
     private bool juegoTerminado = false;
+    public bool esperandoObjetivo = false;
+    public GameObject conjuroEnElAire = null; 
 
 
 
@@ -638,4 +640,32 @@ private void JugarCriaturasIA()
         AvanzarFase(); 
     }
 
+    // Este método se llama desde el script de MostrarCarta cuando lanzas un conjuro que requiere objetivo
+    public void PrepararConjuro(GameObject conjuroFisico)
+    {
+        esperandoObjetivo = true;
+        conjuroEnElAire = conjuroFisico;
+        Debug.Log("¡Has lanzado un conjuro! Ahora haz click en el objetivo que quieras para resolverlo.");
+    }
+
+    public void LanzarConjuroA(GameObject objetivo)
+    {
+        CartasJugadas cjObjetivo = objetivo.GetComponent<CartasJugadas>();
+        MostrarCarta mcConjuro = conjuroEnElAire.GetComponent<MostrarCarta>();
+
+        //Para la prueba, haremos 3 de daño fijo
+        int danioMagico = 3;
+
+        Debug.Log($"¡ZAS! Tu {mcConjuro.GetCarta().nombreCarta} le cae encima a {cjObjetivo.carta.nombreCarta} haciéndole {danioMagico} de daño.");
+
+        //resto la vida
+        cjObjetivo.RecibirDanio(danioMagico);
+
+        //el conjuro hizo su efecto, al cementerio
+        conjuroEnElAire.GetComponent<CartasJugadas>().DestruirCarta();
+
+        //salgo del modo francotirador
+        esperandoObjetivo = false;
+        conjuroEnElAire = null;
+    }
 }

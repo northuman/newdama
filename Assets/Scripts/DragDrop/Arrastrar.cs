@@ -100,6 +100,36 @@ public void OnPointerClick(PointerEventData eventData)
             if (cj == null || mc == null) return;
 
             // --------------------------------------------------------
+            // 0. LÓGICA DE CONJUROS (Modo Francotirador y Activación)
+            // --------------------------------------------------------
+            
+            // CASO A: Tienes el Modo Francotirador activado y buscas una víctima
+            if (gestor.esperandoObjetivo == true)
+            {
+                // Verificamos si haces clic en un enemigo (jugador 2) que sea Criatura
+                if (mc.tipo == "Criatura" && cj.perteneceAJugador == 2)
+                {
+                    gestor.LanzarConjuroA(this.gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning("Objetivo inválido. Debes hacer clic en una criatura enemiga.");
+                }
+                // ¡VITAL! Cortamos aquí. Si estamos en modo francotirador, el clic no debe hacer NADA más.
+                return; 
+            }
+
+            // CASO B: Activar un Conjuro propio durante tu Fase Principal
+            if (gestor.faseActual == Partida.Fases.PRINCIPAL_1 || gestor.faseActual == Partida.Fases.PRINCIPAL_2)
+            {
+                if (mc.tipo == "Conjuro" && cj.perteneceAJugador == 1)
+                {
+                    gestor.PrepararConjuro(this.gameObject);
+                    return; // Cortamos aquí para que el juego se quede esperando el siguiente clic
+                }
+            }
+
+            // --------------------------------------------------------
             // 1. LÓGICA DE DESCARTE (Si estamos en la Fase Final)
             // --------------------------------------------------------
             if (gestor.esperandoDescarte == true && gestor.faseActual == Partida.Fases.FINAL)
