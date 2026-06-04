@@ -187,7 +187,11 @@ public class Jugador : MonoBehaviour
         else { ok = false; }
         if (!ok)
         {
-            mensaje.MostrarMensaje("No tienes maná suficiente!");
+            if(mensaje != null)
+            {
+                mensaje.MostrarMensaje("No tienes maná suficiente!");
+
+            }
         }
         return ok;
     }
@@ -309,4 +313,6 @@ public class Jugador : MonoBehaviour
         }
         return null;
     }
+
+
 }

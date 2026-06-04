@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UtilCartas;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.SceneManagement;
 
 /*
 * Controla el flujo de la partida, aquí va el sistema de turnos.
@@ -12,36 +15,49 @@ using static UtilCartas;
 public class Partida : MonoBehaviour
 {
     public enum OrdenJugadores { JUGADOR, OPONENTE };
+    public enum Fases { INICIO, PRINCIPAL_1, BLOQUEO, COMBATE, PRINCIPAL_2, FINAL };
     public Jugador jugador;
     public Jugador oponente;
+    public bool tierrasJugadasEsteTurno = false;
     List<Jugador> jugadores;
-    bool turno = false; //0 Turno jugador; 1 Turno oponente
+    public bool turno = false; //false = turno jugador; true = turno oponente
+    public Jugador jugadorActivo => turno ? oponente : jugador;
     int ganador = 0;
+    public Fases faseActual; //veo en que momento de partida estamos.
+
+    // Zonas de juego del oponente para que la IA sepa dónde poner sus cartas
+    public Transform zonaTierrasOponente;
+    public Transform zonaBatallaOponente;
+    //para la fase final y descartar cartas (maximo 7 en mano)
+    public bool esperandoDescarte = false;
+    public int cartasParaDescartar = 0;
+    public List <GameObject> criaturasAtacantes = new List<GameObject>();
+    public Dictionary<GameObject, GameObject> emparejamientos = new Dictionary<GameObject, GameObject>(); // Para almacenar qué criatura bloquea a cuál
+    public GameObject bloqueadorSeleccionado = null; // Para saber qué bloqueador ha elegido el jugador durante la fase de bloqueo
+    public TextMeshProUGUI textoVidaOponente;
+    public TextMeshProUGUI textoVidaJugador;
+    public GameObject panelVictoria;
+    public GameObject panelDerrota;
+    private bool juegoTerminado = false;
+    public bool esperandoObjetivo = false;
+    public GameObject conjuroEnElAire = null; 
+
+
+
+    void Start()
+    {
+        AccionesPrevias();
+        //iniciar turno
+        IniciarTurno();
+    }
+
 
     public void GenerarPrioridadJugador()
     {
         turno = Convert.ToBoolean(NumAleatorio(0, 1));
         turno = false; // fuerza el turno del jugador para probar
 
-        jugadores = new List<Jugador>();
-
-        //Primero jugador
-        if (!turno)
-        {
-            jugadores.Add(jugador);
-            jugadores.Add(oponente);
-            //Primero oponente
-        }
-        else
-        {
-            jugadores.Add(oponente);
-            jugadores.Add(jugador);
-        }
-    }
-
-    void Start()
-    {
-        AccionesPrevias();
+        jugadores = new List<Jugador> { jugador, oponente };
     }
 
     public void AccionesPrevias()
@@ -54,53 +70,147 @@ public class Partida : MonoBehaviour
             jugadores[i].CrearBarajaPartida();
             jugadores[i].RobarCarta(7);
         }
+
+        //FORZAR CARTA DEL OPONENTE PARA PROBAR ---------------------
+        ForzarCartaOponente();
     }
 
-    public void BuclePartida()
+    public void ForzarCartaOponente()
     {
-        while (ganador == 0/*jugador.vida >= 0 && oponente.vida >= 0 && jugador.biblioteca.Count >= 0 && oponente.biblioteca.Count >= 0*/)
+        if (oponente.mano.Count > 0)
         {
-            //Fase inicio
-            FaseInicio();
-            if (ganador == 0)
-            {
-                //Fase principal 1
-
-                //Fase combate
-
-                //Fase principal 2
-
-                //Fase final
-            }
+            var cartaPrueba = jugadores[1].mano[0];
+            oponente.mano.RemoveAt(0);
+            Debug.Log("Carta de prueba añadida al campo del oponente: " + cartaPrueba.nombreCarta);
         }
-        ;
     }
 
+    //SISTEMA DE TURNOS Y FASES (MAQUINA DE ESTADOS)
+
+    public void IniciarTurno()
+    {
+        Debug.Log("--- Comienza el turno de: " + (turno ? "Oponente" : "jugador") + " ---");
+        faseActual = Fases.INICIO;
+        FaseInicio();
+
+        if (turno)
+        {
+            StartCoroutine(CerebroIA()); // Inicia el turno de la IA
+        }
+    }
+
+    public void AvanzarFase()
+    {
+        if (ganador != 0) return; //si el juego acabó no se hace nada
+
+        if(esperandoDescarte == true)
+        {
+            Debug.Log("¡Espera! Aún tienes que descartar cartas antes de avanzar de fase.");
+            return; // No avanzamos de fase hasta que el jugador descarte las cartas necesarias
+        }
+
+        switch (faseActual)
+        {
+            case Fases.INICIO:
+                faseActual = Fases.PRINCIPAL_1;
+                FasePrincipal(1);
+                break;
+
+            case Fases.PRINCIPAL_1:
+                faseActual = Fases.COMBATE;
+                FaseCombate();
+                break;
+
+            case Fases.COMBATE:
+                faseActual = Fases.BLOQUEO;
+                FaseBloqueo();
+                break;
+
+            case Fases.BLOQUEO:
+                ResolverCombate(); // Resolvemos el bloqueo antes de pasar a la siguiente fase
+                faseActual = Fases.PRINCIPAL_2;
+                FasePrincipal(2);
+                break;
+
+            case Fases.PRINCIPAL_2:
+                Debug.Log(">>> Intentando entrar a fase final...");
+                faseActual = Fases.FINAL;
+                FaseFinal();
+                break;
+
+            case Fases.FINAL:
+            Debug.Log(">>> Termina el turno. Cambiando jugador activo...");
+                turno = !turno; //cambia el jugador activo
+                //faseActual = Fases.FINAL;
+                IniciarTurno();
+                break;
+        }
+    }
+
+    // LOGICA DE CADA FASE
     public void FaseInicio()
     {
-        //Enderezar cartas giradas
-        //jugadores[0].enderezoInicial();
+        Debug.Log("Fase de inicio (enderezco, mantenimiento, robo");
 
-        //Mantenimiento (efectos etc)
+        tierrasJugadasEsteTurno = false; //reiniciamos el contador de tierras jugadas al inicio del turno.
 
+        //1. Enderezar cartas giradas
+        EnderezarCartasMesa();
 
-        bool falloRobar;
-        //Robar 1, si no puede pierde
-        falloRobar = jugadores[0].RobarCarta(1);
-        if (falloRobar)
+        //2. Mantenimiento (Upkeep)
+
+        //3. Robar (Draw)
+        bool falloRobar = jugadorActivo.RobarCarta(1);
+        
+        if (!falloRobar)
         {
-            if (!turno) ganador = 2;
-            else ganador = 1;
+            ganador = turno ? 1 : 2; //si no se puede robar, pierte.
+            Debug.Log("Jugador " + ganador + " ha ganado por deckeo");
         }
+
+        VerificarEstadoPartida();
     }
 
-    public void FasePrincipal()
+    private void EnderezarCartasMesa()
     {
-        //Jugar carta
+        // El radar: busca todas las cartas que hay en la escena
+        CartasJugadas[] todasLasCartas = FindObjectsOfType<CartasJugadas>();
+
+        foreach (CartasJugadas carta in todasLasCartas)
+        {
+            // Si la carta es del jugador activo Y está girada...
+            if (carta.perteneceAJugador == jugadorActivo.id && carta.girada == true)
+            {
+                carta.RotarCarta(); // Esto la devuelve a su posición vertical
+            }
+        }
+        Debug.Log("Mesa enderezada para el jugador: " + jugadorActivo.id);
+    }
+
+    public void FasePrincipal(int numeroFase)
+    {
+        Debug.Log($"{numeroFase} Fase principal {numeroFase} (jugar tierras, criaturas, conjuros)");
+        // Aquí el juego se detiene y espera a que el jugador arrastre cartas a la mesa.
+        // Solo avanzará cuando pulse el botón de "AvanzarFase()".
+
     }
 
     public void FaseCombate()
     {
+        Debug.Log("--- Fase de combate ---");
+
+        //vacio la lista por si había atacantes del turno anterior
+        criaturasAtacantes.Clear();
+
+        if (turno == false)
+        {
+            Debug.Log("Es el turno del jugador. Esperando a que declare atacantes...");
+            // Aquí el juego se detiene y espera a que el jugador arrastre sus criaturas a la zona de ataque.
+        }
+        else
+        {
+            Debug.Log("Es el turno de la IA. Por ahora no ataca (aún no sé cómo).");
+        }
         //Activar habilidades principio combate
 
         //Declaracion atacantes jugador0->jugador1
@@ -117,24 +227,445 @@ public class Partida : MonoBehaviour
 
         //Resolver efectos fin de combate e instantaneos
 
+        Debug.Log(" FASE DE COMBATE (Declarar Atacantes, Bloqueadoras, Daño)");
+        // El combate es un mini-bucle complejo, pero la base está aquí.
+
     }
 
-    public void PasoLimpieza()
+private void ResolverCombate()
     {
-        //Reducir mano a 7 si lo supera
-        //Eliminar desde el final de la mano
-    }
+        if (criaturasAtacantes.Count == 0) return;
 
-    public void FaseFinal()
+        int danoTotalCara = 0;
+        Jugador objetivo = turno ? jugador : oponente; // Quién recibe los golpes a la cara
+
+        foreach (GameObject atacante in criaturasAtacantes)
+        {
+            if (atacante != null)
+            {
+                CartasJugadas cjAtacante = atacante.GetComponent<CartasJugadas>();
+                
+                // Miramos en el Diccionario si alguien bloquea a este atacante
+                GameObject bloqueador = emparejamientos[atacante];
+
+                if (bloqueador == null)
+                {
+                    // Nadie lo bloquea -> Daño a la cara
+                    danoTotalCara += cjAtacante.fuerzaActual; 
+                    Debug.Log($"- {cjAtacante.carta.nombreCarta} no es bloqueado. Hace {cjAtacante.fuerzaActual} de daño directo.");
+                }
+                else
+                {
+                    // ¡CHOQUE! Hay un bloqueador
+                    CartasJugadas cjBloqueador = bloqueador.GetComponent<CartasJugadas>();
+                    Debug.Log($"- ¡CHOQUE! {cjBloqueador.carta.nombreCarta} (Resistencia: {cjBloqueador.resistenciaActual}) bloquea a {cjAtacante.carta.nombreCarta} (Resistencia: {cjAtacante.resistenciaActual}).");
+                    
+                    // 1. Calculamos cuánto daño se hacen mutuamente (teniendo en cuenta tu Toque Mortal)
+                    int danoQueHaceAtacante = cjAtacante.toqueMortal ? cjBloqueador.resistenciaActual : cjAtacante.fuerzaActual;
+                    int danoQueHaceBloqueador = cjBloqueador.toqueMortal ? cjAtacante.resistenciaActual : cjBloqueador.fuerzaActual;
+
+                    // 2. Se aplican el daño mutuamente y a la vez
+                    cjBloqueador.RecibirDanio(danoQueHaceAtacante);
+                    cjAtacante.RecibirDanio(danoQueHaceBloqueador);
+
+                    // 3. Arrollar (Aprovechamos que ya lo tenías en tu clase)
+                    if (cjAtacante.arrolla && cjAtacante.fuerzaActual > cjBloqueador.resistenciaActual)
+                    {
+                        int exceso = cjAtacante.fuerzaActual - cjBloqueador.resistenciaActual;
+                        danoTotalCara += exceso;
+                        Debug.Log($"¡{cjAtacante.carta.nombreCarta} arrolla y hace {exceso} de daño a la cara!");
+                    }
+                }
+            }
+        }
+
+        // Aplicamos solo el daño directo a la cara que haya pasado
+        if (danoTotalCara > 0)
+        {
+            objetivo.vida -= danoTotalCara; 
+            Debug.Log($"¡BOOM! El objetivo recibe {danoTotalCara} de daño. Le quedan {objetivo.vida} vidas.");
+
+            // Actualizamos los textos
+            if (turno == false && textoVidaOponente != null) textoVidaOponente.text = objetivo.vida.ToString();
+            else if (turno == true && textoVidaJugador != null) textoVidaJugador.text = objetivo.vida.ToString();
+            
+            VerificarEstadoPartida();
+        }
+
+        // Limpiamos la mesa para el siguiente turno
+        criaturasAtacantes.Clear();
+        emparejamientos.Clear();
+        bloqueadorSeleccionado = null; 
+    }
+public void FaseFinal()
     {
-        //Resolver efectos comienzo paso final
+        Jugador jugadorActivo = turno ? oponente : jugador;
+        Debug.Log(" FASE FINAL (Paso final y limpieza)");
+        
+        int excesoCartas = jugadorActivo.mano.Count - 7;
+        
+        if (excesoCartas > 0)
+        {
+            Debug.Log($"El jugador tiene {jugadorActivo.mano.Count} cartas en mano, debe descartar {excesoCartas} cartas.");
+            cartasParaDescartar = excesoCartas;
+            esperandoDescarte = true;
 
-        //Paso limpieza
-        PasoLimpieza();
-
-        //Cambiar turno
-        turno = !turno;
-        jugadores.Intercambio(0, 1);
+            // SI es la IA, le digo que descarte sola. Si es el jugador, esperamos
+            if(turno == true)
+            {
+                StartCoroutine(DescarteAutomaticoIA());
+            }
+            else
+            {
+                Debug.Log("Esperando a que el jugador descarte cartas manualmente...");
+                // ¡AQUÍ NOS DETENEMOS! El código termina aquí y no llama a AvanzarFase()
+                // hasta que tú descartes las cartas con el ratón.
+            }
+        }
+        else
+        {
+            Debug.Log("No es necesario descartar cartas. Avanzando al siguiente turno...");
+            AvanzarFase();
+        }
     }
 
+private IEnumerator DescarteAutomaticoIA()
+    {
+        Debug.Log("IA: Vaya, tengo demasiadas cartas. Pensando cuáles tirar...");
+        yield return new WaitForSeconds(1.5f); 
+        
+        // Mientras la IA tenga que descartar y tenga datos en su lista...
+        while (cartasParaDescartar > 0 && oponente.mano.Count > 0)
+        {
+            // 1. Borramos el dato del "cerebro" del bot (la lista lógica)
+            int indiceUltimaCarta = oponente.mano.Count - 1;
+            oponente.mano.RemoveAt(indiceUltimaCarta);
+            
+            // 2. Borramos el dibujo de la pantalla (el GameObject)
+            // Aseguramos que el panel de la mano (con mayúscula) tenga hijos físicos
+            if (oponente.Mano.transform.childCount > 0) 
+            {
+                // Cogemos la última carta física que cuelga del panel
+                int ultimoHijo = oponente.Mano.transform.childCount - 1;
+                Transform cartaFisica = oponente.Mano.transform.GetChild(ultimoHijo);
+                
+                // ¡La destruimos!
+                Destroy(cartaFisica.gameObject); 
+            }
+            
+            cartasParaDescartar--;
+            Debug.Log($"IA: He descartado una carta. Me quedan por tirar: {cartasParaDescartar}");
+            
+            yield return new WaitForSeconds(0.5f); 
+        }
+
+        // Una vez terminamos de descartar, quitamos el seguro y pasamos el turno
+        esperandoDescarte = false;
+        Debug.Log("IA: He terminado de descartar. Cambio de turno.");
+        AvanzarFase(); 
+    }
+
+    private IEnumerator CerebroIA()
+    {
+        Debug.Log("IA: Pensando mi turno...");
+        yield return new WaitForSeconds(1.5f); 
+        
+        // Pasa a Principal 1
+        AvanzarFase(); 
+        
+        JugarTierraIA();
+        yield return new WaitForSeconds(1.0f);
+
+        ExtraerManaIA();
+        yield return new WaitForSeconds(1.0f);
+
+        JugarCriaturasIA();
+        yield return new WaitForSeconds(1.5f);
+
+        AvanzarFase();
+        yield return new WaitForSeconds(1.5f);
+
+        //La IA declara ataques y el código interno nos mete en la faese de bloqueo
+        AtacarIA();
+
+        while(faseActual == Fases.BLOQUEO)
+        {
+            yield return null; // Esperamos sin avanzar el tiempo hasta que el jugador termine de bloquear
+        }
+
+        yield return new WaitForSeconds(1.0f);
+
+        if (faseActual == Fases.PRINCIPAL_2)
+        {
+            Debug.Log("IA: Ya he terminado mis fases. Pasando a Fase Final.");
+            AvanzarFase(); // Empuja a la Fase Final (donde descartará si le sobran)
+        }
+    }
+
+    private void JugarTierraIA()
+    {
+        if (oponente.Mano == null) return;
+
+        // Buscamos entre los GameObjects físicos que cuelgan de la mano del oponente
+        foreach (Transform cartaTransform in oponente.Mano.transform)
+        {
+            MostrarCarta mc = cartaTransform.GetComponent<MostrarCarta>();
+            if (mc != null && mc.tipo == "Tierra" && !tierrasJugadasEsteTurno)
+            {
+                // Mueve la carta a la mesa
+                cartaTransform.SetParent(zonaTierrasOponente);
+                cartaTransform.localPosition = Vector3.zero; // Asegura que la carta se posicione correctamente en la zona
+                cartaTransform.localRotation = Quaternion.Euler(0, 0, 0); // Asegura que la carta mire hacia arriba
+                
+                oponente.mano.Remove(mc.GetCarta()); // Elimina la carta de la mano lógica del oponente
+
+                Transform reverso = cartaTransform.Find("Reverso");
+                if(reverso != null)
+                {
+                    reverso.gameObject.SetActive(false); // Desactiva el reverso para mostrar la cara de la carta
+                }
+                // La inicializa (como hace el DropZone)
+                CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
+                if (cj != null) cj.Inicializar(mc.GetCarta());
+                
+                tierrasJugadasEsteTurno = true;
+                Debug.Log("IA: ¡He jugado una Tierra!");
+                break; // Solo bajamos una tierra por turno
+            }
+        }
+    }
+
+private void JugarCriaturasIA()
+    {
+        if (oponente.Mano == null) 
+        {
+            Debug.LogWarning("IA: Oye, no tengo enlazado el objeto 'Mano' en el inspector.");
+            return;
+        }
+
+        Debug.Log($"IA: Revisando mi mano... Tengo {oponente.Mano.transform.childCount} cartas físicas.");
+
+        // Hacemos un bucle inverso
+        for (int i = oponente.Mano.transform.childCount - 1; i >= 0; i--)
+        {
+            Transform cartaTransform = oponente.Mano.transform.GetChild(i);
+            MostrarCarta mc = cartaTransform.GetComponent<MostrarCarta>();
+            
+            if (mc != null && mc.GetCarta() != null)
+            {
+                Carta datosCarta = mc.GetCarta();
+                Debug.Log($"IA: Mirando la carta '{datosCarta.nombreCarta}' (Tipo: {mc.tipo})");
+
+                if (mc.tipo == "Criatura")
+                {
+                    Debug.Log($"IA: ¡Es una criatura! Quiero invocar a {datosCarta.nombreCarta}. Voy a ver si tengo maná...");
+                    
+                    // Comprobamos si la IA tiene maná suficiente
+                    if (oponente.ComprobarMana(cartaTransform.gameObject))
+                    {
+                        // Si tiene maná, la invocamos a la zona de batalla
+                        oponente.RestarMana(cartaTransform.gameObject);
+                        // La movemos a la zona de batalla
+                        cartaTransform.SetParent(zonaBatallaOponente);
+                        cartaTransform.localPosition = Vector3.zero; // Asegura que la carta se posicione correctamente en la zona
+                        // Me aseguro de que la carta mire hacia arriba
+                        cartaTransform.localRotation = Quaternion.Euler(0, 0, 0);
+
+                        oponente.mano.Remove(datosCarta); // La eliminamos de la mano lógica del oponente
+
+                        Transform reverso = cartaTransform.Find("Reverso");
+                        if(reverso != null)
+                        {
+                            reverso.gameObject.SetActive(false); // Desactiva el reverso para mostrar la cara de la carta
+                        }
+                        
+                        CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
+                        if (cj != null) cj.Inicializar(datosCarta);
+                        
+                        Debug.Log($"IA: ¡ÉXITO! He invocado a {datosCarta.nombreCarta} en la zona de batalla.");
+                    }
+                    else
+                    {
+                        // ESTA ES LA CLAVE: Nos dirá cuánto maná tiene exactamente y por qué falla
+                        string manaActual = $"[{oponente.mana[0]}, {oponente.mana[1]}, {oponente.mana[2]}, {oponente.mana[3]}]";
+                        Debug.Log($"IA: FRACASO. No tengo maná para {datosCarta.nombreCarta}. Mi maná actual es: {manaActual}");
+                    }
+                }
+            }
+        }
+    }
+    private void ExtraerManaIA()
+    {
+        // Reviso todas las cartas que ya están en la mesa del oponente
+        foreach (Transform cartaTransform in zonaTierrasOponente)
+        {
+            CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
+            
+            // Si es una tierra y NO está girada todavía, la giramos
+            if (cj != null && cj.girada == false)
+            {
+                // La giramos visualmente
+                cj.RotarCarta(); 
+                
+                // Le metemos el maná en el "bolsillo" al oponente
+                oponente.SumarMana(cartaTransform.gameObject);
+                
+                Debug.Log("IA: He girado una tierra para obtener maná.");
+            }
+        }
+    }
+
+    public void VerificarEstadoPartida()
+    {
+        if(juegoTerminado) return;
+        if(oponente.vida <= 0)
+        {
+            FinalizarJuego(true);
+        }
+        else if (jugador.vida <= 0)
+        {
+            FinalizarJuego(false);
+        }
+    }
+
+    public void FinalizarJuego(bool victoria)
+    {
+        juegoTerminado = true;
+        if(victoria){
+            panelVictoria.SetActive(true);
+            Debug.Log("¡Felicidades! Has ganado la partida.");
+        }
+        else
+        {
+            panelDerrota.SetActive(true);
+            Debug.Log("Lo siento, has perdido la partida.");
+        }
+    }
+
+    public void ReiniciarPartida()
+    {
+        Time.timeScale = 1f; //si no, el juego empezará congelado
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    void Update()
+    {
+        // TRUCO: Quitarle 10 de vida al Oponente
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            if (oponente != null)
+            {
+                oponente.vida -= 19;
+                // Actualizamos el texto visual para ver el cambio
+                if (textoVidaOponente != null) 
+                    textoVidaOponente.text = oponente.vida.ToString();
+                
+                Debug.Log("DEBUG: Has usado la tecla K. Vida oponente: " + oponente.vida);
+                
+                // Comprobamos si ha muerto para que salga el panel de Victoria
+                VerificarEstadoPartida();
+            }
+        }
+
+        // TRUCO: Quitarte 10 de vida a TI (para probar la derrota)
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (jugador != null)
+            {
+                jugador.vida -= 10;
+                if (textoVidaJugador != null) 
+                    textoVidaJugador.text = jugador.vida.ToString();
+                
+                Debug.Log("DEBUG: Has usado la tecla L. Tu vida: " + jugador.vida);
+                
+                VerificarEstadoPartida();
+            }
+        }
+    }
+
+    void FaseBloqueo()
+    {
+        Debug.Log("--- Fase de bloqueo ---");
+        emparejamientos.Clear(); // Limpiamos los bloqueos anteriores
+        foreach(GameObject atacante in criaturasAtacantes)
+        {
+            emparejamientos.Add(atacante, null); // Inicialmente, ningún atacante tiene bloqueador asignado
+        }
+
+        if(turno == false)
+        {
+            Debug.Log("IA: viendo como bloquear tus atacantes...");
+            // Aquí la IA debería analizar qué criaturas tiene en su zona de batalla y decidir cómo bloquear
+
+            //TODO: Implementar lógica de bloqueo de la IA (por ahora no bloquea nada)
+            AvanzarFase(); // Pasamos a la siguiente fase aunque no haya bloqueos
+        }
+        else
+        {
+            if(criaturasAtacantes.Count > 0)
+            {
+                Debug.Log("Jugador: Te atacan. Haz click n tu criatura, luegop en el enemigo para bloquear");
+                //pausa y se espera el raton
+            }
+            else
+            {
+                Debug.Log("Nadie te ataque, pasando de fase...");
+                AvanzarFase();
+            }
+        }
+    }
+
+    private void AtacarIA()
+    {
+        Debug.Log("IA: Analizando a quién mandar al ataque...");
+        
+        // La IA mira todas las cartas que tiene en su lado de la mesa
+        foreach (Transform cartaTransform in zonaBatallaOponente)
+        {
+            CartasJugadas cj = cartaTransform.GetComponent<CartasJugadas>();
+            MostrarCarta mc = cartaTransform.GetComponent<MostrarCarta>();
+
+            // Si es una criatura y NO está girada... ¡Al ataque!
+            if (cj != null && mc != null && cj.girada == false && mc.tipo == "Criatura")
+            {
+                cj.RotarCarta(); // La gira visualmente
+                criaturasAtacantes.Add(cartaTransform.gameObject); // La mete en la lista
+                
+                Debug.Log($"IA: ¡Ataco con {mc.GetCarta().nombreCarta}!");
+            }
+        }
+
+        // Una vez ha decidido quién ataca, en lugar de calcular el daño directo,
+        // pasamos a TU fase de Bloqueo.
+        AvanzarFase(); 
+    }
+
+    // Este método se llama desde el script de MostrarCarta cuando lanzas un conjuro que requiere objetivo
+    public void PrepararConjuro(GameObject conjuroFisico)
+    {
+        esperandoObjetivo = true;
+        conjuroEnElAire = conjuroFisico;
+        Debug.Log("¡Has lanzado un conjuro! Ahora haz click en el objetivo que quieras para resolverlo.");
+    }
+
+    public void LanzarConjuroA(GameObject objetivo)
+    {
+        CartasJugadas cjObjetivo = objetivo.GetComponent<CartasJugadas>();
+        MostrarCarta mcConjuro = conjuroEnElAire.GetComponent<MostrarCarta>();
+
+        //Para la prueba, haremos 3 de daño fijo
+        int danioMagico = 3;
+
+        Debug.Log($"¡ZAS! Tu {mcConjuro.GetCarta().nombreCarta} le cae encima a {cjObjetivo.carta.nombreCarta} haciéndole {danioMagico} de daño.");
+
+        //resto la vida
+        cjObjetivo.RecibirDanio(danioMagico);
+
+        //el conjuro hizo su efecto, al cementerio
+        conjuroEnElAire.GetComponent<CartasJugadas>().DestruirCarta();
+
+        //salgo del modo francotirador
+        esperandoObjetivo = false;
+        conjuroEnElAire = null;
+    }
 }

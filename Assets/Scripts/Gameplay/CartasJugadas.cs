@@ -18,6 +18,16 @@ public class CartasJugadas : MonoBehaviour
     public int resistenciaActual;
     public bool mareo;
     public bool girada;
+    public bool defensor; //si es defensor no puede atacar
+    public bool vigilancia; //si tiene vigilancia no se gira al atacar
+    public bool indestructible; //si es indestructible no puede morir
+    public bool toqueMortal; //si tiene toque mortal, cualquier daño que haga es letal
+    public bool destello; //si tiene destello se puede jugar en cualquier momento
+    public bool vuelo; //si tiene vuelo solo puede ser bloqueada por cartas con vuelo
+    public bool arrolla; //si tiene arrolla, el exceso de daño que haga al atacar se lo hace al jugador
+    public bool vinculoVital; //si tiene vínculo vital, recupera vida igual al daño que haga
+    public bool noSerBloqueada; //si tiene no ser bloqueada, no puede ser bloqueada
+    public bool amenaza; //si tiene amenaza, el oponente debe bloquearla con 2 o mas criaturas
     public List<Carta> encantamientos;
     public int perteneceAJugador;
     public GameObject j1;
@@ -30,8 +40,17 @@ public class CartasJugadas : MonoBehaviour
         fuerzaActual = cartp.fuerza;
         resistenciaActual = cartp.resistencia;
         encantamientos = new List<Carta>();
-        //mareo = false;
-        //girada = false;
+        mareo = true;
+        girada = false;
+        defensor = false;
+        vigilancia = false;
+
+        Debug.Log($"[Inicializar] Carta '{cartp.nombreCarta}'");
+
+        //Aplicar atributos iniciales
+        foreach (var atributo in cartp.atributos) {
+            atributo.aplicarAtributo(this);
+        }
     }
 
     public void RotarCarta(){
@@ -70,6 +89,138 @@ public class CartasJugadas : MonoBehaviour
         else if(perteneceAJugador== j2.GetComponent<Jugador>().id)
         {
             CartaJugada.transform.SetParent(ManoOponente.transform);   
+        }
+    }
+
+    /*METODOS DE ATAQUE Y BLOQUEO QUE HACE FALTA USAR EN LA PARTIDA*/
+    public void Atacar(CartasJugadas objetivo)
+    {
+        if (!mareo && !defensor) //si esta mareada no puede atacar, si tiene atributo defensor no puede atacar
+        {
+            int danioAsignado;
+
+            if (toqueMortal)
+            {
+                danioAsignado = objetivo.resistenciaActual;
+            }
+            else
+            {
+                danioAsignado = this.fuerzaActual;
+            }
+
+            //daño a la carta bloqueadora
+            if (objetivo != null)
+            {
+                int danioRealizado = Mathf.Min(danioAsignado, objetivo.resistenciaActual);
+                objetivo.RecibirDanio(danioAsignado);
+
+                if (vinculoVital)
+                {
+                    TratarVida(0, danioRealizado);
+                }
+
+                if (arrolla && danioAsignado > danioRealizado)
+                {
+                    int excesoDanio = danioAsignado - danioRealizado;
+                    TratarVida(1, excesoDanio);
+
+                    if (vinculoVital)
+                    {
+                        TratarVida(0, excesoDanio);
+                    }
+                }
+            }
+
+            else //daño directo al jugador
+            {
+                TratarVida(1, danioAsignado);
+
+                if (vinculoVital)
+                {
+                    TratarVida(0, danioAsignado);
+                }
+            }
+
+            
+
+
+            if (!vigilancia)
+            {
+                girada = true; // Al atacar, la carta se gira
+            }
+
+        }
+    }
+
+    public void RecibirDanio(int danio)
+    {
+        if ( !this.indestructible)
+        {
+            resistenciaActual -= danio;
+
+            if (resistenciaActual <= 0)
+            {
+                DestruirCarta();
+            }
+        }
+       
+    }
+
+    public void DestruirCarta()
+    {
+        Debug.Log($"Carta {carta.nombreCarta} ha muerto");
+        //LLEVAR AL CEMENTERIO
+        if (perteneceAJugador == j1.GetComponent<Jugador>().id)
+        {
+            j1.GetComponent<Jugador>().cementerio.Add(this);
+        }
+        else if (perteneceAJugador == j2.GetComponent<Jugador>().id)
+        {
+            j2.GetComponent<Jugador>().cementerio.Add(this);
+        }
+
+        Destroy(this.gameObject); //Destruyo el gameObject de la mesa para que desaparezca visualmente.
+    }
+
+
+
+    //FALTA LA LOGICA DEL METODO DE BLOQUEO
+    public void Bloquear(CartasJugadas objetivo)
+    {
+        if (!girada && !objetivo.noSerBloqueada) // si esta girada no puede bloquear
+        {
+            if ((objetivo.vuelo && this.vuelo) || !objetivo.vuelo)
+            {
+                //hacer logica de bloqueo
+            }
+        }
+    }
+
+    public void TratarVida(int caso, int cantidad)
+    {
+        if (caso == 0) //vinculo vital o sumar vidas
+        {
+            //le sumamos al jugador que controla la carta el danio realizado o lo que hay que sumar de vida
+            if (perteneceAJugador == j1.GetComponent<Jugador>().id)
+            {
+                j1.GetComponent<Jugador>().vida += cantidad;
+            }
+            else if (perteneceAJugador == j2.GetComponent<Jugador>().id)
+            {
+                j2.GetComponent<Jugador>().vida += cantidad;
+            }
+        }
+        else if (caso == 1) //arrolla y restar vida al oponente
+        {
+            //le restamos el exceso de daño al jugador contrario
+            if (perteneceAJugador == j1.GetComponent<Jugador>().id)
+            {
+                j2.GetComponent<Jugador>().vida -= cantidad;
+            }
+            else if (perteneceAJugador == j2.GetComponent<Jugador>().id)
+            {
+                j1.GetComponent<Jugador>().vida -= cantidad;
+            }
         }
     }
 }

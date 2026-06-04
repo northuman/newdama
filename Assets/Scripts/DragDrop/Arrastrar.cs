@@ -13,7 +13,7 @@ using UnityEngine.EventSystems;
 *             Se vuelven a activar los raycast.
 */
 
-public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDragHandler
+public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     public Transform parentToReturnTo = null;
     private Vector3 escalaOriginal;
@@ -83,6 +83,154 @@ public class Arrastrar : MonoBehaviour, IBeginDragHandler,IDragHandler, IEndDrag
             t += Time.deltaTime / velocidadZoom;
             transform.localScale = Vector3.Lerp(inicio, escala, t);
             yield return null;
+        }
+    }
+
+public void OnPointerClick(PointerEventData eventData)
+    {
+        if(eventData.button == 0) // Clic izquierdo
+        {
+            Partida gestor = FindObjectOfType<Partida>();
+            if(gestor == null) return;
+
+            // Obtenemos los componentes de la carta para usarlos en ambas lógicas
+            CartasJugadas cj = GetComponent<CartasJugadas>();
+            MostrarCarta mc = GetComponent<MostrarCarta>();
+
+            if (cj == null || mc == null) return;
+
+            // --------------------------------------------------------
+            // 0. LÓGICA DE CONJUROS (Modo Francotirador y Activación)
+            // --------------------------------------------------------
+            
+            // CASO A: Tienes el Modo Francotirador activado y buscas una víctima
+            if (gestor.esperandoObjetivo == true)
+            {
+                // Verificamos si haces clic en un enemigo (jugador 2) que sea Criatura
+                if (mc.tipo == "Criatura" && cj.perteneceAJugador == 2)
+                {
+                    gestor.LanzarConjuroA(this.gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning("Objetivo inválido. Debes hacer clic en una criatura enemiga.");
+                }
+                // ¡VITAL! Cortamos aquí. Si estamos en modo francotirador, el clic no debe hacer NADA más.
+                return; 
+            }
+
+            // CASO B: Activar un Conjuro propio durante tu Fase Principal
+            if (gestor.faseActual == Partida.Fases.PRINCIPAL_1 || gestor.faseActual == Partida.Fases.PRINCIPAL_2)
+            {
+                if (mc.tipo == "Conjuro" && cj.perteneceAJugador == 1)
+                {
+                    gestor.PrepararConjuro(this.gameObject);
+                    return; // Cortamos aquí para que el juego se quede esperando el siguiente clic
+                }
+            }
+
+            // --------------------------------------------------------
+            // 1. LÓGICA DE DESCARTE (Si estamos en la Fase Final)
+            // --------------------------------------------------------
+            if (gestor.esperandoDescarte == true && gestor.faseActual == Partida.Fases.FINAL)
+            {
+                int perteneceA = cj.perteneceAJugador;
+                
+                // Comprobamos que la carta sea nuestra
+                if (perteneceA == 1) 
+                {
+                    // Borramos la carta de la memoria (la lista lógica)
+                    var datosCarta = mc.GetCarta();
+                    gestor.jugador.mano.Remove(datosCarta);
+
+                    // Destruimos la carta visual de la pantalla
+                    Destroy(gameObject);
+
+                    // Restamos al contador
+                    gestor.cartasParaDescartar--;
+                    Debug.Log("Has descartado una carta. Te faltan por tirar: " + gestor.cartasParaDescartar);
+
+                    // Si ya hemos cumplido el cupo... ¡Pasamos turno automáticamente!
+                    if (gestor.cartasParaDescartar <= 0)
+                    {
+                        gestor.esperandoDescarte = false;
+                        Debug.Log("Descarte completado. Pasando el turno al rival...");
+                        gestor.AvanzarFase();
+                    }
+                }
+                
+                // IMPORTANTE: Salimos de la función aquí. Si la carta se destruyó,
+                // no queremos que intente ejecutar la lógica de ataque de abajo.
+                return; 
+            }
+
+            // --------------------------------------------------------
+            // 2. LÓGICA DE ATAQUE (Si estamos en la Fase de Combate)
+            // --------------------------------------------------------
+            if (gestor.faseActual == Partida.Fases.COMBATE)
+            {
+                // Solo podemos atacar con nuestras propias cartas y si son criaturas
+                if (cj.perteneceAJugador == 1 && mc.tipo == "Criatura")
+                {
+                    // Regla de Magic: Una carta girada no puede atacar
+                    if (cj.girada == true)
+                    {
+                        Debug.LogWarning("Esta criatura ya está girada (exhausta). No puede atacar.");
+                    }
+                    else
+                    {
+                        // La giramos visualmente para indicar que está atacando
+                        cj.RotarCarta();
+                        
+                        // La metemos en la lista de la guerra de Partida.cs
+                        gestor.criaturasAtacantes.Add(this.gameObject);
+                        
+                        Debug.Log($"¡{mc.GetCarta().nombreCarta} ha sido declarada como atacante!");
+                    }
+                }
+            }
+
+            // --------------------------------------------------------
+            // 3. LÓGICA DE BLOQUEO (Si estamos en Fase de Bloqueo y NOS ATACAN)
+            // --------------------------------------------------------
+            if (gestor.faseActual == Partida.Fases.BLOQUEO && gestor.turno == true)
+            {
+                // CASO A: Hacemos clic en NUESTRA propia criatura para que defienda
+                if (cj.perteneceAJugador == 1 && mc.tipo == "Criatura")
+                {
+                    if (cj.girada == true)
+                    {
+                        Debug.LogWarning("No puedes bloquear con una criatura girada (exhausta).");
+                    }
+                    else
+                    {
+                        // La guardamos en el Gestor
+                        gestor.bloqueadorSeleccionado = this.gameObject;
+                        Debug.Log($"Has seleccionado a {mc.GetCarta().nombreCarta} para defender. Ahora haz clic en el atacante enemigo.");
+                    }
+                }
+                
+                // CASO B: Hacemos clic en un ENEMIGO para lanzarle a nuestro defensor
+                else if (cj.perteneceAJugador == 2 && gestor.bloqueadorSeleccionado != null)
+                {
+                    // Comprobamos si este enemigo realmente nos está atacando
+                    if (gestor.criaturasAtacantes.Contains(this.gameObject))
+                    {
+                        // ¡Los emparejamos en el Diccionario!
+                        gestor.emparejamientos[this.gameObject] = gestor.bloqueadorSeleccionado;
+                        
+                        string nomDefensor = gestor.bloqueadorSeleccionado.GetComponent<MostrarCarta>().GetCarta().nombreCarta;
+                        Debug.Log($"¡ORDEN DADA! {nomDefensor} defenderá el ataque de {mc.GetCarta().nombreCarta}.");
+                        
+                        // Vaciamos el cursor para poder elegir otro bloqueador si queremos
+                        gestor.bloqueadorSeleccionado = null; 
+                    }
+                    else
+                    {
+                        Debug.Log("Esa criatura enemiga no te está atacando, elige a otra.");
+                    }
+                }
+            }
         }
     }
 }
