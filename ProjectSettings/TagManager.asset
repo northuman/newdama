@@ -5,6 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - Clone
+  - NPCImage
+  - PlayerImage
+  - BackgroundImage
+  - CardGame
+  - Debug
   layers:
   - Default
   - TransparentFX
@@ -12,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Terrain
   - 
   - 
   - 

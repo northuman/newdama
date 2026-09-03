@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca7ce0e78386a94d98caf1324dbe790, type: 3}
+  m_Name: DMartinFinal
+  m_EditorClassIdentifier:
+  <id>k__BackingField: DMartinFinal
+  questName: El niño ante D. Martin
+  inkKnotName: DMartinFinal
+  levelRequirement: 13
+  questPrerequisites:
+  - {fileID: 11400000, guid: e5555555555555555555555555555555, type: 2}
+  requiredOutfit: 2
+  requiredItems:
+  - nino
+  backgroundSprite: {fileID: 0}
+  npcPortraitSprite: {fileID: 0}
+  isRepeatable: 1
+  launchesCombat: 1
+  suppressResultPanel: 0
+  initialResult:
+    goldReward: 0
+    levelUp: 1
+    itemsReward:
+    - invitacion_mercado
+    cardsReward: []
+    loseGoldPenalty: 0
+    loseHealthPenalty: 0
+    cardsPenalty: []
+    loseIsGameOver: 0
+  repeatResult: {goldReward: 0, levelUp: 0, itemsReward: [], cardsReward: [], loseGoldPenalty: 0, loseHealthPenalty: 0, cardsPenalty: [], loseIsGameOver: 0}
+  unlocksOutfitChange: 0
+  exitsNunPhase: 0

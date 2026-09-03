@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca7ce0e78386a94d98caf1324dbe790, type: 3}
+  m_Name: Marques
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: Marques
+  questName: "Combate con el Marqu\xE9s"
+  inkKnotName: Marques
+  levelRequirement: 6
+  questPrerequisites:
+  - {fileID: 11400000, guid: 19e382995a8f60046a40b20111b68a12, type: 2}
+  requiredOutfit: 2
+  requiredItems:
+  - cantarida
+  backgroundSprite: {fileID: 21300000, guid: cad149dff4b7f7f49a6e1b0b013ec86c, type: 3}
+  npcPortraitSprite: {fileID: 21300000, guid: 5ca50cd86df9d0045bf8b51ba14d9bd6, type: 3}
+  isRepeatable: 1
+  launchesCombat: 1
+  suppressResultPanel: 1
+  initialResult:
+    goldReward: 12
+    levelUp: 1
+    itemsReward:
+    - salvoconducto
+    cardsReward:
+    - carta_mitica
+    loseGoldPenalty: 12
+    loseHealthPenalty: 0
+    cardsPenalty: []
+    loseIsGameOver: 0
+  repeatResult:
+    goldReward: 12
+    levelUp: 0
+    itemsReward: []
+    cardsReward:
+    - carta_mitica
+    loseGoldPenalty: 12
+    loseHealthPenalty: 0
+    cardsPenalty: []
+    loseIsGameOver: 0
+  unlocksOutfitChange: 0
+  exitsNunPhase: 0

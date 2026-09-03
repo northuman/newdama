@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca7ce0e78386a94d98caf1324dbe790, type: 3}
+  m_Name: Sepulturero
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: Sepulturero
+  questName: Buscando la espada de Damasco
+  inkKnotName: Sepulturero
+  levelRequirement: 7
+  questPrerequisites:
+  - {fileID: 11400000, guid: 254bcab838dccb34582c7ca55d7a8a34, type: 2}
+  requiredOutfit: 2
+  requiredItems: []
+  backgroundSprite: {fileID: 21300000, guid: 588a0d4e5033e2448b2fbb58bd694b13, type: 3}
+  npcPortraitSprite: {fileID: 21300000, guid: b4cc676ca4958ea4aaec89bc37717c68, type: 3}
+  isRepeatable: 1
+  launchesCombat: 1
+  suppressResultPanel: 0
+  initialResult:
+    goldReward: 0
+    levelUp: 1
+    itemsReward:
+    - espada_damasco
+    cardsReward:
+    - carta_rara
+    loseGoldPenalty: 0
+    loseHealthPenalty: 0
+    cardsPenalty:
+    - carta_rara
+    - carta_rara
+    - carta_rara
+    loseIsGameOver: 0
+  repeatResult:
+    goldReward: 8
+    levelUp: 0
+    itemsReward: []
+    cardsReward:
+    - carta_rara
+    - carta_rara
+    loseGoldPenalty: 8
+    loseHealthPenalty: 0
+    cardsPenalty:
+    - carta_rara
+    - carta_rara
+    loseIsGameOver: 0
+  unlocksOutfitChange: 0
+  exitsNunPhase: 0

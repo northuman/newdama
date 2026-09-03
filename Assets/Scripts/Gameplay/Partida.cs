@@ -38,6 +38,7 @@ public class Partida : MonoBehaviour
     public TextMeshProUGUI textoVidaJugador;
     public GameObject panelVictoria;
     public GameObject panelDerrota;
+    public StoryGameResult resultSystem;
     private bool juegoTerminado = false;
     public bool esperandoObjetivo = false;
     public GameObject conjuroEnElAire = null; 
@@ -540,6 +541,9 @@ private void JugarCriaturasIA()
             panelDerrota.SetActive(true);
             Debug.Log("Lo siento, has perdido la partida.");
         }
+
+        if (resultSystem != null)
+            resultSystem.ReportResult(victoria);
     }
 
     public void ReiniciarPartida()

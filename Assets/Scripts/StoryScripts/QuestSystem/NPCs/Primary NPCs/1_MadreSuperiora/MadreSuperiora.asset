@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ca7ce0e78386a94d98caf1324dbe790, type: 3}
+  m_Name: MadreSuperiora
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: MadreSuperiora
+  questName: Combate con la Madre Superiora
+  inkKnotName: MadreSuperiora
+  levelRequirement: 1
+  questPrerequisites: []
+  requiredOutfit: 1
+  requiredItems: []
+  backgroundSprite: {fileID: 21300000, guid: a435005480bc15e40b0475c507fc8200, type: 3}
+  npcPortraitSprite: {fileID: 21300000, guid: 437ab6c335774594d9d800bf4568cd6c, type: 3}
+  isRepeatable: 0
+  launchesCombat: 1
+  suppressResultPanel: 0
+  initialResult:
+    goldReward: 12
+    levelUp: 1
+    itemsReward: []
+    cardsReward: []
+    loseGoldPenalty: 0
+    loseHealthPenalty: 0
+    loseIsGameOver: 1
+  repeatResult:
+    goldReward: 0
+    levelUp: 0
+    itemsReward: []
+    cardsReward: []
+    loseGoldPenalty: 0
+    loseHealthPenalty: 0
+    loseIsGameOver: 0
+  unlocksOutfitChange: 0
+  exitsNunPhase: 1
